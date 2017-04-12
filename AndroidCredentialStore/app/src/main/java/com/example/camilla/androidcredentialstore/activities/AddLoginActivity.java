@@ -21,7 +21,6 @@ import com.example.camilla.androidcredentialstore.models.Login;
 import com.example.camilla.androidcredentialstore.R;
 
 
-
 public class AddLoginActivity extends AppCompatActivity
 {
     EditText username;
@@ -33,8 +32,7 @@ public class AddLoginActivity extends AppCompatActivity
     SQLiteDatabase database;
 
     Button btn;
-
-
+    
     //put this cons where data gets saved
     /*public AddLoginActivity(Context context)
     {
