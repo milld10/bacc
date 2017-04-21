@@ -1,15 +1,38 @@
 package com.example.camilla.androidcredentialstore.models;
 
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Property;
+import org.greenrobot.greendao.annotation.ToMany;
+
 /**
  * Created by Camilla on 29.03.2017.
  */
 
+@Entity(
+        active =  true,
+
+        nameInDb = "CREDENTIALS"//,
+
+        //generateConstructors = true,
+        //generateGettersSetters = true
+)
 public class Login implements java.io.Serializable
 {
-    //private long id; //created automatically by greenDao
+    //used for error of serialization
+    private static final long serialVersionUID = 1L;
+
+    @Id(autoincrement = true)
+    private long id;
+
+    @Property(nameInDb = "WEBSITE")
     private String website;
+
+    @Property(nameInDb = "USERNAME")
     private String username;
+
+    //@Property(nameInDb = "PASSWORD")
     private char[] password;
 
     /*

@@ -32,7 +32,7 @@ public class AddLoginActivity extends AppCompatActivity
     SQLiteDatabase database;
 
     Button btn;
-    
+
     //put this cons where data gets saved
     /*public AddLoginActivity(Context context)
     {

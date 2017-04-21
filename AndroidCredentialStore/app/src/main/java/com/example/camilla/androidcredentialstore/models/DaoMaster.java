@@ -5,4 +5,6 @@ package com.example.camilla.androidcredentialstore.models;
  */
 
 public class DaoMaster {
+    public class DevOpenHelper {
+    }
 }

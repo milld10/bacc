@@ -25,14 +25,15 @@ public class CredentialApplication extends Application
     {
         super.onCreate();
 
-        /*try {
-            DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, /* ENCRYPTED ? "credentials-db-encrypted" :  "credentials-db", null);
+        try {
+            DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this,"credentials-db", null);
             //Database db = ENCRYPTED ? //encrypted : getwritabledb();
-            Database db = helper.getWritableDb();
+            Database db = helper.getWritableDatabase();
             daoSession = new DaoMaster.newSession();
         } catch (Exception e) {
             Log.e(TAG, "Could not open database", e);
-        }*/
+        }
+
     }
 
     public DaoSession getDaoSession()

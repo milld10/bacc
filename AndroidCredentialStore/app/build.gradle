@@ -20,6 +20,10 @@ android {
     }
 }
 
+greendao {
+    //schemaVersion 2 //defaults to 1, not necessary?
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
