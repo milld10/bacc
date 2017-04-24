@@ -18,13 +18,13 @@ public class AddCredentialActivity extends AppCompatActivity
 {
     EditText username;
     EditText password;
-    EditText website;
+    EditText account;
     Context context;
 
     com.example.camilla.androidcredentialstore.database.DBHelper DBHelper;
     SQLiteDatabase database;
 
-    Button btn;
+    Button saveButton;
 
     //put this cons where data gets saved
     /*public AddCredentialActivity(Context context)
@@ -48,14 +48,14 @@ public class AddCredentialActivity extends AppCompatActivity
         username = (EditText) login_data.findViewById(R.id.username);
         password = (EditText) login_data.findViewById(R.id.password);*/
 
-        website = (EditText) findViewById(R.id.website);
+        account = (EditText) findViewById(R.id.account);
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
 
         //the save button in AddCredentialActivity
-        btn = (Button) findViewById(R.id.saveBtn);
+        saveButton = (Button) findViewById(R.id.saveBtn);
 
-        btn.setOnClickListener(new View.OnClickListener()
+        saveButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -63,22 +63,19 @@ public class AddCredentialActivity extends AppCompatActivity
                 final Credential credential = new Credential();
 
                // Log.w("ADDLOGIN", "before getText() func");
-                String _website = website.getText().toString();
+                String _website = account.getText().toString();
                // Log.w("ADDLOGIN", "after getText() func -> website: " + _website);
 
                 String _username = username.getText().toString();
 
-                //normal über 2 Zeile, jetzt ohne zwischenspeichern in String
-                //String _password = password.getText().toString();
-                //char[] pwArray = _password.toCharArray();
-
+                //uses a toString -> not for passwords!
                 //byte[] pwArray = password.getText().toString().getBytes(StandardCharsets.UTF_8);
                 int length = password.length();
                 char[] pwArray = new char[length];
                 password.getText().getChars(0, length, pwArray, 0);
 
 
-
+                //TODO: cast pw to a byte array to encrypt and save in DB
 
 
                 boolean flag_website = true;

@@ -29,8 +29,8 @@ public class AppOfCredential implements java.io.Serializable
     private long app_id;
 
     //former website
-    @Property(nameInDb = "APP_NAME")
-    private String name;
+    @Property(nameInDb = "ACCOUNT_NAME")
+    private String account_name;
 
     @ToMany(referencedJoinProperty = "applicationId")
     @OrderBy("username ASC")
@@ -44,10 +44,10 @@ private transient DaoSession daoSession;
 @Generated(hash = 1561407162)
 private transient AppOfCredentialDao myDao;
 
-@Generated(hash = 959775088)
-public AppOfCredential(long app_id, String name) {
+@Generated(hash = 1296978024)
+public AppOfCredential(long app_id, String account_name) {
     this.app_id = app_id;
-    this.name = name;
+    this.account_name = account_name;
 }
 
 @Generated(hash = 227680436)
@@ -62,19 +62,11 @@ public void setApp_id(long app_id) {
     this.app_id = app_id;
 }
 
-public String getName() {
-    return this.name;
-}
-
-public void setName(String name) {
-    this.name = name;
-}
-
 
 @Override
 public String toString()
 {
-    return name;
+    return account_name;
 }
 
 /**
@@ -140,6 +132,14 @@ public void update() {
         throw new DaoException("Entity is detached from DAO context");
     }
     myDao.update(this);
+}
+
+public String getAccount_name() {
+    return this.account_name;
+}
+
+public void setAccount_name(String account_name) {
+    this.account_name = account_name;
 }
 
 /** called by internal mechanisms, do not call yourself. */

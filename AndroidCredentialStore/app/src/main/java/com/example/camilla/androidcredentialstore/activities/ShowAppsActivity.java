@@ -15,24 +15,25 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.camilla.androidcredentialstore.R;
+import com.example.camilla.androidcredentialstore.models.AppOfCredential;
 import com.example.camilla.androidcredentialstore.models.Credential;
 
 import java.util.ArrayList;
 
 public class ShowAppsActivity extends ListActivity
 {
-    private static final int ADD_LOGIN_RESULT_CODE = 15;
+    private static final int ADD_APP_RESULT_CODE = 15;
 
-    private ListView list;
+    private ListView app_list;
 
-    //private LoginDao loginDao;
 
-    TextView website;
+    TextView account;
     TextView username;
     TextView password;
 
-    final ArrayList<Credential> credentialArrayList = new ArrayList<Credential>();
-    //to get the logins into the arraylist, credentialArrayList.add(..) to show with the adapter
+    final ArrayList<AppOfCredential> credentialArrayList = new ArrayList<>();
+    //TODO: new function that gets all credentials out of DB
+    // to get the logins into the arraylist, credentialArrayList.add(..) to show with the adapter
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,14 +41,15 @@ public class ShowAppsActivity extends ListActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_apps);
 
-        Credential credential = new Credential();
-        credential.setUsername("testuser");
+        AppOfCredential appOfCredential = new AppOfCredential();
 
-        credentialArrayList.add(credential);
+        appOfCredential.setAccount_name("tugraz");
+
+        credentialArrayList.add(appOfCredential);
 
         //show elements in a ListView
-        ArrayAdapter<Credential> adapter = new ArrayAdapter<>(this,
-                                        android.R.layout.simple_list_item_1,
+        ArrayAdapter<AppOfCredential> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1,
                 credentialArrayList);
         setListAdapter(adapter);
 
@@ -57,11 +59,12 @@ public class ShowAppsActivity extends ListActivity
         //loginDao = daoSession.getLoginDao();
 
         //for what are these?
-        website = (TextView) findViewById(R.id.website);
+        account = (TextView) findViewById(R.id.account);
         username = (TextView) findViewById(R.id.username);
         password = (TextView) findViewById(R.id.password);
 
 
+        //TODO: TODO: 2 different buttons or the same in show apps/credentials activity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_addLogin);
         fab.setOnClickListener(new View.OnClickListener()
         {
@@ -77,7 +80,7 @@ public class ShowAppsActivity extends ListActivity
     public void showAddCredentialActivity(View view)
     {
         Intent intent = new Intent(this, AddCredentialActivity.class);
-        startActivityForResult(intent, ADD_LOGIN_RESULT_CODE);
+        startActivityForResult(intent, ADD_APP_RESULT_CODE);
        // startActivity(intent);
     }
 
@@ -85,7 +88,7 @@ public class ShowAppsActivity extends ListActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent intent)
     {
 
-        if(requestCode == ADD_LOGIN_RESULT_CODE)
+        if(requestCode == ADD_APP_RESULT_CODE)
         {
             if(resultCode == ShowAppsActivity.RESULT_OK)
             {
