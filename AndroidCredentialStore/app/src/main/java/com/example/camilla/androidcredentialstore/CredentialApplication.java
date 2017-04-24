@@ -3,13 +3,14 @@ package com.example.camilla.androidcredentialstore;
  * Created by Camilla on 31.03.2017.
  */
 import android.app.Application;
-import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-
-import org.greenrobot.greendao.database.Database;
 
 import com.example.camilla.androidcredentialstore.models.DaoMaster;
 import com.example.camilla.androidcredentialstore.models.DaoSession;
+
+import org.greenrobot.greendao.database.Database;
+
 
 
 public class CredentialApplication extends Application
@@ -26,10 +27,10 @@ public class CredentialApplication extends Application
         super.onCreate();
 
         try {
-            DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this,"credentials-db", null);
+            DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this,"credentials-db");
             //Database db = ENCRYPTED ? //encrypted : getwritabledb();
-            Database db = helper.getWritableDatabase();
-            daoSession = new DaoMaster.newSession();
+            Database db = helper.getWritableDb();
+            daoSession = new DaoMaster(db).newSession();
         } catch (Exception e) {
             Log.e(TAG, "Could not open database", e);
         }

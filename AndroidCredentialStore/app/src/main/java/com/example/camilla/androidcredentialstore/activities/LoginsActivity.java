@@ -10,18 +10,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.camilla.androidcredentialstore.database.DBHelper;
 import com.example.camilla.androidcredentialstore.R;
-import com.example.camilla.androidcredentialstore.models.Login;
+import com.example.camilla.androidcredentialstore.models.Credential;
 
-import org.greenrobot.greendao.query.Query;
-
-import java.security.KeyStore;
 import java.util.ArrayList;
 
 public class LoginsActivity extends ListActivity
@@ -36,8 +31,8 @@ public class LoginsActivity extends ListActivity
     TextView username;
     TextView password;
 
-    final ArrayList<Login> loginArrayList = new ArrayList<Login>();
-    //to get the logins into the arraylist, loginArrayList.add(..) to show with the adapter
+    final ArrayList<Credential> credentialArrayList = new ArrayList<Credential>();
+    //to get the logins into the arraylist, credentialArrayList.add(..) to show with the adapter
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -45,20 +40,20 @@ public class LoginsActivity extends ListActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logins);
 
-        Login login = new Login();
-        login.setWebsite("www.google.com");
-        login.setUsername("testuser");
+        Credential credential = new Credential();
+        credential.setWebsite("www.google.com");
+        credential.setUsername("testuser");
 
-        loginArrayList.add(login);
+        credentialArrayList.add(credential);
 
         //show elements in a ListView
-        ArrayAdapter<Login> adapter = new ArrayAdapter<>(this,
+        ArrayAdapter<Credential> adapter = new ArrayAdapter<>(this,
                                         android.R.layout.simple_list_item_1,
-                                        loginArrayList);
+                credentialArrayList);
         setListAdapter(adapter);
 
         //TODO: greenDAO DB
-        //prepare DAO object for Login class
+        //prepare DAO object for Credential class
         //DaoSession daoSession = ((App) getApplication()).getDaoSession();
         //loginDao = daoSession.getLoginDao();
 
@@ -95,17 +90,17 @@ public class LoginsActivity extends ListActivity
         {
             if(resultCode == LoginsActivity.RESULT_OK)
             {
-                Login login_extras = (Login) intent.getSerializableExtra("login");
+                Credential credential_extras = (Credential) intent.getSerializableExtra("login");
 
                 //only add to arrayList if not null
-                if(login_extras != null)
+                if(credential_extras != null)
                 {
-                    Log.w("LOGIN", "website: " + login_extras);
+                    Log.w("LOGIN", "website: " + credential_extras);
 
                     //TODO put object into DB with greenDAO? here:
 
                     //add user login to the array list
-                    loginArrayList.add(login_extras);
+                    credentialArrayList.add(credential_extras);
                 }
             }
         }

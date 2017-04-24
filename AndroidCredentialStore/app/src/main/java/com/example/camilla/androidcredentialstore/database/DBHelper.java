@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.camilla.androidcredentialstore.models.Login;
+import com.example.camilla.androidcredentialstore.models.Credential;
 
 public class DBHelper extends SQLiteOpenHelper
 {
@@ -66,18 +66,20 @@ public class DBHelper extends SQLiteOpenHelper
 
     //***********************************
 
-        public boolean insertLogin(Login login)
+        public boolean insertLogin(Credential credential)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
         //needs to be changed to input values of user.
-        contentValues.put(COLUMN_WEBSITE, login.getWebsite());
-        contentValues.put(COLUMN_USERNAME, login.getUsername());
-        //contentValues.put(COLUMN_PASSWORD, login.getPassword());
+        contentValues.put(COLUMN_WEBSITE, credential.getWebsite());
+        contentValues.put(COLUMN_USERNAME, credential.getUsername());
+        //contentValues.put(COLUMN_PASSWORD, credential.getPassword());
         db.insert(TABLE_NAME, null, contentValues);
+
         return true;
     }
+
 
     //CHANGE TO WEBSITE
     public Cursor getLoginById(int id)
@@ -95,7 +97,7 @@ public class DBHelper extends SQLiteOpenHelper
     }
 
     //TODO: delete entries based on id or website?
-    public boolean deleteLogin(Login login)
+    public boolean deleteLogin(Credential credential)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -105,6 +107,6 @@ public class DBHelper extends SQLiteOpenHelper
         return true;
     }
 
-    //TODO: update Login
+    //TODO: update Credential
 
 }

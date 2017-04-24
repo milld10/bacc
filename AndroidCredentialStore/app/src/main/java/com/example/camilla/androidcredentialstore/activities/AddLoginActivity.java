@@ -2,22 +2,17 @@ package com.example.camilla.androidcredentialstore.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.MenuItemHoverListener;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
-import com.example.camilla.androidcredentialstore.database.DBHelper;
-import com.example.camilla.androidcredentialstore.models.Login;
+import com.example.camilla.androidcredentialstore.models.Credential;
 import com.example.camilla.androidcredentialstore.R;
 
 
@@ -67,7 +62,7 @@ public class AddLoginActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                final Login login = new Login();
+                final Credential credential = new Credential();
 
                // Log.w("ADDLOGIN", "before getText() func");
                 String _website = website.getText().toString();
@@ -79,7 +74,12 @@ public class AddLoginActivity extends AppCompatActivity
                 //String _password = password.getText().toString();
                 //char[] pwArray = _password.toCharArray();
 
-                char[] pwArray = password.getText().toString().toCharArray();
+                //byte[] pwArray = password.getText().toString().getBytes(StandardCharsets.UTF_8);
+                int length = password.length();
+                char[] pwArray = new char[length];
+                password.getText().getChars(0, length, pwArray, 0);
+
+
 
 
                 boolean flag_website = false;
@@ -87,11 +87,11 @@ public class AddLoginActivity extends AppCompatActivity
                 boolean flag_pw = false;
 
 
-                if(!_website.matches(""))
+                if(!_website.isEmpty())
                 {
                     if(Patterns.WEB_URL.matcher(_website).matches())
                     {
-                        login.setWebsite(_website);
+                        credential.setWebsite(_website);
                         flag_website = true;
                     }
                     else
@@ -114,7 +114,7 @@ public class AddLoginActivity extends AppCompatActivity
                 if(!_username.matches(""))
                 {
                     //other checks to username?
-                    login.setUsername(_username);
+                    credential.setUsername(_username);
                     flag_username = true;
                 }
                 else
@@ -128,7 +128,7 @@ public class AddLoginActivity extends AppCompatActivity
 
                 if(pwArray.length != 0)
                 {
-                    login.setPassword(pwArray);
+                    credential.setPassword(pwArray);
                     flag_pw = true;
 
                     //fill array with zeros
@@ -151,10 +151,10 @@ public class AddLoginActivity extends AppCompatActivity
                 {
                     //****** Code just executed when all fields als filled in and no exceptions are thrown
 
-                    Log.w("ADDLOGIN", "obj website: " + login.getWebsite() + " || txt website: " + _website);
+                    Log.w("ADDLOGIN", "obj website: " + credential.getWebsite() + " || txt website: " + _website);
 
                     Intent intent = new Intent(AddLoginActivity.this, LoginsActivity.class);
-                    intent.putExtra("login", login);
+                    intent.putExtra("credential", credential);
 
                     setResult(LoginsActivity.RESULT_OK, intent);
                     finish();
