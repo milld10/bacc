@@ -19,7 +19,7 @@ import com.example.camilla.androidcredentialstore.models.Credential;
 
 import java.util.ArrayList;
 
-public class LoginsActivity extends ListActivity
+public class ShowAppsActivity extends ListActivity
 {
     private static final int ADD_LOGIN_RESULT_CODE = 15;
 
@@ -38,10 +38,9 @@ public class LoginsActivity extends ListActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_logins);
+        setContentView(R.layout.activity_show_apps);
 
         Credential credential = new Credential();
-        credential.setWebsite("www.google.com");
         credential.setUsername("testuser");
 
         credentialArrayList.add(credential);
@@ -69,15 +68,15 @@ public class LoginsActivity extends ListActivity
             public void onClick(View view)
             {
                 //TODO checks; then show new view????
-                showAddLoginActivity(view);
+                showAddCredentialActivity(view);
             }
         });
     }
 
     //calling constructor without parameters
-    public void showAddLoginActivity(View view)
+    public void showAddCredentialActivity(View view)
     {
-        Intent intent = new Intent(this, AddLoginActivity.class);
+        Intent intent = new Intent(this, AddCredentialActivity.class);
         startActivityForResult(intent, ADD_LOGIN_RESULT_CODE);
        // startActivity(intent);
     }
@@ -88,7 +87,7 @@ public class LoginsActivity extends ListActivity
 
         if(requestCode == ADD_LOGIN_RESULT_CODE)
         {
-            if(resultCode == LoginsActivity.RESULT_OK)
+            if(resultCode == ShowAppsActivity.RESULT_OK)
             {
                 Credential credential_extras = (Credential) intent.getSerializableExtra("login");
 

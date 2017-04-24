@@ -19,35 +19,41 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.BluetoothActivity"
-            android:label="@string/bluetooth" >
+            android:label="@string/bluetooth">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.ShowAppsActivity"
+            android:label="@string/applications">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
-            android:name=".activities.LoginsActivity"
-            android:label="@string/logins" >
+            android:name=".activities.ShowCredentialsActivity"
+            android:label="@string/title_activity_show_credentials">
+        </activity>
+
+        <activity
+            android:name=".activities.AddCredentialActivity"
+            android:label="@string/add_credential"
+            android:parentActivityName=".activities.ShowAppsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".activities.AddLoginActivity"
-            android:label="@string/add_login"
-            android:parentActivityName=".activities.LoginsActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
 
     </application>
 

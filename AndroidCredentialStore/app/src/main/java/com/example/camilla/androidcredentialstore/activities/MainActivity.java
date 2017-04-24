@@ -10,8 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.camilla.androidcredentialstore.R;
-import com.example.camilla.androidcredentialstore.activities.BluetoothActivity;
-import com.example.camilla.androidcredentialstore.activities.LoginsActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     /*public void showAddLoginActivity(View view)
     {
-        Intent intent = new Intent(this, AddLoginActivity.class);
+        Intent intent = new Intent(this, AddCredentialActivity.class);
         startActivity(intent);
     }*/
 
@@ -48,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public void showLoginsActivity(View view)
     {
 
-        Intent intent = new Intent(this, LoginsActivity.class);
+        Intent intent = new Intent(this, ShowAppsActivity.class);
         startActivity(intent);
 
     }

@@ -5,18 +5,16 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.Toast;
 
 import com.example.camilla.androidcredentialstore.models.Credential;
 import com.example.camilla.androidcredentialstore.R;
 
 
-public class AddLoginActivity extends AppCompatActivity
+public class AddCredentialActivity extends AppCompatActivity
 {
     EditText username;
     EditText password;
@@ -29,7 +27,7 @@ public class AddLoginActivity extends AppCompatActivity
     Button btn;
 
     //put this cons where data gets saved
-    /*public AddLoginActivity(Context context)
+    /*public AddCredentialActivity(Context context)
     {
     //TODO rausfinden: wie kann man den konstruktor mit parametern aufrufen kann?
     //wird vil nicht mehr gebraucht wegen greenDAO!!
@@ -41,10 +39,10 @@ public class AddLoginActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_login);
+        setContentView(R.layout.activity_add_credential);
 
         //TODO Research: what does inflate do??
-        /*View login_data = View.inflate(this, R.layout.activity_add_login, null);
+        /*View login_data = View.inflate(this, R.layout.activity_add_credential, null);
 
         website = (EditText) login_data.findViewById(R.id.website);
         username = (EditText) login_data.findViewById(R.id.username);
@@ -54,7 +52,7 @@ public class AddLoginActivity extends AppCompatActivity
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
 
-        //the save button in AddLoginActivity
+        //the save button in AddCredentialActivity
         btn = (Button) findViewById(R.id.saveBtn);
 
         btn.setOnClickListener(new View.OnClickListener()
@@ -82,16 +80,20 @@ public class AddLoginActivity extends AppCompatActivity
 
 
 
-                boolean flag_website = false;
-                boolean flag_username = false;
-                boolean flag_pw = false;
+
+                boolean flag_website = true;
+                boolean flag_username = true;
+                boolean flag_pw = true;
 
 
+
+                //TODO: checks for the fields
+                /*
                 if(!_website.isEmpty())
                 {
                     if(Patterns.WEB_URL.matcher(_website).matches())
                     {
-                        credential.setWebsite(_website);
+                        //credential.setWebsite(_website);
                         flag_website = true;
                     }
                     else
@@ -145,18 +147,19 @@ public class AddLoginActivity extends AppCompatActivity
                     //return;
                 }
 
+                */
 
 
                 if(flag_website && flag_username && flag_pw)
                 {
                     //****** Code just executed when all fields als filled in and no exceptions are thrown
 
-                    Log.w("ADDLOGIN", "obj website: " + credential.getWebsite() + " || txt website: " + _website);
+                    Log.w("ADDLOGIN", "before finishing the new intent");
 
-                    Intent intent = new Intent(AddLoginActivity.this, LoginsActivity.class);
+                    Intent intent = new Intent(AddCredentialActivity.this, ShowAppsActivity.class);
                     intent.putExtra("credential", credential);
 
-                    setResult(LoginsActivity.RESULT_OK, intent);
+                    setResult(ShowAppsActivity.RESULT_OK, intent);
                     finish();
                 }
                 else

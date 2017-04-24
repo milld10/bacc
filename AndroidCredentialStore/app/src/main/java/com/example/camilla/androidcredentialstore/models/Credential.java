@@ -13,11 +13,7 @@ import org.greenrobot.greendao.DaoException;
 
 @Entity(
         active =  true,
-
-        nameInDb = "CREDENTIALS"//,
-
-        //generateConstructors = true,
-        //generateGettersSetters = true
+        nameInDb = "CREDENTIALS"
 )
 public class Credential implements java.io.Serializable
 {
@@ -29,11 +25,6 @@ public class Credential implements java.io.Serializable
     private String username;
     private byte[] password;
     private long applicationId;
-
-
-
-
-
 
 
     /** Used to resolve relations */
@@ -82,7 +73,7 @@ public class Credential implements java.io.Serializable
 
 
     /* now in AppOfCredential Object:
-    //used by ArrayAdapter in LoginsActivity
+    //used by ArrayAdapter in ShowAppsActivity
     @Override
     public String toString()
     {
