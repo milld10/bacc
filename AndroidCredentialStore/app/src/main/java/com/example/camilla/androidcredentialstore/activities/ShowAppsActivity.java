@@ -92,17 +92,18 @@ public class ShowAppsActivity extends ListActivity
         {
             if(resultCode == ShowAppsActivity.RESULT_OK)
             {
-                Credential credential_extras = (Credential) intent.getSerializableExtra("login");
+                //Credential credential_extras = (Credential) intent.getSerializableExtra("login");
 
+                AppOfCredential extras = (AppOfCredential) intent.getSerializableExtra("credential");
                 //only add to arrayList if not null
-                if(credential_extras != null)
+                if(extras != null)
                 {
-                    Log.w("LOGIN", "website: " + credential_extras);
+                    Log.w("LOGIN", "website: " + extras);
 
                     //TODO put object into DB with greenDAO? here:
 
                     //add user login to the array list
-                    credentialArrayList.add(credential_extras);
+                    //credentialArrayList.add(credential_extras);
                 }
             }
         }

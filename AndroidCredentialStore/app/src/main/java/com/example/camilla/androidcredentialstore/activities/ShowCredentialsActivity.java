@@ -56,5 +56,29 @@ public class ShowCredentialsActivity extends ListActivity
         });
 
     }
+    public void showAddCredentialActivity(View view)
+    {
+        Intent intent = new Intent(this, AddCredentialActivity.class);
+        startActivityForResult(intent, ADD_CRED_RESULT_CODE);
+    }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent)
+    {
+        if(requestCode == ADD_CRED_RESULT_CODE)
+        {
+            if(resultCode == ShowAppsActivity.RESULT_OK)
+            {
+                Credential credential_extras = (Credential) intent.getSerializableExtra("login");
+
+                if(credential_extras != null)
+                {
+                    Log.w("ShowCredActi", "worked");
+
+                    //create a new appofcredential then a credential?
+                }
+            }
+        }
+    }
 }
