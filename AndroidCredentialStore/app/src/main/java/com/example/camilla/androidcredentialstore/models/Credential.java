@@ -72,6 +72,13 @@ public class Credential implements java.io.Serializable
     public void setPassword(byte[] password) {this.password = password;}
 
 
+    //to show in arrayadapter of ShowCredActivity
+    @Override
+    public String toString()
+    {
+        return username;
+    }
+
     /* now in AppOfCredential Object:
     //used by ArrayAdapter in ShowAppsActivity
     @Override

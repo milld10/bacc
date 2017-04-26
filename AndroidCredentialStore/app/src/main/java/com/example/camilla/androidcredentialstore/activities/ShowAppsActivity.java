@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,13 +20,11 @@ import com.example.camilla.androidcredentialstore.models.AppOfCredential;
 import com.example.camilla.androidcredentialstore.models.Credential;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ShowAppsActivity extends ListActivity
 {
     private static final int ADD_APP_RESULT_CODE = 15;
-
-    private ListView app_list;
-
 
     TextView account;
     TextView username;
@@ -42,10 +41,19 @@ public class ShowAppsActivity extends ListActivity
         setContentView(R.layout.activity_show_apps);
 
         AppOfCredential appOfCredential = new AppOfCredential();
+        AppOfCredential appOfCredential1 = new AppOfCredential();
+        AppOfCredential appOfCredential2 = new AppOfCredential();
 
         appOfCredential.setAccount_name("tugraz");
+        appOfCredential1.setAccount_name("google");
+        appOfCredential2.setAccount_name("facebook");
+        //get a List:
+        //List<Credential> list = appOfCredential.getCredentialList();
+
 
         credentialArrayList.add(appOfCredential);
+        credentialArrayList.add(appOfCredential1);
+        credentialArrayList.add(appOfCredential2);
 
         //show elements in a ListView
         ArrayAdapter<AppOfCredential> adapter = new ArrayAdapter<>(this,
@@ -65,29 +73,48 @@ public class ShowAppsActivity extends ListActivity
 
 
         //TODO: TODO: 2 different buttons or the same in show apps/credentials activity
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_addLogin);
-        fab.setOnClickListener(new View.OnClickListener()
+        FloatingActionButton fab_app = (FloatingActionButton) findViewById(R.id.fab_addApp);
+        fab_app.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View view)
             {
-                //TODO checks; then show new view????
-                showAddCredentialActivity(view);
+                //TODO checks; then show new view????ntialActivity(view);
+                //showAddCredentialActivity(view);
             }
         });
     }
 
+
+    //shows credential list of clicked account
+    @Override
+    protected void onListItemClick(ListView listView, View view, int position, long id)
+    {
+        super.onListItemClick(listView, view, position, id);
+
+        //todo: logic here -> show the listactivity of the credentials in show ShowCredentialAc.
+        Intent intent = new Intent(this, ShowCredentialsActivity.class);
+        AppOfCredential app = new AppOfCredential();
+        String account = app.toString();
+        intent.putExtra("account", account);
+        //startActivityForResult(intent, CODE); idk if needed?!
+        startActivity(intent);
+
+    }
+
+    /*
     //calling constructor without parameters
     public void showAddCredentialActivity(View view)
     {
         Intent intent = new Intent(this, AddCredentialActivity.class);
         startActivityForResult(intent, ADD_APP_RESULT_CODE);
        // startActivity(intent);
-    }
+    }*/
 
+    /*
+    NEEDED FOR SHOWCREDENTIALSACTIVITY:
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent)
     {
-
         if(requestCode == ADD_APP_RESULT_CODE)
         {
             if(resultCode == ShowAppsActivity.RESULT_OK)
@@ -107,7 +134,7 @@ public class ShowAppsActivity extends ListActivity
                 }
             }
         }
-    }
+    }*/
 }
 
         /*if(extras != null)

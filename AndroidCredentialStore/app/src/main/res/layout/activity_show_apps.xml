@@ -37,7 +37,7 @@
             android:background="?attr/selectableItemBackground"
             android:layout_gravity="bottom|right"
             android:onClick="showAddCredentialActivity"
-            android:id="@+id/fab_addLogin"
+            android:id="@+id/fab_addApp"
             android:layout_weight="1.92" />
 
     </LinearLayout>

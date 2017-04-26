@@ -31,6 +31,7 @@ public class CredentialApplication extends Application
             //Database db = ENCRYPTED ? //encrypted : getwritabledb();
             Database db = helper.getWritableDb();
             daoSession = new DaoMaster(db).newSession();
+
         } catch (Exception e) {
             Log.e(TAG, "Could not open database", e);
         }

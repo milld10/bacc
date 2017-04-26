@@ -78,13 +78,15 @@ public class AddCredentialActivity extends AppCompatActivity
                 //TODO: cast pw to a byte array to encrypt and save in DB
 
 
+                //actually false
                 boolean flag_website = true;
                 boolean flag_username = true;
                 boolean flag_pw = true;
 
 
+                credential.setUsername("suprise");
 
-                //TODO: checks for the fields
+                //TODO: checks for the fields, make new and less checks!
                 /*
                 if(!_website.isEmpty())
                 {
@@ -153,10 +155,10 @@ public class AddCredentialActivity extends AppCompatActivity
 
                     Log.w("ADDLOGIN", "before finishing the new intent");
 
-                    Intent intent = new Intent(AddCredentialActivity.this, ShowAppsActivity.class);
+                    Intent intent = new Intent(AddCredentialActivity.this, ShowCredentialsActivity.class);
                     intent.putExtra("credential", credential);
 
-                    setResult(ShowAppsActivity.RESULT_OK, intent);
+                    setResult(ShowCredentialsActivity.RESULT_OK, intent);
                     finish();
                 }
                 else
