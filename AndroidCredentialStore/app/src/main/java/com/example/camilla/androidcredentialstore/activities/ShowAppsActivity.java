@@ -79,12 +79,13 @@ public class ShowAppsActivity extends ListActivity
             public void onClick(View view)
             {
                 //TODO checks; then show new view????ntialActivity(view);
-                //showAddCredentialActivity(view);
+                showAddCredentialActivity(view);
             }
         });
     }
 
 
+    /*
     //shows credential list of clicked account
     @Override
     protected void onListItemClick(ListView listView, View view, int position, long id)
@@ -99,19 +100,19 @@ public class ShowAppsActivity extends ListActivity
         //startActivityForResult(intent, CODE); idk if needed?!
         startActivity(intent);
 
-    }
+    }*/
 
-    /*
+
     //calling constructor without parameters
     public void showAddCredentialActivity(View view)
     {
         Intent intent = new Intent(this, AddCredentialActivity.class);
         startActivityForResult(intent, ADD_APP_RESULT_CODE);
        // startActivity(intent);
-    }*/
+    }
 
-    /*
-    NEEDED FOR SHOWCREDENTIALSACTIVITY:
+
+    //NEEDED FOR SHOWCREDENTIALSACTIVITY:
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent)
     {
@@ -125,16 +126,16 @@ public class ShowAppsActivity extends ListActivity
                 //only add to arrayList if not null
                 if(extras != null)
                 {
-                    Log.w("LOGIN", "website: " + extras);
+                    //Log.w("LOGIN", "website: " + extras);
 
-                    //TODO put object into DB with greenDAO? here:
+                    //TODO put object into DB with greenDAO here:
 
                     //add user login to the array list
                     //credentialArrayList.add(credential_extras);
                 }
             }
         }
-    }*/
+    }
 }
 
         /*if(extras != null)

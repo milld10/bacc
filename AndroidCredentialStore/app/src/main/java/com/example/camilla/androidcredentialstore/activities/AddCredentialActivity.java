@@ -10,8 +10,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.camilla.androidcredentialstore.models.AppOfCredential;
 import com.example.camilla.androidcredentialstore.models.Credential;
 import com.example.camilla.androidcredentialstore.R;
+
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 
 public class AddCredentialActivity extends AppCompatActivity
@@ -60,10 +67,11 @@ public class AddCredentialActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
+                final AppOfCredential app = new AppOfCredential();
                 final Credential credential = new Credential();
 
                // Log.w("ADDLOGIN", "before getText() func");
-                String _website = account.getText().toString();
+                String _account = account.getText().toString();
                // Log.w("ADDLOGIN", "after getText() func -> website: " + _website);
 
                 String _username = username.getText().toString();
@@ -74,9 +82,14 @@ public class AddCredentialActivity extends AppCompatActivity
                 char[] pwArray = new char[length];
                 password.getText().getChars(0, length, pwArray, 0);
 
+                //****
+                //casted to byte array?
+                //byte[] _pwArray = Charset.forName("UTF-8").encode(CharBuffer.wrap(pwArray)).array();
 
-                //TODO: cast pw to a byte array to encrypt and save in DB
-
+                ByteBuffer buf = StandardCharsets.UTF_8.encode(CharBuffer.wrap(pwArray));
+                byte[] _pwArray = new byte[buf.limit()];
+                buf.get(_pwArray);
+                //****
 
                 //actually false
                 boolean flag_website = true;
@@ -84,7 +97,13 @@ public class AddCredentialActivity extends AppCompatActivity
                 boolean flag_pw = true;
 
 
-                credential.setUsername("suprise");
+                //credential.setUsername("suprise");
+                app.setAccount_name(_account);
+                credential.setUsername(_username);
+                credential.setPassword(_pwArray);
+
+                List<Credential> listOfCredentials = app.getCredentialList();
+                listOfCredentials.add(credential);
 
                 //TODO: checks for the fields, make new and less checks!
                 /*
