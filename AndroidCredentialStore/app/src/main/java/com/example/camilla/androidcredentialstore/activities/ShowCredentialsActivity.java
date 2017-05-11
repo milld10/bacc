@@ -69,7 +69,7 @@ public class ShowCredentialsActivity extends ListActivity
         AppOfCredential app = new AppOfCredential();
         String account = app.getAccount_name();
         intent.putExtra("account", account);
-        startActivityForResult(intent, ADD_CRED_RESULT_CODE);
+        //startActivityForResult(intent, ADD_CRED_RESULT_CODE);
     }
 
 

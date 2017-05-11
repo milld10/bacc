@@ -26,16 +26,88 @@ public class DBHelper
         this.daoSession = application.getDaoSession();
     }
 
-    public long insert(AppOfCredential appOfCredential)
+    public long insertNewAppOfCredential(AppOfCredential appOfCredential, Credential credential)
     {
+        /**
+         * Add new Login (Application and Credentials for it)
+         */
+
         AppOfCredentialDao appOfCredentialDao = this.daoSession.getAppOfCredentialDao();
-        long id = appOfCredentialDao.insert(appOfCredential);
+        CredentialDao credentialDao = this.daoSession.getCredentialDao();
+
+        long id_app = appOfCredentialDao.insert(appOfCredential);
+        long id_cred = credentialDao.insert(credential);
 
         for(Credential credentials : appOfCredential.getCredentialList()){
-            credentials.setCred_id(id);
+            credentials.setCred_id(id_app);
             //this.insert(credentials);
         }
 
-        return id;
+        return id_app;
+    }
+
+    public long insertNewCredential(Credential credential)
+    {
+        /**
+         * Adds one Credential to the List, which is held by the AppOfCredential Obj.
+         */
+
+        return 1;
+    }
+
+    public void deleteOneCredentialOfList(Credential credential)
+    {
+        /**
+         * Deletes just one Credential out the List, which is held by the AppOfCredential Obj.
+         */
+
+        CredentialDao credentialDao = this.daoSession.getCredentialDao();
+        credentialDao.delete(credential);
+    }
+
+    public long deleteAppOfCredential(AppOfCredential appOfCredential)
+    {
+        /**
+         * Deletes whole App of Credential, incl all Credentials of the list it holds
+         */
+        List<Credential> listToDelete = getListOfCredentials();
+
+        AppOfCredentialDao appOfCredentialDao = this.daoSession.getAppOfCredentialDao();
+        appOfCredentialDao.delete(appOfCredential);
+
+        return 1;
+    }
+
+    public long getAllAppsOfCredential(AppOfCredential appOfCredential)
+    {
+        /**
+         * Returns all listed Apps (for the Adapter)
+         */
+
+        return 1;
+    }
+
+    public List<Credential> getListOfCredentials()
+    {
+        /**
+         * Get List with Credentials of one specific App of Credential
+         */
+
+        //TODO: iterate through list and delete all items?
+        CredentialDao credentialDao = this.daoSession.getCredentialDao();
+
+        List<Credential> credentials = credentialDao.queryBuilder().orderDesc(CredentialDao.
+                Properties.Username).list();
+
+        return credentials;
+    }
+
+    public long updateOneCredential(Credential credential)
+    {
+        /**
+         * Update one credential upon changes (and saves it back again to DB?)
+         */
+
+        return 1;
     }
 }

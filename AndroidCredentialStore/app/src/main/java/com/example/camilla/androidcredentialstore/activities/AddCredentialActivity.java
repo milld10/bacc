@@ -97,7 +97,7 @@ public class AddCredentialActivity extends AppCompatActivity
                 boolean flag_pw = true;
 
 
-                //credential.setUsername("suprise");
+                //credential.setUsername("surprise");
                 app.setAccount_name(_account);
                 credential.setUsername(_username);
                 credential.setPassword(_pwArray);
@@ -177,7 +177,11 @@ public class AddCredentialActivity extends AppCompatActivity
                     Intent intent = new Intent(AddCredentialActivity.this, ShowCredentialsActivity.class);
                     intent.putExtra("credential", credential);
 
-                    setResult(ShowCredentialsActivity.RESULT_OK, intent);
+                    //for Credential list
+                    //setResult(ShowCredentialsActivity.RESULT_OK, intent);
+
+                    //for App List
+                    setResult(ShowAppsActivity.RESULT_OK, intent);
                     finish();
                 }
                 else
