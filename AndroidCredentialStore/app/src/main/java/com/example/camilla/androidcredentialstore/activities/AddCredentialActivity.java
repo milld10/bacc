@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.camilla.androidcredentialstore.R;
+import com.example.camilla.androidcredentialstore.models.Account;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -65,7 +66,6 @@ public class AddCredentialActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 final Account app = new Account();
-                final Credential credential = new Credential();
 
                // Log.w("ADDLOGIN", "before getText() func");
                 String _account = account.getText().toString();
@@ -96,11 +96,9 @@ public class AddCredentialActivity extends AppCompatActivity
 
                 //credential.setUsername("surprise");
                 app.setAccount_name(_account);
-                credential.setUsername(_username);
-                credential.setPassword(_pwArray);
+                app.setUsername(_username);
+                app.setPassword(_pwArray);
 
-                List<Credential> listOfCredentials = app.getCredentialList();
-                listOfCredentials.add(credential);
 
                 //TODO: checks for the fields, make new and less checks!
                 /*
@@ -171,8 +169,8 @@ public class AddCredentialActivity extends AppCompatActivity
 
                     Log.w("ADDLOGIN", "before finishing the new intent");
 
-                    Intent intent = new Intent(AddCredentialActivity.this, ShowCredentialsActivity.class);
-                    intent.putExtra("credential", credential);
+                    Intent intent = new Intent(AddCredentialActivity.this, ShowAccountsActivity.class);
+                    intent.putExtra("credential", app);
 
                     //for Credential list
                     //setResult(ShowCredentialsActivity.RESULT_OK, intent);

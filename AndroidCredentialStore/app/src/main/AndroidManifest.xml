@@ -39,7 +39,7 @@
         </activity>
 
         <activity
-            android:name=".activities.ShowCredentialsActivity"
+            android:name=".activities.ChangeAccountActivity"
             android:label="@string/title_activity_show_credentials">
         </activity>
 
