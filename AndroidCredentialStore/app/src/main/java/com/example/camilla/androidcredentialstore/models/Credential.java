@@ -24,135 +24,98 @@ public class Credential implements java.io.Serializable
     private long cred_id;
     private String username;
     private byte[] password;
-    private long applicationId;
+    private long accountId;
+
+/** Used to resolve relations */
+@Generated(hash = 2040040024)
+private transient DaoSession daoSession;
+
+/** Used for active entity operations. */
+@Generated(hash = 1832334603)
+private transient CredentialDao myDao;
+
+@Generated(hash = 843430051)
+public Credential(long cred_id, String username, byte[] password, long accountId)
+{
+    this.cred_id = cred_id;
+    this.username = username;
+    this.password = password;
+    this.accountId = accountId;
+}
+
+@Generated(hash = 943805485)
+public Credential() {
+}
+public long getCred_id() {
+    return this.cred_id;
+}
+public void setCred_id(long cred_id) {
+    this.cred_id = cred_id;
+}
+public String getUsername() {
+    return this.username;
+}
+public void setUsername(String username) {
+    this.username = username;
+}
+public byte[] getPassword() {
+    return this.password;
+}
+public void setPassword(byte[] password) {
+    this.password = password;
+}
+public long getAccountId() {
+    return this.accountId;
+}
+public void setAccountId(long accountId) {
+    this.accountId = accountId;
+}
+
+@Override
+public String toString()
+{
+    return username;
+}
 
 
-    /** Used to resolve relations */
-    @Generated(hash = 2040040024)
-    private transient DaoSession daoSession;
-
-    /** Used for active entity operations. */
-    @Generated(hash = 1832334603)
-    private transient CredentialDao myDao;
-
-    @Generated(hash = 1133015330)
-    public Credential(long cred_id, String username, byte[] password, long applicationId) {
-        this.cred_id = cred_id;
-        this.username = username;
-        this.password = password;
-        this.applicationId = applicationId;
+/**
+ * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
+ * Entity must attached to an entity context.
+ */
+@Generated(hash = 128553479)
+public void delete() {
+    if (myDao == null) {
+        throw new DaoException("Entity is detached from DAO context");
     }
-
-    @Generated(hash = 943805485)
-    public Credential() {
+    myDao.delete(this);
+}
+/**
+ * Convenient call for {@link org.greenrobot.greendao.AbstractDao#refresh(Object)}.
+ * Entity must attached to an entity context.
+ */
+@Generated(hash = 1942392019)
+public void refresh() {
+    if (myDao == null) {
+        throw new DaoException("Entity is detached from DAO context");
     }
-
-    
-
-    /*
-    //constructor mit parameter??
-    public Credential(String website, String username, char[] password)
-    {
-        super();
-        this.website = website;
-        this.username = username;
-        this.password = password;
-    }*/
-
-
-
-    public String getUsername() {return username;}
-
-    public void setUsername(String username) {this.username = username;}
-
-
-    public byte[] getPassword() {return password;}
-
-    //TODO: encrypt pw
-    public void setPassword(byte[] password) {this.password = password;}
-
-
-    //to show in arrayadapter of ShowCredActivity
-    @Override
-    public String toString()
-    {
-        return username;
+    myDao.refresh(this);
+}
+/**
+ * Convenient call for {@link org.greenrobot.greendao.AbstractDao#update(Object)}.
+ * Entity must attached to an entity context.
+ */
+@Generated(hash = 713229351)
+public void update() {
+    if (myDao == null) {
+        throw new DaoException("Entity is detached from DAO context");
     }
+    myDao.update(this);
+}
+/** called by internal mechanisms, do not call yourself. */
+@Generated(hash = 1895121706)
+public void __setDaoSession(DaoSession daoSession) {
+    this.daoSession = daoSession;
+    myDao = daoSession != null ? daoSession.getCredentialDao() : null;
+}
 
-    /* now in AppOfCredential Object:
-    //used by ArrayAdapter in ShowAppsActivity
-    @Override
-    public String toString()
-    {
-        return website;
-    }
-
-    public long getId() {
-        return this.id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-    */
-
-    /**
-     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
-     * Entity must attached to an entity context.
-     */
-    @Generated(hash = 128553479)
-    public void delete() {
-        if (myDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }
-        myDao.delete(this);
-    }
-
-    /**
-     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#refresh(Object)}.
-     * Entity must attached to an entity context.
-     */
-    @Generated(hash = 1942392019)
-    public void refresh() {
-        if (myDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }
-        myDao.refresh(this);
-    }
-
-    /**
-     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#update(Object)}.
-     * Entity must attached to an entity context.
-     */
-    @Generated(hash = 713229351)
-    public void update() {
-        if (myDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }
-        myDao.update(this);
-    }
-
-    public long getCred_id() {
-        return this.cred_id;
-    }
-
-    public void setCred_id(long cred_id) {
-        this.cred_id = cred_id;
-    }
-
-
-    public long getApplicationId() {
-        return this.applicationId;
-    }
-
-    public void setApplicationId(long applicationId) {
-        this.applicationId = applicationId;
-    }
-
-    /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 1895121706)
-    public void __setDaoSession(DaoSession daoSession) {
-        this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getCredentialDao() : null;
-    }
 }

@@ -1,16 +1,14 @@
 package com.example.camilla.androidcredentialstore.database;
 
 
-import android.util.Log;
 import java.util.List;
 
 import com.example.camilla.androidcredentialstore.CredentialApplication;
-import com.example.camilla.androidcredentialstore.models.DaoMaster;
+import com.example.camilla.androidcredentialstore.models.AccountDao;
 import com.example.camilla.androidcredentialstore.models.DaoSession;
 import com.example.camilla.androidcredentialstore.models.Credential;
 import com.example.camilla.androidcredentialstore.models.CredentialDao;
-import com.example.camilla.androidcredentialstore.models.AppOfCredential;
-import com.example.camilla.androidcredentialstore.models.AppOfCredentialDao;
+import com.example.camilla.androidcredentialstore.models.Account;
 
 
 
@@ -26,19 +24,19 @@ public class DBHelper
         this.daoSession = application.getDaoSession();
     }
 
-    public long insertNewAppOfCredential(AppOfCredential appOfCredential, Credential credential)
+    public long insertNewAppOfCredential(Account account, Credential credential)
     {
         /**
          * Add new Login (Application and Credentials for it)
          */
 
-        AppOfCredentialDao appOfCredentialDao = this.daoSession.getAppOfCredentialDao();
+        AccountDao accountDao = this.daoSession.getAccountDao();
         CredentialDao credentialDao = this.daoSession.getCredentialDao();
 
-        long id_app = appOfCredentialDao.insert(appOfCredential);
+        long id_app = accountDao.insert(account);
         long id_cred = credentialDao.insert(credential);
 
-        for(Credential credentials : appOfCredential.getCredentialList()){
+        for(Credential credentials : account.getCredentialList()){
             credentials.setCred_id(id_app);
             //this.insert(credentials);
         }
@@ -49,7 +47,7 @@ public class DBHelper
     public long insertNewCredential(Credential credential)
     {
         /**
-         * Adds one Credential to the List, which is held by the AppOfCredential Obj.
+         * Adds one Credential to the List, which is held by the Account Obj.
          */
 
         return 1;
@@ -58,33 +56,38 @@ public class DBHelper
     public void deleteOneCredentialOfList(Credential credential)
     {
         /**
-         * Deletes just one Credential out the List, which is held by the AppOfCredential Obj.
+         * Deletes just one Credential out the List, which is held by the Account Obj.
          */
 
         CredentialDao credentialDao = this.daoSession.getCredentialDao();
         credentialDao.delete(credential);
     }
 
-    public long deleteAppOfCredential(AppOfCredential appOfCredential)
+    public long deleteAccount(Account account)
     {
         /**
          * Deletes whole App of Credential, incl all Credentials of the list it holds
          */
         List<Credential> listToDelete = getListOfCredentials();
 
-        AppOfCredentialDao appOfCredentialDao = this.daoSession.getAppOfCredentialDao();
-        appOfCredentialDao.delete(appOfCredential);
+        AccountDao accountDao = this.daoSession.getAccountDao();
+        accountDao.delete(account);
 
         return 1;
     }
 
-    public long getAllAppsOfCredential(AppOfCredential appOfCredential)
+    public List<Account> getAllAccounts()
     {
         /**
          * Returns all listed Apps (for the Adapter)
          */
 
-        return 1;
+        AccountDao accountDao = this.daoSession.getAccountDao();
+
+        List<Account> listOfAccounts = accountDao.queryBuilder().
+                orderDesc(AccountDao.Properties.Account_name).list();
+
+        return listOfAccounts;
     }
 
     public List<Credential> getListOfCredentials()
@@ -96,18 +99,24 @@ public class DBHelper
         //TODO: iterate through list and delete all items?
         CredentialDao credentialDao = this.daoSession.getCredentialDao();
 
-        List<Credential> credentials = credentialDao.queryBuilder().orderDesc(CredentialDao.
-                Properties.Username).list();
+        List<Credential> credentials = credentialDao.queryBuilder().
+                orderDesc(CredentialDao.Properties.Username).list();
 
         return credentials;
     }
 
-    public long updateOneCredential(Credential credential)
+    public void updateOneCredential(Credential credential)
     {
         /**
          * Update one credential upon changes (and saves it back again to DB?)
          */
+    }
 
-        return 1;
+    public void updateAccount(Account account)
+    {
+        /**
+         * Update account upon changes (and saves it back again to DB?)
+         */
+
     }
 }

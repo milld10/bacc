@@ -10,13 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.camilla.androidcredentialstore.models.AppOfCredential;
+import com.example.camilla.androidcredentialstore.models.Account;
 import com.example.camilla.androidcredentialstore.models.Credential;
 import com.example.camilla.androidcredentialstore.R;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -67,7 +66,7 @@ public class AddCredentialActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                final AppOfCredential app = new AppOfCredential();
+                final Account app = new Account();
                 final Credential credential = new Credential();
 
                // Log.w("ADDLOGIN", "before getText() func");
@@ -181,7 +180,7 @@ public class AddCredentialActivity extends AppCompatActivity
                     //setResult(ShowCredentialsActivity.RESULT_OK, intent);
 
                     //for App List
-                    setResult(ShowAppsActivity.RESULT_OK, intent);
+                    setResult(ShowAccountsActivity.RESULT_OK, intent);
                     finish();
                 }
                 else

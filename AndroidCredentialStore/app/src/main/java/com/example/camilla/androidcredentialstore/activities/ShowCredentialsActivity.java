@@ -7,11 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.camilla.androidcredentialstore.R;
-import com.example.camilla.androidcredentialstore.models.AppOfCredential;
+import com.example.camilla.androidcredentialstore.models.Account;
 import com.example.camilla.androidcredentialstore.models.Credential;
 
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class ShowCredentialsActivity extends ListActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_credentials);
 
-        AppOfCredential app = new AppOfCredential();
+        Account app = new Account();
         Credential credential = new Credential();
 
         Intent intent = getIntent();
@@ -45,7 +44,7 @@ public class ShowCredentialsActivity extends ListActivity
 
         credentialArrayList.add(credential);
 
-        //now still static, but get list from DB
+        //TODO: now still static, but get list from DB
         ArrayAdapter<Credential> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
                 credentialArrayList);
@@ -66,7 +65,7 @@ public class ShowCredentialsActivity extends ListActivity
     public void showAddCredentialActivity(View view)
     {
         Intent intent = new Intent(this, AddCredentialActivity.class);
-        AppOfCredential app = new AppOfCredential();
+        Account app = new Account();
         String account = app.getAccount_name();
         intent.putExtra("account", account);
         //startActivityForResult(intent, ADD_CRED_RESULT_CODE);
@@ -78,7 +77,7 @@ public class ShowCredentialsActivity extends ListActivity
     {
         if(requestCode == ADD_CRED_RESULT_CODE)
         {
-            if(resultCode == ShowAppsActivity.RESULT_OK)
+            if(resultCode == ShowAccountsActivity.RESULT_OK)
             {
                 Credential credential_extras = (Credential) intent.getSerializableExtra("credential");
 

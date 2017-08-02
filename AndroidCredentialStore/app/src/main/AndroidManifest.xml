@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.ShowAppsActivity"
+            android:name=".activities.ShowAccountsActivity"
             android:label="@string/applications">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,7 +46,7 @@
         <activity
             android:name=".activities.AddCredentialActivity"
             android:label="@string/add_credential"
-            android:parentActivityName=".activities.ShowAppsActivity">
+            android:parentActivityName=".activities.ShowAccountsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
