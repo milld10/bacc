@@ -10,8 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.camilla.androidcredentialstore.models.Account;
-import com.example.camilla.androidcredentialstore.models.Credential;
 import com.example.camilla.androidcredentialstore.R;
 
 import java.nio.ByteBuffer;

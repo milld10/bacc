@@ -10,10 +10,13 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.camilla.androidcredentialstore.R;
-import com.example.camilla.androidcredentialstore.models.Account;
-import com.example.camilla.androidcredentialstore.models.Credential;
 
 import java.util.ArrayList;
+/*
+
+commented out due to know needed in version2.
+ShowCredentialsActivity was for handling the object Credentials and showing them in a list when clicked on
+the account where the credentials belonged to.
 
 public class ShowCredentialsActivity extends ListActivity
 {
@@ -92,3 +95,4 @@ public class ShowCredentialsActivity extends ListActivity
         }
     }
 }
+*/

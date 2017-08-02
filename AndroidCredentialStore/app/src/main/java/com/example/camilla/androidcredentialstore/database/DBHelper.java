@@ -6,10 +6,7 @@ import java.util.List;
 import com.example.camilla.androidcredentialstore.CredentialApplication;
 import com.example.camilla.androidcredentialstore.models.AccountDao;
 import com.example.camilla.androidcredentialstore.models.DaoSession;
-import com.example.camilla.androidcredentialstore.models.Credential;
 import com.example.camilla.androidcredentialstore.models.CredentialDao;
-import com.example.camilla.androidcredentialstore.models.Account;
-
 
 
 public class DBHelper
