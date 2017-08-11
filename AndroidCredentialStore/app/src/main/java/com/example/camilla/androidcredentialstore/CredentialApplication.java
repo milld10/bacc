@@ -21,12 +21,18 @@ public class CredentialApplication extends Application
 
     private DaoSession daoSession;
 
+    private static CredentialApplication singleton;
+
     @Override
     public void onCreate()
     {
+        Log.w("onCreate", "something");
         super.onCreate();
 
+        singleton = this;
+
         try {
+            Log.w("try", "something");
             DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this,"credentials-db");
             //Database db = ENCRYPTED ? //encrypted : getwritabledb();
             Database db = helper.getWritableDb();
@@ -41,5 +47,10 @@ public class CredentialApplication extends Application
     public DaoSession getDaoSession()
     {
         return daoSession;
+    }
+
+    public static CredentialApplication getInstance()
+    {
+        return singleton;
     }
 }

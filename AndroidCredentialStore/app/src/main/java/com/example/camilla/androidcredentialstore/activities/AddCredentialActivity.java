@@ -10,12 +10,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.camilla.androidcredentialstore.CredentialApplication;
 import com.example.camilla.androidcredentialstore.R;
+import com.example.camilla.androidcredentialstore.database.DBHelper;
 import com.example.camilla.androidcredentialstore.models.Account;
+import com.example.camilla.androidcredentialstore.models.DaoMaster;
+import com.example.camilla.androidcredentialstore.models.DaoSession;
+
+import org.greenrobot.greendao.database.Database;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,8 +33,12 @@ public class AddCredentialActivity extends AppCompatActivity
     EditText account;
     Context context;
 
-    com.example.camilla.androidcredentialstore.database.DBHelper DBHelper;
+    DBHelper dbHelper;
     SQLiteDatabase database;
+
+    private DaoSession daoSession;
+
+    CredentialApplication credentialApplication;
 
     Button saveButton;
 
@@ -45,6 +56,10 @@ public class AddCredentialActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_credential);
+
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "accounts-db");
+        Database db = helper.getWritableDb();
+        daoSession = new DaoMaster(db).newSession();
 
         //TODO Research: what does inflate do??
         /*View login_data = View.inflate(this, R.layout.activity_add_credential, null);
@@ -88,105 +103,43 @@ public class AddCredentialActivity extends AppCompatActivity
                 buf.get(_pwArray);
                 //****
 
-                //actually false
-                boolean flag_website = true;
-                boolean flag_username = true;
-                boolean flag_pw = true;
 
-
-                //credential.setUsername("surprise");
                 app.setAccount_name(_account);
                 app.setUsername(_username);
                 app.setPassword(_pwArray);
 
+                Intent intent = new Intent(AddCredentialActivity.this, ShowAccountsActivity.class);
+                intent.putExtra("credential", app);
 
-                //TODO: checks for the fields, make new and less checks!
-                /*
-                if(!_website.isEmpty())
-                {
-                    if(Patterns.WEB_URL.matcher(_website).matches())
-                    {
-                        //credential.setWebsite(_website);
-                        flag_website = true;
-                    }
-                    else
-                    {
-                        //website is not valid
-                        Toast.makeText(getApplicationContext(), "The entered website is not valid!",
-                                Toast.LENGTH_SHORT).show();
-                        //return;
-                    }
-                }
-                else
-                {
-                    //toast that website is not valid
-                    Toast.makeText(getApplicationContext(), "You did not enter a website!",
-                            Toast.LENGTH_SHORT).show();
-                    //return;
-                }
+                Log.w("ADD", "before saving it into DB");
 
+                DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
+                Log.w("ADD", "created a new dbHelper");
+                dbHelper.insertNewAccount(app);
 
-                if(!_username.matches(""))
-                {
-                    //other checks to username?
-                    credential.setUsername(_username);
-                    flag_username = true;
-                }
-                else
-                {
-                    //toast that website is not valid
-                    Toast.makeText(getApplicationContext(), "You did not enter a username!",
-                            Toast.LENGTH_SHORT).show();
-                    //return;
-                }
+                Log.w("ADD", "after inserting to DB");
 
-
-                if(pwArray.length != 0)
-                {
-                    credential.setPassword(pwArray);
-                    flag_pw = true;
-
-                    //fill array with zeros
-                    for(int i = 0; i < pwArray.length; i++)
-                    {
-                        pwArray[i] = 0;
-                    }
-                }
-                else
-                {
-                    //toast that website is not valid
-                    Toast.makeText(getApplicationContext(), "You did not enter a password!",
-                            Toast.LENGTH_SHORT).show();
-                    //return;
-                }
-
-                */
-
-
-                if(flag_website && flag_username && flag_pw)
-                {
-                    //****** Code just executed when all fields als filled in and no exceptions are thrown
-
-                    Log.w("ADDLOGIN", "before finishing the new intent");
-
-                    Intent intent = new Intent(AddCredentialActivity.this, ShowAccountsActivity.class);
-                    intent.putExtra("credential", app);
-
-                    //for Credential list
-                    //setResult(ShowCredentialsActivity.RESULT_OK, intent);
-
-                    //for App List
-                    setResult(ShowAccountsActivity.RESULT_OK, intent);
-                    finish();
-                }
-                else
-                {
-                    Log.w("ADDLOGIN", "Intent could not be sent");
-                    /*Toast.makeText(getApplicationContext(), "Intent could not be sent",
-                            Toast.LENGTH_SHORT).show();*/
-                }
+                setResult(ShowAccountsActivity.RESULT_OK, intent);
+                finish();
             }
         });
+
     }
+
+    /*
+
+    public DaoSession getDaoSession()
+    {
+        return daoSession;
+    }
+
+
+    byte[] pw = {1,2,3};
+    Account account1 = new Account(1, "google", "user1", pw);
+
+    long account_id = getDaoSession().getAccountDao().insert(account1);*/
+
+
+
 }
 

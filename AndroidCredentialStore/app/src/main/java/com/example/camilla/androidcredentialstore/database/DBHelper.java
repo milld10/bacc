@@ -28,14 +28,10 @@ public class DBHelper
          */
 
         AccountDao accountDao = this.daoSession.getAccountDao();
-
         long id_app = accountDao.insert(account);
-
-
 
         return id_app;
     }
-
 
 
     public void deleteAccount(Account account)
@@ -69,6 +65,5 @@ public class DBHelper
         /**
          * Update account upon changes (and saves it back again to DB?)
          */
-
     }
 }
