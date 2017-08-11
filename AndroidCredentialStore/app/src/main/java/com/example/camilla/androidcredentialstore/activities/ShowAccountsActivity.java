@@ -15,7 +15,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.camilla.androidcredentialstore.CredentialApplication;
 import com.example.camilla.androidcredentialstore.R;
+import com.example.camilla.androidcredentialstore.database.DBHelper;
 import com.example.camilla.androidcredentialstore.models.Account;
 
 import java.util.ArrayList;
@@ -29,9 +31,7 @@ public class ShowAccountsActivity extends ListActivity
     TextView username;
     TextView password;
 
-    final ArrayList<Account> accountArrayList = new ArrayList<>();
-    //TODO: new function that gets all credentials out of DB
-    // to get the logins into the arraylist, credentialArrayList.add(..) to show with the adapter
+    ArrayList<Account> accountArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,17 +39,8 @@ public class ShowAccountsActivity extends ListActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_apps);
 
-        Account account = new Account();
-        Account account1 = new Account();
-        Account account2 = new Account();
-
-        account.setAccount_name("tugraz");
-        account1.setAccount_name("google");
-        account2.setAccount_name("facebook");
-
-        accountArrayList.add(account);
-        accountArrayList.add(account1);
-        accountArrayList.add(account2);
+        DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
+        accountArrayList = (ArrayList<Account>) dbHelper.getAllAccounts();
 
         //show elements in a ListView
         ArrayAdapter<Account> adapter = new ArrayAdapter<>(this,
@@ -92,6 +83,7 @@ public class ShowAccountsActivity extends ListActivity
     }
 
 
+    /*
     //TODO LAST: edit to show clicked account in changeAccountActivity
     @Override
     protected void onListItemClick(ListView listView, View view, int position, long id)
@@ -106,6 +98,7 @@ public class ShowAccountsActivity extends ListActivity
         intent.putExtra("account", account);
         startActivityForResult(intent, CHANGE_ACCOUNT_RESULT_CODE);
     }
+    */
 
     //calling constructor without parameters
     public void showAddCredentialActivity(View view)
@@ -130,12 +123,13 @@ public class ShowAccountsActivity extends ListActivity
                 if(extras != null)
                 {
                     Log.w("SHOWACCOUNTS", "website: " + extras);
+                    Log.w("SHOWACCOUNTS", "id: " + extras.getAccount_id());
 
                     //TODO: update the listView with new account
                     accountArrayList.add(extras);
 
-                    //add user login to the array list
-                    //credentialArrayList.add(credential_extras);
+                    Log.w("SHOWACCOUNTS", "account added to the arraylist");
+
                 }
             }
         }

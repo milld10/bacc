@@ -30,6 +30,7 @@ public class DBHelper
         AccountDao accountDao = this.daoSession.getAccountDao();
         long id_app = accountDao.insert(account);
 
+
         return id_app;
     }
 

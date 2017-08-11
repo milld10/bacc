@@ -80,11 +80,9 @@ public class AddCredentialActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                final Account app = new Account();
-
-               // Log.w("ADDLOGIN", "before getText() func");
+                // Log.w("ADDLOGIN", "before getText() func");
                 String _account = account.getText().toString();
-               // Log.w("ADDLOGIN", "after getText() func -> website: " + _website);
+                // Log.w("ADDLOGIN", "after getText() func -> website: " + _website);
 
                 String _username = username.getText().toString();
 
@@ -104,9 +102,13 @@ public class AddCredentialActivity extends AppCompatActivity
                 //****
 
 
+                final Account app = new Account();
+
                 app.setAccount_name(_account);
                 app.setUsername(_username);
                 app.setPassword(_pwArray);
+
+                //final Account app = new Account(account, _username, _pwArray);
 
                 Intent intent = new Intent(AddCredentialActivity.this, ShowAccountsActivity.class);
                 intent.putExtra("credential", app);
