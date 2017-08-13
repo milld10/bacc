@@ -103,7 +103,6 @@ public class ShowAccountsActivity extends ListActivity
     }
 
 
-    //calling constructor without parameters
     public void showAddCredentialActivity(View view)
     {
         Intent intent = new Intent(this, AddCredentialActivity.class);
@@ -111,7 +110,7 @@ public class ShowAccountsActivity extends ListActivity
        // startActivity(intent);
     }
 
-    //for method showAddCredentialActivity
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent)
     {
@@ -125,8 +124,7 @@ public class ShowAccountsActivity extends ListActivity
                     Account extras = (Account) intent.getSerializableExtra("credential");
                     //only add to arrayList if not null
                     if (extras != null) {
-                        Log.w("SHOWACCOUNTS", "website: " + extras);
-                        Log.w("SHOWACCOUNTS", "id: " + extras.getAccount_id());
+                        Log.w("SHOWACCOUNTS", "website: " + extras + " id: " + extras.getAccount_id());
 
                         //update the listView with new account
                         accountArrayList.add(extras);
@@ -142,8 +140,7 @@ public class ShowAccountsActivity extends ListActivity
                     Account extras = (Account) intent.getSerializableExtra("credential");
                     //only add to arrayList if not null
                     if (extras != null) {
-                        Log.w("SHOWACCOUNTS", "website: " + extras);
-                        Log.w("SHOWACCOUNTS", "id: " + extras.getAccount_id());
+                        Log.w("SHOWACCOUNTS", "website: " + extras + ", id: " + extras.getAccount_id());
 
                         //update the listView with changed account
                         accountArrayList.add(extras);
@@ -155,6 +152,7 @@ public class ShowAccountsActivity extends ListActivity
         }
     }
 
+
     @Override
     public void onResume()
     {
@@ -165,7 +163,7 @@ public class ShowAccountsActivity extends ListActivity
         ArrayAdapter<Account> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
                 accountArrayList);
-
+ 
         setListAdapter(adapter);
     }
 }
