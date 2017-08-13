@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.camilla.androidcredentialstore.activities.ChangeAccountActivity">
 
-    <TextView
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
@@ -20,7 +20,7 @@
         android:ems="10"
         android:layout_alignParentStart="true"/>
 
-    <TextView
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
@@ -30,7 +30,7 @@
         android:layout_marginTop="10dp"
         android:ems="10"/>
 
-    <TextView
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"

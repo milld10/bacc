@@ -10,7 +10,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,6 +20,10 @@ import com.example.camilla.androidcredentialstore.database.DBHelper;
 import com.example.camilla.androidcredentialstore.models.Account;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class ShowAccountsActivity extends ListActivity
 {
@@ -37,39 +40,34 @@ public class ShowAccountsActivity extends ListActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_apps);
+        setContentView(R.layout.activity_show_accounts);
 
         DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
         accountArrayList = (ArrayList<Account>) dbHelper.getAllAccounts();
 
-        //show elements in a ListView
+        //show elements in the ListView <activity_show_accounts>
         ArrayAdapter<Account> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
                 accountArrayList);
+
+        /*adapter.sort(new Comparator<Account>() {
+            @Override
+            public int compare(String s1, String s2) {
+                return s1.compareTo(s2);
+            }
+        });*/
+
         setListAdapter(adapter);
 
-        //TODO: greenDAO DB
-        //prepare DAO object for Credential class
-        //DaoSession daoSession = ((App) getApplication()).getDaoSession();
-        //loginDao = daoSession.getLoginDao();
+
 
         //for what are these?
         this.account = (TextView) findViewById(R.id.account);
         username = (TextView) findViewById(R.id.username);
         password = (TextView) findViewById(R.id.password);
 
-        /*
-        adapter.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                Intent intent = new Intent(ShowAccountsActivity.this, ChangeAccountActivity.class);
-                startActivityForResult(intent, CHANGE_ACCOUNT_RESULT_CODE);
-            }
-        });*/
 
-
-        //TODO: switch to AddCredentialActivity
+        //FAButton switches to AddCredentialActivity
         FloatingActionButton fab_app = (FloatingActionButton) findViewById(R.id.fab_addApp);
         fab_app.setOnClickListener(new View.OnClickListener()
         {
@@ -83,7 +81,7 @@ public class ShowAccountsActivity extends ListActivity
     }
 
 
-    /*
+
     //TODO LAST: edit to show clicked account in changeAccountActivity
     @Override
     protected void onListItemClick(ListView listView, View view, int position, long id)
@@ -92,13 +90,17 @@ public class ShowAccountsActivity extends ListActivity
 
         //do something using the position in the array
 
-        Intent intent = new Intent(this, ShowAccountsActivity.class);
-        Account account = new Account();
-        String account_name = account.toString();
-        intent.putExtra("account", account);
+        Account account = accountArrayList.get(position);
+
+        Intent intent = new Intent(ShowAccountsActivity.this, ChangeAccountActivity.class);
+        intent.putExtra("clickedAccount",account);
+
+        Log.w("SHOWACCOUNTS", "before sending intent to change account activity");
+        Log.w("SHOWACCOUNTS", "account-name: " + account.getAccount_name() + " with id: " + account.getAccount_id());
+
         startActivityForResult(intent, CHANGE_ACCOUNT_RESULT_CODE);
     }
-    */
+
 
     //calling constructor without parameters
     public void showAddCredentialActivity(View view)

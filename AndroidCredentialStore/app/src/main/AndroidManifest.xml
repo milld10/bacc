@@ -40,7 +40,13 @@
 
         <activity
             android:name=".activities.ChangeAccountActivity"
-            android:label="@string/title_activity_show_credentials">
+            android:label="@string/change_credential"
+            android:parentActivityName=".activities.ShowAccountsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <activity

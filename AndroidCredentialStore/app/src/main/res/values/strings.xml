@@ -6,6 +6,7 @@
     <string name="title_activity_web_logins">WebLogins</string>
     <string name="button_save">SAVE</string>
     <string name="add_credential">Add new Credential</string>
+    <string name="change_credential">Change existing Credential</string>
     <string name="hint_website">Website for the new credential</string>
     <string name="hint_username">Username for the new credential</string>
     <string name="hint_password">Password for the new credential</string>
