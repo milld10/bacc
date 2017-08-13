@@ -58,6 +58,8 @@ public class ShowAccountsActivity extends ListActivity
         });*/
 
         setListAdapter(adapter);
+        //what does notifyDataSetChanged do??
+        adapter.notifyDataSetChanged();
 
 
 
@@ -76,10 +78,9 @@ public class ShowAccountsActivity extends ListActivity
                 showAddCredentialActivity(view);
             }
         });
-
-
     }
 
+    //onCreate end
 
 
     //TODO LAST: edit to show clicked account in changeAccountActivity
@@ -110,55 +111,61 @@ public class ShowAccountsActivity extends ListActivity
        // startActivity(intent);
     }
 
-    //NEEDED FOR SHOWCREDENTIALSACTIVITY:
+    //for method showAddCredentialActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent)
     {
-        if(requestCode == ADD_ACCOUNT_RESULT_CODE)
+        switch (requestCode)
         {
-            if(resultCode == ShowAccountsActivity.RESULT_OK)
-            {
-                //Credential credential_extras = (Credential) intent.getSerializableExtra("login");
-
-                Account extras = (Account) intent.getSerializableExtra("credential");
-                //only add to arrayList if not null
-                if(extras != null)
+            case ADD_ACCOUNT_RESULT_CODE:
+                if (resultCode == ShowAccountsActivity.RESULT_OK)
                 {
-                    Log.w("SHOWACCOUNTS", "website: " + extras);
-                    Log.w("SHOWACCOUNTS", "id: " + extras.getAccount_id());
+                    //Credential credential_extras = (Credential) intent.getSerializableExtra("login");
 
-                    //TODO: update the listView with new account
-                    accountArrayList.add(extras);
+                    Account extras = (Account) intent.getSerializableExtra("credential");
+                    //only add to arrayList if not null
+                    if (extras != null) {
+                        Log.w("SHOWACCOUNTS", "website: " + extras);
+                        Log.w("SHOWACCOUNTS", "id: " + extras.getAccount_id());
 
-                    Log.w("SHOWACCOUNTS", "account added to the arraylist");
+                        //update the listView with new account
+                        accountArrayList.add(extras);
+                        getListAdapter().notify();
 
+                        Log.w("SHOWACCOUNTS", "NEW account added to the arraylist");
+                    }
                 }
-            }
+                break;
+            case CHANGE_ACCOUNT_RESULT_CODE:
+                if (resultCode == ShowAccountsActivity.RESULT_OK)
+                {
+                    Account extras = (Account) intent.getSerializableExtra("credential");
+                    //only add to arrayList if not null
+                    if (extras != null) {
+                        Log.w("SHOWACCOUNTS", "website: " + extras);
+                        Log.w("SHOWACCOUNTS", "id: " + extras.getAccount_id());
+
+                        //update the listView with changed account
+                        accountArrayList.add(extras);
+
+                        Log.w("SHOWACCOUNTS", "CHANGED account added to the arraylist");
+                    }
+                }
+                break;
         }
     }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
+        accountArrayList = (ArrayList<Account>) dbHelper.getAllAccounts();
+
+        ArrayAdapter<Account> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1,
+                accountArrayList);
+
+        setListAdapter(adapter);
+    }
 }
-
-        /*if(extras != null)
-        {
-            int Value = extras.getInt("id");
-
-            if(Value > 0)
-            {
-                String website = extras.getString("website");
-                String username = extras.getString("username");
-                char[] password = extras.getCharArray("password");
-
-                Cursor cursor = mydb.getData(Value);
-                id_To_Update = Value;
-                cursor.moveToFirst();
-
-                String website = cursor.getString(rs.getColumnIndex(DBHelper.COLUMN_WEBSITE));
-                String username = cursor.getString(rs.getColumnIndex(DBHelper.COLUMN_USERNAME));
-                String password = cursor.getString(rs.getColumnIndex(DBHelper.COLUMN_PASSWORD));
-
-                if(!cursor.isClosed())
-                {
-                    cursor.close();
-                }
-            }
-        }*/

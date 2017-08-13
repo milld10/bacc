@@ -16,29 +16,19 @@ import com.example.camilla.androidcredentialstore.database.DBHelper;
 import com.example.camilla.androidcredentialstore.models.Account;
 import com.example.camilla.androidcredentialstore.models.DaoMaster;
 import com.example.camilla.androidcredentialstore.models.DaoSession;
+import com.example.camilla.androidcredentialstore.tools.Converter;
 
 import org.greenrobot.greendao.database.Database;
-
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class AddCredentialActivity extends AppCompatActivity
 {
     EditText username;
     EditText password;
-    EditText account;
+    EditText accountname;
     Context context;
 
-    DBHelper dbHelper;
-    SQLiteDatabase database;
-
     private DaoSession daoSession;
-
-    CredentialApplication credentialApplication;
 
     Button saveButton;
 
@@ -68,7 +58,7 @@ public class AddCredentialActivity extends AppCompatActivity
         username = (EditText) login_data.findViewById(R.id.username);
         password = (EditText) login_data.findViewById(R.id.password);*/
 
-        account = (EditText) findViewById(R.id.account);
+        accountname = (EditText) findViewById(R.id.account);
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
 
@@ -80,68 +70,34 @@ public class AddCredentialActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                // Log.w("ADDLOGIN", "before getText() func");
-                String _account = account.getText().toString();
-                // Log.w("ADDLOGIN", "after getText() func -> website: " + _website);
-
+                String _account = accountname.getText().toString();
                 String _username = username.getText().toString();
 
-                //uses a toString -> not for passwords!
-                //byte[] pwArray = password.getText().toString().getBytes(StandardCharsets.UTF_8);
-                int length = password.length();
-                char[] pwArray = new char[length];
-                password.getText().getChars(0, length, pwArray, 0);
+                //own method to convert in Converter.java
+                byte[] _pwArray = Converter.charToByte(password);
 
-                //****
-                //casted to byte array?
-                //byte[] _pwArray = Charset.forName("UTF-8").encode(CharBuffer.wrap(pwArray)).array();
+                final Account account = new Account();
 
-                ByteBuffer buf = StandardCharsets.UTF_8.encode(CharBuffer.wrap(pwArray));
-                byte[] _pwArray = new byte[buf.limit()];
-                buf.get(_pwArray);
-                //****
+                account.setAccount_name(_account);
+                account.setUsername(_username);
+                account.setPassword(_pwArray);
 
-
-                final Account app = new Account();
-
-                app.setAccount_name(_account);
-                app.setUsername(_username);
-                app.setPassword(_pwArray);
-
-                //final Account app = new Account(account, _username, _pwArray);
 
                 Intent intent = new Intent(AddCredentialActivity.this, ShowAccountsActivity.class);
-                intent.putExtra("credential", app);
+                intent.putExtra("account", account);
 
-                Log.w("ADD", "before saving it into DB");
+                Log.w("ADD ACC", "before saving it into DB");
 
                 DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
-                Log.w("ADD", "created a new dbHelper");
-                dbHelper.insertNewAccount(app);
+                Log.w("ADD ACC", "created a new dbHelper");
+                dbHelper.insertNewAccount(account);
 
-                Log.w("ADD", "after inserting to DB");
+                Log.w("ADD ACC", "after inserting to DB");
 
                 setResult(ShowAccountsActivity.RESULT_OK, intent);
                 finish();
             }
         });
-
     }
-
-    /*
-
-    public DaoSession getDaoSession()
-    {
-        return daoSession;
-    }
-
-
-    byte[] pw = {1,2,3};
-    Account account1 = new Account(1, "google", "user1", pw);
-
-    long account_id = getDaoSession().getAccountDao().insert(account1);*/
-
-
-
 }
 

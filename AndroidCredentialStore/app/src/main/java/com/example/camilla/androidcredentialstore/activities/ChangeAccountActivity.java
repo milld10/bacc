@@ -7,12 +7,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.support.design.widget.TextInputLayout;
 
 import com.example.camilla.androidcredentialstore.CredentialApplication;
 import com.example.camilla.androidcredentialstore.R;
 import com.example.camilla.androidcredentialstore.database.DBHelper;
 import com.example.camilla.androidcredentialstore.models.Account;
+import com.example.camilla.androidcredentialstore.tools.Converter;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -31,10 +32,6 @@ public class ChangeAccountActivity extends AppCompatActivity
     EditText password;
     Button saveButton;
 
-
-    //TODO: if clicked on account then show all information here and let user change it! DB NEEDED!
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -48,70 +45,49 @@ public class ChangeAccountActivity extends AppCompatActivity
         saveButton = (Button) findViewById(R.id.saveBtn);
 
         Intent intent = getIntent();
-        Account accountGotten = (Account) intent.getSerializableExtra("clickedAccount");
-
+        final Account accountGotten = (Account) intent.getSerializableExtra("clickedAccount");
 
         Log.w("CHANGE_ACCOUNT", "got the extras: " + accountGotten.toString());
 
         accountname.setText(accountGotten.getAccount_name());
         username.setText(accountGotten.getUsername());
 
-        byte[] pw = accountGotten.getPassword();
-
-        int length = pw.length;
-        char[] pwArray = new char[pw.length];
-
-        
-
-        ByteBuffer buf = StandardCharsets.UTF_8.encode(CharBuffer.wrap(accountGotten.getPassword()));
-        byte[] pw = new byte[buf.limit()];
+        //conversion of byte to char array, now in Converter.java
+        int length = accountGotten.getPassword().length;
+        password.setText(Converter.byteToChar(accountGotten), 0, length);
 
 
-
+        //TODO LAST: 13.8. functionality for save button
         //********* for the save button
         saveButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                // Log.w("ADDLOGIN", "before getText() func");
-                String _account = account.getText().toString();
-                // Log.w("ADDLOGIN", "after getText() func -> website: " + _website);
+                DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
+                Log.w("CHANGE ACC", "created a new dbHelper");
 
+                //delete the clicked account first
+                dbHelper.deleteAccount(accountGotten);
+
+
+                String _account = accountname.getText().toString();
                 String _username = username.getText().toString();
+                byte[] _pwArray = Converter.charToByte(password);
 
-                //uses a toString -> not for passwords!
-                //byte[] pwArray = password.getText().toString().getBytes(StandardCharsets.UTF_8);
-                int length = password.length();
-                char[] pwArray = new char[length];
-                password.getText().getChars(0, length, pwArray, 0);
+                final Account account = new Account();
 
-                //****
-                //casted to byte array?
-                //byte[] _pwArray = Charset.forName("UTF-8").encode(CharBuffer.wrap(pwArray)).array();
+                account.setAccount_name(_account);
+                account.setUsername(_username);
+                account.setPassword(_pwArray);
 
-                ByteBuffer buf = StandardCharsets.UTF_8.encode(CharBuffer.wrap(pwArray));
-                byte[] _pwArray = new byte[buf.limit()];
-                buf.get(_pwArray);
-                //****
-
-
-                final Account app = new Account();
-
-                app.setAccount_name(_account);
-                app.setUsername(_username);
-                app.setPassword(_pwArray);
-
-                //final Account app = new Account(account, _username, _pwArray);
 
                 Intent intent = new Intent(ChangeAccountActivity.this, ShowAccountsActivity.class);
-                intent.putExtra("credential", app);
+                intent.putExtra("account", account);
 
                 Log.w("ADD", "before saving it into DB");
 
-                DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
-                Log.w("ADD", "created a new dbHelper");
-                dbHelper.insertNewAccount(app);
+                dbHelper.insertNewAccount(account);
 
                 Log.w("ADD", "after inserting to DB");
 
@@ -121,14 +97,13 @@ public class ChangeAccountActivity extends AppCompatActivity
         });
 
 
-        Intent intentRetour = new Intent(ChangeAccountActivity.this, ShowAccountsActivity.class);
+
+        //this intent for when no changes are made???
+
+        //Intent intentRetour = new Intent(ChangeAccountActivity.this, ShowAccountsActivity.class);
         //send the changed object back to DB and other activity
-        intent.putExtra("changedAccount", changedAccount);
+        //intent.putExtra("changedAccount", changedAccount);
 
-        setResult(ShowAccountsActivity.RESULT_OK, intentRetour);
-
-
-
+        //setResult(ShowAccountsActivity.RESULT_OK, intentRetour);
     }
-
 }
