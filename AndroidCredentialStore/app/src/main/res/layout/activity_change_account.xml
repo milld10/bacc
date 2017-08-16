@@ -36,7 +36,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/PasswordLayout"
         app:passwordToggleEnabled="true"
-        app:passwordToggleTint="@color/green_shade1"
         android:layout_below="@+id/username"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
