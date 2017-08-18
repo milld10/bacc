@@ -8,12 +8,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.design.widget.TextInputEditText;
 
 import com.example.camilla.androidcredentialstore.CredentialApplication;
 import com.example.camilla.androidcredentialstore.R;
 import com.example.camilla.androidcredentialstore.database.DBHelper;
 import com.example.camilla.androidcredentialstore.models.Account;
+import com.example.camilla.androidcredentialstore.models.DaoMaster;
+import com.example.camilla.androidcredentialstore.models.DaoSession;
 import com.example.camilla.androidcredentialstore.tools.Converter;
+
+import org.greenrobot.greendao.database.Database;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -25,12 +30,16 @@ import java.nio.charset.StandardCharsets;
 
 public class ChangeAccountActivity extends AppCompatActivity
 {
-    private static final int ADD_CRED_RESULT_CODE = 10;
-
-    EditText accountname;
-    EditText username;
-    EditText password;
+    TextInputLayout accountLayout;
+    TextInputEditText accountname;
+    TextInputLayout usernameLayout;
+    TextInputEditText username;
+    TextInputLayout passwordLayout;
+    TextInputEditText password;
     Button saveButton;
+
+    private DaoSession daoSession;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,9 +47,21 @@ public class ChangeAccountActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_account);
 
-        accountname = (EditText) findViewById(R.id.accountname);
-        username = (EditText) findViewById(R.id.username);
-        password = (EditText) findViewById(R.id.password);
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "accounts-db");
+        Database db = helper.getWritableDb();
+        daoSession = new DaoMaster(db).newSession();
+
+        final DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
+
+
+        accountLayout = (TextInputLayout) findViewById(R.id.AccountLayout);
+        accountname = (TextInputEditText) findViewById(R.id.account);
+
+        usernameLayout = (TextInputLayout) findViewById(R.id.UsernameLayout);
+        username = (TextInputEditText) findViewById(R.id.username);
+
+        passwordLayout = (TextInputLayout) findViewById(R.id.PasswordLayout);
+        password = (TextInputEditText) findViewById(R.id.password);
 
         saveButton = (Button) findViewById(R.id.saveBtn);
 
@@ -48,14 +69,31 @@ public class ChangeAccountActivity extends AppCompatActivity
         final Account accountGotten = (Account) intent.getSerializableExtra("clickedAccount");
 
         Log.w("CHANGE_ACCOUNT", "got the extras: " + accountGotten.toString());
+        Log.w("CHANGE_ACCOUNT", "id of account: " + accountGotten.getAccount_id());
+
+
+        /*
+        //***********************
+        Account testAccount = new Account();
+        long testId = 15;
+        Long obj = new Long(testId);
+
+        testAccount = dbHelper.getAccountById(obj);
+
+        Log.w("CHANGE_ACCOUNT", "TESTACCOUNT ID: " + testAccount.getPassword() + " and its id: " + testAccount.getAccount_id());
+        //***********************
+        */
 
         accountname.setText(accountGotten.getAccount_name());
         username.setText(accountGotten.getUsername());
 
         //conversion of byte to char array, now in Converter.java
         int length = accountGotten.getPassword().length;
+        Log.w("CHANGE_ACCOUNT", "pw BEFORE converter: " + accountGotten.getPassword().toString());
+
         password.setText(Converter.byteToChar(accountGotten), 0, length);
 
+        Log.w("CHANGE_ACCOUNT", "pw AFTER converter: " + password.getText().toString());
 
         //TODO LAST: 13.8. functionality for save button
         //********* for the save button
@@ -64,7 +102,7 @@ public class ChangeAccountActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
+                //DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
                 Log.w("CHANGE ACC", "created a new dbHelper");
 
                 //delete the clicked account first

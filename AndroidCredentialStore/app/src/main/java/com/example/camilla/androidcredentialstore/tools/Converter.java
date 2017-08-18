@@ -1,5 +1,6 @@
 package com.example.camilla.androidcredentialstore.tools;
 
+import android.support.design.widget.TextInputEditText;
 import android.widget.EditText;
 
 import com.example.camilla.androidcredentialstore.models.Account;
@@ -19,7 +20,7 @@ public class Converter {
      * store into DB
      * @return
      */
-    public static byte[] charToByte(EditText pw)
+    public static byte[] charToByte(TextInputEditText pw)
     {
 
         /* Code used before in AddCredActivity:

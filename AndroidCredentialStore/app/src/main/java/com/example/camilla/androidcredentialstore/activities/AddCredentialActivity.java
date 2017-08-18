@@ -2,13 +2,14 @@ package com.example.camilla.androidcredentialstore.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.example.camilla.androidcredentialstore.CredentialApplication;
 import com.example.camilla.androidcredentialstore.R;
@@ -23,23 +24,15 @@ import org.greenrobot.greendao.database.Database;
 
 public class AddCredentialActivity extends AppCompatActivity
 {
-    EditText username;
-    EditText password;
-    EditText accountname;
-    Context context;
-
-    private DaoSession daoSession;
-
+    TextInputLayout accountLayout;
+    TextInputEditText accountname;
+    TextInputLayout usernameLayout;
+    TextInputEditText username;
+    TextInputLayout passwordLayout;
+    TextInputEditText password;
     Button saveButton;
 
-    //put this cons where data gets saved
-    /*public AddCredentialActivity(Context context)
-    {
-    //TODO rausfinden: wie kann man den konstruktor mit parametern aufrufen kann?
-    //wird vil nicht mehr gebraucht wegen greenDAO!!
-        //DBHelper = new DBHelper(context);
-        //database = DBHelper.getWritableDatabase();
-    }*/
+    private DaoSession daoSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -58,12 +51,19 @@ public class AddCredentialActivity extends AppCompatActivity
         username = (EditText) login_data.findViewById(R.id.username);
         password = (EditText) login_data.findViewById(R.id.password);*/
 
-        accountname = (EditText) findViewById(R.id.account);
-        username = (EditText) findViewById(R.id.username);
-        password = (EditText) findViewById(R.id.password);
+        accountLayout = (TextInputLayout) findViewById(R.id.AccountLayout);
+        accountname = (TextInputEditText) findViewById(R.id.account);
+
+        usernameLayout = (TextInputLayout) findViewById(R.id.UsernameLayout);
+        username = (TextInputEditText) findViewById(R.id.username);
+
+        passwordLayout = (TextInputLayout) findViewById(R.id.PasswordLayout);
+        password = (TextInputEditText) findViewById(R.id.password);
+
 
         //the save button in AddCredentialActivity
         saveButton = (Button) findViewById(R.id.saveBtn);
+
 
         saveButton.setOnClickListener(new View.OnClickListener()
         {

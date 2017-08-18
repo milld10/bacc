@@ -30,7 +30,7 @@
         </activity>
         <activity
             android:name=".activities.ShowAccountsActivity"
-            android:label="@string/applications">
+            android:label="@string/show_credentials">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

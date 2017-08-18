@@ -34,6 +34,14 @@ public class DBHelper
         return id_app;
     }
 
+    public Account getAccountById(Long id)
+    {
+        AccountDao accountDao = this.daoSession.getAccountDao();
+        Account account = accountDao.load(id);
+
+        return account;
+    }
+
 
     public void deleteAccount(Account account)
     {
