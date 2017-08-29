@@ -1,6 +1,7 @@
 package com.example.camilla.androidcredentialstore.tools;
 
 import android.support.design.widget.TextInputEditText;
+import android.util.Log;
 import android.widget.EditText;
 
 import com.example.camilla.androidcredentialstore.models.Account;
@@ -57,12 +58,25 @@ public class Converter {
     public static char[] byteToChar(Account account)
     {
         int length = account.getPassword().length;
-        char[] charArray = new char[length];
 
+        Log.w("CONVERTER", "length of pw: " + length);
+        Log.w("CONVERTER", "account_id: " + account.getAccount_id());
+        Log.w("CONVERTER", "account_name: " + account.getAccount_name());
+        Log.w("CONVERTER", "pw: " + account.getPassword());
+
+        Log.w("CONVERTER", "before decode");
         CharBuffer buffer = StandardCharsets.UTF_8.decode(ByteBuffer.allocate(length));
 
-        buffer.get(charArray);
 
+
+        Log.w("CONVERTER", "after decode");
+
+        char[] charArray = new char[buffer.limit()];
+
+        Log.w("CONVERTER", "charArray: " + charArray);
+
+        buffer.get(charArray);
+        Log.w("CONVERTER", "charArray: " + charArray);
         return charArray;
     }
 
