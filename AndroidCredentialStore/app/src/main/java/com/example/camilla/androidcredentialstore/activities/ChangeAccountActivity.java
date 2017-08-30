@@ -43,12 +43,8 @@ public class ChangeAccountActivity extends AppCompatActivity
 
     private DaoSession daoSession;
 
-
+    //global account id for deleting in alert dialog
     Long id;
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -154,12 +150,8 @@ public class ChangeAccountActivity extends AppCompatActivity
             public void onClick(View view){
                 AlertDialog dialog = AskToDelete();
                 dialog.show();
-
-
-
             }
         });
-
 
 
         //this intent for when no changes are made???
@@ -170,7 +162,6 @@ public class ChangeAccountActivity extends AppCompatActivity
 
         //setResult(ShowAccountsActivity.RESULT_OK, intentRetour);
     }
-
 
 
 
@@ -185,23 +176,11 @@ public class ChangeAccountActivity extends AppCompatActivity
                 {
                     public void onClick(DialogInterface dialog, int whichButton)
                     {
-                        /*
-                        daoSession = new DaoMaster(db).newSession();
-                        final DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
-
-                        Intent intent = getIntent();
-                        final Account accountGotten = (Account) intent.getSerializableExtra("clickedAccount");
-
-                        dbHelper.deleteAccount(accountGotten);
-                        */
                         DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
                         dbHelper.deleteAccountById(id);
 
-                        finish();
-
-
-
                         dialog.dismiss();
+                        finish();
                     }
                 })
 
@@ -209,7 +188,6 @@ public class ChangeAccountActivity extends AppCompatActivity
                 {
                     public void onClick(DialogInterface dialog, int which)
                     {
-
                         dialog.dismiss();
                     }
                 })
@@ -217,5 +195,4 @@ public class ChangeAccountActivity extends AppCompatActivity
 
         return myQuittingDialogBox;
     }
-
 }
