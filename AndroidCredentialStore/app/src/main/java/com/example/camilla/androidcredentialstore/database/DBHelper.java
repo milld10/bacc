@@ -53,6 +53,13 @@ public class DBHelper
         accountDao.delete(account);
     }
 
+    public void deleteAccountById(Long id)
+    {
+        AccountDao accountDao = this.daoSession.getAccountDao();
+        Account account = accountDao.load(id);
+        accountDao.delete(account);
+    }
+
     public List<Account> getAllAccounts()
     {
         /**

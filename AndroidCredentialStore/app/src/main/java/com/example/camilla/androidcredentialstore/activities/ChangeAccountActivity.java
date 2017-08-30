@@ -44,11 +44,18 @@ public class ChangeAccountActivity extends AppCompatActivity
     private DaoSession daoSession;
 
 
+    Long id;
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_account);
+
 
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "accounts-db");
         Database db = helper.getWritableDb();
@@ -69,8 +76,10 @@ public class ChangeAccountActivity extends AppCompatActivity
         saveButton = (Button) findViewById(R.id.saveBtn);
         deleteButton = (Button) findViewById(R.id.delBtn);
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         final Account accountGotten = (Account) intent.getSerializableExtra("clickedAccount");
+
+        id = accountGotten.getAccount_id();
 
         Log.w("CHANGE_ACCOUNT", "got the extras: " + accountGotten.toString());
         Log.w("CHANGE_ACCOUNT", "id of account: " + accountGotten.getAccount_id());
@@ -146,6 +155,8 @@ public class ChangeAccountActivity extends AppCompatActivity
                 AlertDialog dialog = AskToDelete();
                 dialog.show();
 
+
+
             }
         });
 
@@ -162,31 +173,48 @@ public class ChangeAccountActivity extends AppCompatActivity
 
 
 
+
     private AlertDialog AskToDelete()
     {
         AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
-                //set message, title, and icon
                 .setTitle(R.string.dialog_delete_title)
                 .setMessage(R.string.dialog_delete_message)
                 //.setIcon(R.drawable.delete)
 
-                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener(){
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int whichButton)
+                    {
+                        /*
+                        daoSession = new DaoMaster(db).newSession();
+                        final DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
 
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        //your deleting code
+                        Intent intent = getIntent();
+                        final Account accountGotten = (Account) intent.getSerializableExtra("clickedAccount");
+
+                        dbHelper.deleteAccount(accountGotten);
+                        */
+                        DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
+                        dbHelper.deleteAccountById(id);
+
+                        finish();
+
+
+
                         dialog.dismiss();
                     }
-
                 })
 
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
 
                         dialog.dismiss();
-
                     }
                 })
                 .create();
+
         return myQuittingDialogBox;
     }
 

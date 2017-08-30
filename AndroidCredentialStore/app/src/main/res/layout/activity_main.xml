@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:background="@color/green_shade1"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="Name of App"
+            app:title="@string/app_name"
             app:titleMargin="0dp"
             app:titleTextAppearance="@style/TextAppearance.AppCompat.Headline"
             app:titleTextColor="@android:color/background_light"
