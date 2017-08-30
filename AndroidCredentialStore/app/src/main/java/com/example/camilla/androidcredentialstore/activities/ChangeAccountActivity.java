@@ -1,7 +1,9 @@
 package com.example.camilla.androidcredentialstore.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -37,6 +39,7 @@ public class ChangeAccountActivity extends AppCompatActivity
     TextInputLayout passwordLayout;
     TextInputEditText password;
     Button saveButton;
+    Button deleteButton;
 
     private DaoSession daoSession;
 
@@ -64,6 +67,7 @@ public class ChangeAccountActivity extends AppCompatActivity
         password = (TextInputEditText) findViewById(R.id.password);
 
         saveButton = (Button) findViewById(R.id.saveBtn);
+        deleteButton = (Button) findViewById(R.id.delBtn);
 
         Intent intent = getIntent();
         final Account accountGotten = (Account) intent.getSerializableExtra("clickedAccount");
@@ -135,6 +139,17 @@ public class ChangeAccountActivity extends AppCompatActivity
         });
 
 
+        deleteButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view){
+                AlertDialog dialog = AskToDelete();
+                dialog.show();
+
+            }
+        });
+
+
 
         //this intent for when no changes are made???
 
@@ -144,4 +159,35 @@ public class ChangeAccountActivity extends AppCompatActivity
 
         //setResult(ShowAccountsActivity.RESULT_OK, intentRetour);
     }
+
+
+
+    private AlertDialog AskToDelete()
+    {
+        AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
+                //set message, title, and icon
+                .setTitle(R.string.dialog_delete_title)
+                .setMessage(R.string.dialog_delete_message)
+                //.setIcon(R.drawable.delete)
+
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener(){
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //your deleting code
+                        dialog.dismiss();
+                    }
+
+                })
+
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+        return myQuittingDialogBox;
+    }
+
 }

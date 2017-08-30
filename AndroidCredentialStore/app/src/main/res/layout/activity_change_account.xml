@@ -59,17 +59,31 @@
     </android.support.design.widget.TextInputLayout>
 
 
-
-    <Button
-        android:text="@string/button_save"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/saveBtn"
-        android:layout_below="@+id/PasswordLayout"
-        android:clickable="true"
-        android:onClick="saveChanges"/>
+        android:layout_alignParentBottom="true">
+
+
+        <Button
+            android:text="@string/button_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/saveBtn"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:onClick="saveChanges"/>
+
+        <Button
+            android:text="@string/button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/delBtn"
+            android:clickable="true"
+            android:onClick="delAccount"/>
+    </LinearLayout>
+
 
 
 </RelativeLayout>

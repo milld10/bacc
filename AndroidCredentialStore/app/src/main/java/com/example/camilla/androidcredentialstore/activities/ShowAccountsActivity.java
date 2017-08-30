@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -46,7 +47,7 @@ public class ShowAccountsActivity extends ListActivity
         accountArrayList = (ArrayList<Account>) dbHelper.getAllAccounts();
 
         //show elements in the ListView <activity_show_accounts>
-        ArrayAdapter<Account> adapter = new ArrayAdapter<>(this,
+        final ArrayAdapter<Account> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
                 accountArrayList);
 
@@ -78,18 +79,18 @@ public class ShowAccountsActivity extends ListActivity
                 showAddCredentialActivity(view);
             }
         });
+
+
     }
 
     //onCreate end
 
 
-    //TODO LAST: edit to show clicked account in changeAccountActivity
     @Override
     protected void onListItemClick(ListView listView, View view, int position, long id)
     {
         super.onListItemClick(listView, view, position, id);
 
-        //do something using the position in the array
 
         Account account = accountArrayList.get(position);
 
@@ -101,6 +102,10 @@ public class ShowAccountsActivity extends ListActivity
 
         startActivityForResult(intent, CHANGE_ACCOUNT_RESULT_CODE);
     }
+
+
+
+
 
 
     public void showAddCredentialActivity(View view)

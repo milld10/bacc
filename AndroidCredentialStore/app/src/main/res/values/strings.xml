@@ -8,8 +8,13 @@
     <string name="title_activity_web_logins">Web Logins</string>
     <string name="title_activity_show_credentials">Accounts</string>
     <string name="button_save">SAVE</string>
+    <string name="button_delete">DELETE</string>
     <string name="hint_username">Insert a username</string>
     <string name="hint_password">Insert a password</string>
     <string name="hint_account">Insert an account</string>
+    <string name="dialog_delete_title">Delete Account</string>
+    <string name="dialog_delete_message">Do you want to delete this account?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
