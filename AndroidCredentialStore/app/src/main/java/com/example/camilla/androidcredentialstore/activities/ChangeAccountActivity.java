@@ -167,10 +167,9 @@ public class ChangeAccountActivity extends AppCompatActivity
 
     private AlertDialog AskToDelete()
     {
-        AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
+        AlertDialog deleteDialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.dialog_delete_title)
                 .setMessage(R.string.dialog_delete_message)
-                //.setIcon(R.drawable.delete)
 
                 .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener()
                 {
@@ -193,6 +192,6 @@ public class ChangeAccountActivity extends AppCompatActivity
                 })
                 .create();
 
-        return myQuittingDialogBox;
+        return deleteDialog;
     }
 }
