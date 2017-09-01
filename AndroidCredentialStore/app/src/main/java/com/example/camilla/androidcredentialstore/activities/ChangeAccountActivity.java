@@ -32,6 +32,8 @@ import java.nio.charset.StandardCharsets;
 
 public class ChangeAccountActivity extends AppCompatActivity
 {
+    private static final String TAG = "ChangeAccountActivity";
+
     TextInputLayout accountLayout;
     TextInputEditText accountname;
     TextInputLayout usernameLayout;
@@ -98,11 +100,11 @@ public class ChangeAccountActivity extends AppCompatActivity
 
         //conversion of byte to char array, now in Converter.java
         int length = accountGotten.getPassword().length;
-        Log.w("CHANGE_ACCOUNT", "pw BEFORE converter: " + accountGotten.getPassword().toString());
+        Log.w(TAG, "pw BEFORE converter: " + accountGotten.getPassword().toString());
 
         password.setText(Converter.byteToChar(accountGotten), 0, length);
 
-        Log.w("CHANGE_ACCOUNT", "pw AFTER converter: " + password.getText().toString());
+        Log.w(TAG, "pw AFTER converter: " + password.getText().toString());
 
         //TODO LAST: 13.8. functionality for save button
         //********* for the save button
@@ -112,7 +114,7 @@ public class ChangeAccountActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 //DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
-                Log.w("CHANGE ACC", "created a new dbHelper");
+                Log.w(TAG, "created a new dbHelper");
 
                 //delete the clicked account first
                 dbHelper.deleteAccount(accountGotten);
@@ -132,11 +134,11 @@ public class ChangeAccountActivity extends AppCompatActivity
                 Intent intent = new Intent(ChangeAccountActivity.this, ShowAccountsActivity.class);
                 intent.putExtra("account", account);
 
-                Log.w("ADD", "before saving it into DB");
+                Log.w(TAG, "before saving it into DB");
 
                 dbHelper.insertNewAccount(account);
 
-                Log.w("ADD", "after inserting to DB");
+                Log.w(TAG, "after inserting to DB");
 
                 setResult(ShowAccountsActivity.RESULT_OK, intent);
                 finish();

@@ -26,13 +26,13 @@ public class CredentialApplication extends Application
     @Override
     public void onCreate()
     {
-        Log.w("onCreate", "something");
+        Log.w(TAG, "something");
         super.onCreate();
 
         singleton = this;
 
         try {
-            Log.w("try", "something");
+            Log.w(TAG, "something");
             DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this,"credentials-db");
             //Database db = ENCRYPTED ? //encrypted : getwritabledb();
             Database db = helper.getWritableDb();

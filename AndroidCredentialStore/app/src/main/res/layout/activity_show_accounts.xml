@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.camilla.androidcredentialstore.activities.ShowAccountsActivity"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_alignParentTop="true">
 
     <ListView

@@ -24,6 +24,8 @@ import org.greenrobot.greendao.database.Database;
 
 public class AddCredentialActivity extends AppCompatActivity
 {
+    private static final String TAG = "AddCredentialActivity";
+
     TextInputLayout accountLayout;
     TextInputEditText accountname;
     TextInputLayout usernameLayout;
@@ -86,13 +88,13 @@ public class AddCredentialActivity extends AppCompatActivity
                 Intent intent = new Intent(AddCredentialActivity.this, ShowAccountsActivity.class);
                 intent.putExtra("account", account);
 
-                Log.w("ADD ACC", "before saving it into DB");
+                Log.w(TAG, "before saving it into DB");
 
                 DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
-                Log.w("ADD ACC", "created a new dbHelper");
+                Log.w(TAG, "created a new dbHelper");
                 dbHelper.insertNewAccount(account);
 
-                Log.w("ADD ACC", "after inserting to DB");
+                Log.w(TAG, "after inserting to DB");
 
                 setResult(ShowAccountsActivity.RESULT_OK, intent);
                 finish();

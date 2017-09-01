@@ -31,9 +31,7 @@ public class ShowAccountsActivity extends ListActivity
     private static final int ADD_ACCOUNT_RESULT_CODE = 15;
     private static final int CHANGE_ACCOUNT_RESULT_CODE = 20;
 
-    TextView account;
-    TextView username;
-    TextView password;
+    private static final String TAG = "ShowAccountsActivity";
 
     ArrayList<Account> accountArrayList = new ArrayList<>();
 
@@ -51,6 +49,7 @@ public class ShowAccountsActivity extends ListActivity
                 android.R.layout.simple_list_item_1,
                 accountArrayList);
 
+        //TODO: sort list from a-z
         /*adapter.sort(new Comparator<Account>() {
             @Override
             public int compare(String s1, String s2) {
@@ -61,13 +60,6 @@ public class ShowAccountsActivity extends ListActivity
         setListAdapter(adapter);
         //what does notifyDataSetChanged do??
         adapter.notifyDataSetChanged();
-
-
-
-        //for what are these?
-        this.account = (TextView) findViewById(R.id.account);
-        username = (TextView) findViewById(R.id.username);
-        password = (TextView) findViewById(R.id.password);
 
 
         //FAButton switches to AddCredentialActivity
@@ -97,8 +89,8 @@ public class ShowAccountsActivity extends ListActivity
         Intent intent = new Intent(ShowAccountsActivity.this, ChangeAccountActivity.class);
         intent.putExtra("clickedAccount",account);
 
-        Log.w("SHOWACCOUNTS", "before sending intent to change account activity");
-        Log.w("SHOWACCOUNTS", "account-name: " + account.getAccount_name() + " with id: " + account.getAccount_id());
+        Log.w(TAG, "before sending intent to change account activity");
+        Log.w(TAG, "account-name: " + account.getAccount_name() + " with id: " + account.getAccount_id());
 
         startActivityForResult(intent, CHANGE_ACCOUNT_RESULT_CODE);
     }
@@ -129,13 +121,13 @@ public class ShowAccountsActivity extends ListActivity
                     Account extras = (Account) intent.getSerializableExtra("credential");
                     //only add to arrayList if not null
                     if (extras != null) {
-                        Log.w("SHOWACCOUNTS", "website: " + extras + " id: " + extras.getAccount_id());
+                        Log.w(TAG, "website: " + extras + " id: " + extras.getAccount_id());
 
                         //update the listView with new account
                         accountArrayList.add(extras);
                         getListAdapter().notify();
 
-                        Log.w("SHOWACCOUNTS", "NEW account added to the arraylist");
+                        Log.w(TAG, "NEW account added to the arraylist");
                     }
                 }
                 break;
@@ -145,12 +137,12 @@ public class ShowAccountsActivity extends ListActivity
                     Account extras = (Account) intent.getSerializableExtra("credential");
                     //only add to arrayList if not null
                     if (extras != null) {
-                        Log.w("SHOWACCOUNTS", "website: " + extras + ", id: " + extras.getAccount_id());
+                        Log.w(TAG, "website: " + extras + ", id: " + extras.getAccount_id());
 
                         //update the listView with changed account
                         accountArrayList.add(extras);
 
-                        Log.w("SHOWACCOUNTS", "CHANGED account added to the arraylist");
+                        Log.w(TAG, "CHANGED account added to the arraylist");
                     }
                 }
                 break;

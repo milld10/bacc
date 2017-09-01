@@ -24,6 +24,36 @@
 
         <!-- Bluetooth Layout -->
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground"
+            android:onClick="showLoginsActivity" >
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="75dp"
+                android:tint="@color/green_shade1"
+                android:id="@+id/LoginsSymbol"
+                android:cropToPadding="false"
+                android:padding="3dp"
+                android:src="@android:drawable/ic_lock_idle_lock"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:text="@string/accounts"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:id="@+id/LoginsTextView"
+                android:textSize="24sp"
+                android:textAlignment="inherit"
+                android:padding="25dp"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
+
+        <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
@@ -40,7 +70,7 @@
                 app:srcCompat="@android:drawable/stat_sys_data_bluetooth"
                 android:id="@+id/BluetoothSymbol"
                 android:cropToPadding="false"
-                android:padding="10dp"
+                android:padding="3dp"
                 android:layout_gravity="center" />
 
             <TextView
@@ -51,41 +81,12 @@
                 android:id="@+id/BluetoothTextView"
                 android:textSize="24sp"
                 android:textAlignment="inherit"
-                android:padding="20dp"
+                android:padding="25dp"
                 android:layout_gravity="center_vertical"
                  />
         </LinearLayout>
 
         <!-- Logins Layout -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:clickable="true"
-            android:background="?attr/selectableItemBackground"
-            android:onClick="showLoginsActivity" >
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="75dp"
-                android:tint="@color/green_shade1"
-                android:id="@+id/LoginsSymbol"
-                android:cropToPadding="false"
-                android:padding="10dp"
-                android:src="@android:drawable/ic_lock_idle_lock"
-                android:layout_gravity="center" />
-
-            <TextView
-                android:text="@string/accounts"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="50"
-                android:id="@+id/LoginsTextView"
-                android:textSize="24sp"
-                android:textAlignment="inherit"
-                android:padding="20dp"
-                android:layout_gravity="center_vertical" />
-        </LinearLayout>
 
         <!-- Einstellungen Layout
         <LinearLayout
