@@ -2,7 +2,6 @@ package com.example.camilla.androidcredentialstore.models;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

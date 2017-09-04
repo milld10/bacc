@@ -8,9 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.design.widget.TextInputEditText;
+import android.widget.Toast;
 
 import com.example.camilla.androidcredentialstore.CredentialApplication;
 import com.example.camilla.androidcredentialstore.R;
@@ -18,13 +18,11 @@ import com.example.camilla.androidcredentialstore.database.DBHelper;
 import com.example.camilla.androidcredentialstore.models.Account;
 import com.example.camilla.androidcredentialstore.models.DaoMaster;
 import com.example.camilla.androidcredentialstore.models.DaoSession;
+import com.example.camilla.androidcredentialstore.tools.CheckingTools;
 import com.example.camilla.androidcredentialstore.tools.Converter;
 
 import org.greenrobot.greendao.database.Database;
 
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Created by Camilla on 02.08.2017.
@@ -42,6 +40,8 @@ public class ChangeAccountActivity extends AppCompatActivity
     TextInputEditText password;
     Button saveButton;
     Button deleteButton;
+
+    boolean flagEverythingOk = false;
 
     private DaoSession daoSession;
 
@@ -83,39 +83,18 @@ public class ChangeAccountActivity extends AppCompatActivity
         Log.w("CHANGE_ACCOUNT", "id of account: " + accountGotten.getAccount_id());
 
 
-        /*
-        //***********************
-        Account testAccount = new Account();
-        long testId = 15;
-        Long obj = new Long(testId);
-
-        testAccount = dbHelper.getAccountById(obj);
-
-        Log.w("CHANGE_ACCOUNT", "TESTACCOUNT ID: " + testAccount.getPassword() + " and its id: " + testAccount.getAccount_id());
-        //***********************
-        */
-
         accountname.setText(accountGotten.getAccount_name());
         username.setText(accountGotten.getUsername());
 
-        //conversion of byte to char array, now in Converter.java
         int length = accountGotten.getPassword().length;
-        Log.w(TAG, "pw BEFORE converter: " + accountGotten.getPassword().toString());
-
         password.setText(Converter.byteToChar(accountGotten), 0, length);
 
-        Log.w(TAG, "pw AFTER converter: " + password.getText().toString());
 
-        //TODO LAST: 13.8. functionality for save button
-        //********* for the save button
         saveButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                //DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
-                Log.w(TAG, "created a new dbHelper");
-
                 //delete the clicked account first
                 dbHelper.deleteAccount(accountGotten);
 
@@ -126,22 +105,58 @@ public class ChangeAccountActivity extends AppCompatActivity
 
                 final Account account = new Account();
 
-                account.setAccount_name(_account);
-                account.setUsername(_username);
-                account.setPassword(_pwArray);
+                if(CheckingTools.websiteOk(_account))
+                {
+                    if(CheckingTools.usernameOk(_username))
+                    {
+                        if(CheckingTools.passwordOk(_pwArray))
+                        {
+                            //object account gets initialized
+                            account.setAccount_name(_account);
+                            account.setUsername(_username);
+                            account.setPassword(_pwArray);
+
+                            flagEverythingOk = true;
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(), "Password is not valid!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(), "Username is not valid!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), "Website is not valid!",
+                            Toast.LENGTH_SHORT).show();
+                }
 
 
-                Intent intent = new Intent(ChangeAccountActivity.this, ShowAccountsActivity.class);
-                intent.putExtra("account", account);
 
-                Log.w(TAG, "before saving it into DB");
+                if(flagEverythingOk)
+                {
+                    Intent intent = new Intent(ChangeAccountActivity.this, ShowAccountsActivity.class);
+                    intent.putExtra("account", account);
 
-                dbHelper.insertNewAccount(account);
+                    dbHelper.insertNewAccount(account);
 
-                Log.w(TAG, "after inserting to DB");
+                    Log.w(TAG, "account changes successfully and added to DB");
 
-                setResult(ShowAccountsActivity.RESULT_OK, intent);
-                finish();
+                    setResult(ShowAccountsActivity.RESULT_OK, intent);
+                    finish();
+                }
+                else
+                {
+                    Log.d(TAG, "Intent could not be sent!");
+
+                    Toast.makeText(getApplicationContext(), "The account cannot be changed!",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -187,7 +202,7 @@ public class ChangeAccountActivity extends AppCompatActivity
 
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
                 {
-                    public void onClick(DialogInterface dialog, int which)
+                    public void onClick(DialogInterface dialog, int whichButton)
                     {
                         dialog.dismiss();
                     }

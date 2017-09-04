@@ -3,14 +3,12 @@ package com.example.camilla.androidcredentialstore;
  * Created by Camilla on 31.03.2017.
  */
 import android.app.Application;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.camilla.androidcredentialstore.models.DaoMaster;
 import com.example.camilla.androidcredentialstore.models.DaoSession;
 
 import org.greenrobot.greendao.database.Database;
-
 
 
 public class CredentialApplication extends Application

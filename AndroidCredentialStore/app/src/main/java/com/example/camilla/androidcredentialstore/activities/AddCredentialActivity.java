@@ -1,6 +1,5 @@
 package com.example.camilla.androidcredentialstore.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -9,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.camilla.androidcredentialstore.CredentialApplication;
@@ -41,6 +39,8 @@ public class AddCredentialActivity extends AppCompatActivity
     boolean flagUsername = false;
     boolean flagPassword = false;
 
+    boolean flagEverythingOk = false;
+
     private DaoSession daoSession;
 
     @Override
@@ -69,8 +69,6 @@ public class AddCredentialActivity extends AppCompatActivity
         passwordLayout = (TextInputLayout) findViewById(R.id.PasswordLayout);
         password = (TextInputEditText) findViewById(R.id.password);
 
-
-        //the save button in AddCredentialActivity
         saveButton = (Button) findViewById(R.id.saveBtn);
 
 
@@ -81,58 +79,59 @@ public class AddCredentialActivity extends AppCompatActivity
             {
                 String _account = accountname.getText().toString();
                 String _username = username.getText().toString();
-
-                //own method to convert in Converter.java
                 byte[] _pwArray = Converter.charToByte(password);
 
                 final Account account = new Account();
 
-                if(!CheckingTools.websiteOk(_account))
+                if(CheckingTools.websiteOk(_account))
                 {
-                    Toast.makeText(getApplicationContext(), "The entered website is not valid!",
+                    if(CheckingTools.usernameOk(_username))
+                    {
+                        if(CheckingTools.passwordOk(_pwArray))
+                        {
+                            //object account gets initialized
+                            account.setAccount_name(_account);
+                            account.setUsername(_username);
+                            account.setPassword(_pwArray);
+
+                            flagEverythingOk = true;
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(), "Password is not valid!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(), "Username is not valid!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), "Website is not valid!",
                             Toast.LENGTH_SHORT).show();
                 }
-                else{ flagWebsite = true; }
 
-                if(!CheckingTools.usernameOk(_username))
+
+
+                if(flagEverythingOk)
                 {
-                    Toast.makeText(getApplicationContext(), "The entered username is not valid!",
-                            Toast.LENGTH_SHORT).show();
-                }
-                else{ flagUsername = true; }
-
-                if(!CheckingTools.usernameOk(_username))
-                {
-                    Toast.makeText(getApplicationContext(),
-                            "The entered password must be at least 4 characters long!",
-                            Toast.LENGTH_SHORT).show();
-                }
-                else{ flagPassword = true; }
-
-
-                if(flagWebsite && flagUsername && flagPassword)
-                {
-                    account.setAccount_name(_account);
-                    account.setUsername(_username);
-                    account.setPassword(_pwArray);
-
-
                     Intent intent = new Intent(AddCredentialActivity.this, ShowAccountsActivity.class);
                     intent.putExtra("account", account);
 
-                    Log.w(TAG, "before saving it into DB");
-
                     DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
-                    Log.w(TAG, "created a new dbHelper");
                     dbHelper.insertNewAccount(account);
 
-                    Log.w(TAG, "after inserting to DB");
+                    Log.w(TAG, "new account added to DB");
 
                     setResult(ShowAccountsActivity.RESULT_OK, intent);
                     finish();
                 }
                 else
                 {
+                    Log.d(TAG, "Intent could not be sent!");
 
                     Toast.makeText(getApplicationContext(), "The account cannot be added!",
                             Toast.LENGTH_SHORT).show();
