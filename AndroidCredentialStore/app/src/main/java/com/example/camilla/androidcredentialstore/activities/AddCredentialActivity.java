@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.camilla.androidcredentialstore.CredentialApplication;
 import com.example.camilla.androidcredentialstore.R;
@@ -17,6 +18,7 @@ import com.example.camilla.androidcredentialstore.database.DBHelper;
 import com.example.camilla.androidcredentialstore.models.Account;
 import com.example.camilla.androidcredentialstore.models.DaoMaster;
 import com.example.camilla.androidcredentialstore.models.DaoSession;
+import com.example.camilla.androidcredentialstore.tools.CheckingTools;
 import com.example.camilla.androidcredentialstore.tools.Converter;
 
 import org.greenrobot.greendao.database.Database;
@@ -33,6 +35,11 @@ public class AddCredentialActivity extends AppCompatActivity
     TextInputLayout passwordLayout;
     TextInputEditText password;
     Button saveButton;
+
+
+    boolean flagWebsite = false;
+    boolean flagUsername = false;
+    boolean flagPassword = false;
 
     private DaoSession daoSession;
 
@@ -80,24 +87,57 @@ public class AddCredentialActivity extends AppCompatActivity
 
                 final Account account = new Account();
 
-                account.setAccount_name(_account);
-                account.setUsername(_username);
-                account.setPassword(_pwArray);
+                if(!CheckingTools.websiteOk(_account))
+                {
+                    Toast.makeText(getApplicationContext(), "The entered website is not valid!",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else{ flagWebsite = true; }
+
+                if(!CheckingTools.usernameOk(_username))
+                {
+                    Toast.makeText(getApplicationContext(), "The entered username is not valid!",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else{ flagUsername = true; }
+
+                if(!CheckingTools.usernameOk(_username))
+                {
+                    Toast.makeText(getApplicationContext(),
+                            "The entered password must be at least 4 characters long!",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else{ flagPassword = true; }
 
 
-                Intent intent = new Intent(AddCredentialActivity.this, ShowAccountsActivity.class);
-                intent.putExtra("account", account);
+                if(flagWebsite && flagUsername && flagPassword)
+                {
+                    account.setAccount_name(_account);
+                    account.setUsername(_username);
+                    account.setPassword(_pwArray);
 
-                Log.w(TAG, "before saving it into DB");
 
-                DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
-                Log.w(TAG, "created a new dbHelper");
-                dbHelper.insertNewAccount(account);
+                    Intent intent = new Intent(AddCredentialActivity.this, ShowAccountsActivity.class);
+                    intent.putExtra("account", account);
 
-                Log.w(TAG, "after inserting to DB");
+                    Log.w(TAG, "before saving it into DB");
 
-                setResult(ShowAccountsActivity.RESULT_OK, intent);
-                finish();
+                    DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
+                    Log.w(TAG, "created a new dbHelper");
+                    dbHelper.insertNewAccount(account);
+
+                    Log.w(TAG, "after inserting to DB");
+
+                    setResult(ShowAccountsActivity.RESULT_OK, intent);
+                    finish();
+                }
+                else
+                {
+
+                    Toast.makeText(getApplicationContext(), "The account cannot be added!",
+                            Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
     }

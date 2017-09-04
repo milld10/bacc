@@ -1,6 +1,8 @@
 package com.example.camilla.androidcredentialstore.tools;
 
 import android.support.design.widget.TextInputEditText;
+import android.util.Patterns;
+import android.widget.Toast;
 
 /**
  * Class CheckingTools holds methods for checking the input of the user
@@ -9,16 +11,31 @@ import android.support.design.widget.TextInputEditText;
 public class CheckingTools {
 
 
-    public static boolean websiteOk(TextInputEditText website)
+    public static boolean websiteOk(String website)
     {
-
-        int _website = website.getText().toString().trim().length();
-        if(_website > 0)
+        if(!website.isEmpty())
         {
-            
+            if(Patterns.WEB_URL.matcher(website).matches())
+            {
+                return true;
+            }
         }
 
+        return false;
+    }
 
+    public static boolean usernameOk(String username)
+    {
+        return username.isEmpty();
+    }
+
+
+    public static boolean passwordOk(byte[] password)
+    {
+        if(password.length > 0)
+            return true;
+
+        return false;
     }
 
     /*
