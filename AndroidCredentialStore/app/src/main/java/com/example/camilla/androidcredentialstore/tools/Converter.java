@@ -6,6 +6,9 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * class Converter holds methods for the conversion of byte[] to char[] and vice versa
+ */
 
 public class Converter {
 
