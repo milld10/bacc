@@ -1,4 +1,4 @@
-package com.example.camilla.androidcredentialstore.models;
+package iaik.bacc.camilla.androidcredentialstore.models;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;

@@ -1,4 +1,4 @@
-package com.example.camilla.androidcredentialstore.activities;
+package iaik.bacc.camilla.androidcredentialstore.activities;
 
 import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
@@ -10,14 +10,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.camilla.androidcredentialstore.CredentialApplication;
-import com.example.camilla.androidcredentialstore.R;
-import com.example.camilla.androidcredentialstore.database.DBHelper;
-import com.example.camilla.androidcredentialstore.models.Account;
-import com.example.camilla.androidcredentialstore.models.DaoMaster;
-import com.example.camilla.androidcredentialstore.models.DaoSession;
-import com.example.camilla.androidcredentialstore.tools.CheckingTools;
-import com.example.camilla.androidcredentialstore.tools.Converter;
+import iaik.bacc.camilla.androidcredentialstore.CredentialApplication;
+import iaik.bacc.camilla.androidcredentialstore.R;
+import iaik.bacc.camilla.androidcredentialstore.database.DBHelper;
+import iaik.bacc.camilla.androidcredentialstore.models.Account;
+import iaik.bacc.camilla.androidcredentialstore.models.DaoMaster;
+import iaik.bacc.camilla.androidcredentialstore.models.DaoSession;
+import iaik.bacc.camilla.androidcredentialstore.tools.CheckingTools;
+import iaik.bacc.camilla.androidcredentialstore.tools.Converter;
 
 import org.greenrobot.greendao.database.Database;
 
@@ -33,11 +33,6 @@ public class AddCredentialActivity extends AppCompatActivity
     TextInputLayout passwordLayout;
     TextInputEditText password;
     Button saveButton;
-
-
-    boolean flagWebsite = false;
-    boolean flagUsername = false;
-    boolean flagPassword = false;
 
     boolean flagEverythingOk = false;
 
@@ -126,7 +121,7 @@ public class AddCredentialActivity extends AppCompatActivity
 
                     Log.w(TAG, "new account added to DB");
 
-                    setResult(ShowAccountsActivity.RESULT_OK, intent);
+                    setResult(RESULT_OK, intent);
                     finish();
                 }
                 else

@@ -1,7 +1,7 @@
-package com.example.camilla.androidcredentialstore.tools;
+package iaik.bacc.camilla.androidcredentialstore.tools;
 
 import android.support.design.widget.TextInputEditText;
-import com.example.camilla.androidcredentialstore.models.Account;
+import iaik.bacc.camilla.androidcredentialstore.models.Account;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;

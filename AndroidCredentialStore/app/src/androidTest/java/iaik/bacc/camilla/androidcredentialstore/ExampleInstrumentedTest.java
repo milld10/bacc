@@ -1,4 +1,4 @@
-package com.example.camilla.androidcredentialstore;
+package iaik.bacc.camilla.androidcredentialstore;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

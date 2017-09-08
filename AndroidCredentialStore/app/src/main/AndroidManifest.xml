@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.camilla.androidcredentialstore">
+    package="iaik.bacc.camilla.androidcredentialstore">
 
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -10,14 +10,14 @@
     <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED"/>
 
     <application
-        android:name=".CredentialApplication"
+        android:name="iaik.bacc.camilla.androidcredentialstore.CredentialApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light">
         <activity
-            android:name=".activities.MainActivity"
+            android:name="iaik.bacc.camilla.androidcredentialstore.activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.BluetoothActivity"
+            android:name="iaik.bacc.camilla.androidcredentialstore.activities.BluetoothActivity"
             android:label="@string/bluetooth">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.ShowAccountsActivity"
+            android:name="iaik.bacc.camilla.androidcredentialstore.activities.ShowAccountsActivity"
             android:label="@string/show_credentials">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,9 +46,9 @@
         </activity>
 
         <activity
-            android:name=".activities.ChangeAccountActivity"
+            android:name="iaik.bacc.camilla.androidcredentialstore.activities.ChangeAccountActivity"
             android:label="@string/change_credential"
-            android:parentActivityName=".activities.ShowAccountsActivity">
+            android:parentActivityName="iaik.bacc.camilla.androidcredentialstore.activities.ShowAccountsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -57,9 +57,9 @@
         </activity>
 
         <activity
-            android:name=".activities.AddCredentialActivity"
+            android:name="iaik.bacc.camilla.androidcredentialstore.activities.AddCredentialActivity"
             android:label="@string/add_credential"
-            android:parentActivityName=".activities.ShowAccountsActivity">
+            android:parentActivityName="iaik.bacc.camilla.androidcredentialstore.activities.ShowAccountsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

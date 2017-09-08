@@ -1,4 +1,4 @@
-package com.example.camilla.androidcredentialstore;
+package iaik.bacc.camilla.androidcredentialstore;
 
 import org.junit.Test;
 

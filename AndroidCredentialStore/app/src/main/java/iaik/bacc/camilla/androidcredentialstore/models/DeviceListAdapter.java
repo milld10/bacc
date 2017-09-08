@@ -1,4 +1,4 @@
-package com.example.camilla.androidcredentialstore.models;
+package iaik.bacc.camilla.androidcredentialstore.models;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.camilla.androidcredentialstore.R;
+import iaik.bacc.camilla.androidcredentialstore.R;
 
 import java.util.ArrayList;
 

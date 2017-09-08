@@ -1,12 +1,12 @@
-package com.example.camilla.androidcredentialstore.database;
+package iaik.bacc.camilla.androidcredentialstore.database;
 
 
 import java.util.List;
 
-import com.example.camilla.androidcredentialstore.CredentialApplication;
-import com.example.camilla.androidcredentialstore.models.Account;
-import com.example.camilla.androidcredentialstore.models.AccountDao;
-import com.example.camilla.androidcredentialstore.models.DaoSession;
+import iaik.bacc.camilla.androidcredentialstore.CredentialApplication;
+import iaik.bacc.camilla.androidcredentialstore.models.Account;
+import iaik.bacc.camilla.androidcredentialstore.models.AccountDao;
+import iaik.bacc.camilla.androidcredentialstore.models.DaoSession;
 
 
 public class DBHelper

@@ -1,4 +1,4 @@
-package com.example.camilla.androidcredentialstore.activities;
+package iaik.bacc.camilla.androidcredentialstore.activities;
 
 /**
  * Activity to display all logins in a list
@@ -13,10 +13,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.example.camilla.androidcredentialstore.CredentialApplication;
-import com.example.camilla.androidcredentialstore.R;
-import com.example.camilla.androidcredentialstore.database.DBHelper;
-import com.example.camilla.androidcredentialstore.models.Account;
+import iaik.bacc.camilla.androidcredentialstore.CredentialApplication;
+import iaik.bacc.camilla.androidcredentialstore.R;
+import iaik.bacc.camilla.androidcredentialstore.database.DBHelper;
+import iaik.bacc.camilla.androidcredentialstore.models.Account;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.camilla.androidcredentialstore.tools;
+package iaik.bacc.camilla.androidcredentialstore.tools;
 
 import android.util.Patterns;
 
