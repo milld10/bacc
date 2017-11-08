@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,7 +23,7 @@ import iaik.bacc.camilla.androidcredentialstore.models.DeviceListAdapter;
 import java.util.ArrayList;
 
 
-public class BluetoothActivity extends AppCompatActivity
+public class BluetoothActivity extends AppCompatActivity implements AdapterView.OnItemClickListener
 {
     private static final String TAG = "BluetoothActivity";
 
@@ -53,6 +54,11 @@ public class BluetoothActivity extends AppCompatActivity
         lvNewDevices = (ListView) findViewById(R.id.lvNewDevices);
         mBTDevices = new ArrayList<>();
 
+        lvNewDevices.setOnItemClickListener(BluetoothActivity.this);
+
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+        registerReceiver(mBroadcastReceiver4, filter);
+
 
         if(mBluetoothAdapter.isEnabled())
             bluetooth_notification.setText(R.string.hint_bluetoothON);
@@ -64,7 +70,7 @@ public class BluetoothActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Log.d(TAG, "onClick: enabling/disabling");
+                Log.d(TAG, "onClick: enabling/disabling bt");
                 enableDisableBT();
             }
         });
@@ -123,7 +129,7 @@ public class BluetoothActivity extends AppCompatActivity
         }
     }
 
-    // Create a BroadcastReceiver for ACTION_FOUND.
+    // Create a BroadcastReceiver for ACTION_STATE_CHANGED when BT gets turned on/off
     private final BroadcastReceiver mBroadcastReceiver1 = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -256,6 +262,42 @@ public class BluetoothActivity extends AppCompatActivity
         }
     };
 
+    /**
+     * identifies bond state changes e.g. when BT pairing status changes
+     */
+    private BroadcastReceiver mBroadcastReceiver4 = new BroadcastReceiver()
+    {
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            final String action = intent.getAction();
+            Log.d(TAG, "onBonding: ACTION FOUND.");
+
+            if(action.equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED))
+            {
+                BluetoothDevice mDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                //there are 3 different cases for intents:
+                //case1: BT device is already bonded
+                if(mDevice.getBondState() == BluetoothDevice.BOND_BONDED)
+                {
+                    Log.d(TAG, "BroadcastReceiver: BOND_BONDED.");
+
+                }
+                //case2: BT device is now creating a bond with other device
+                if(mDevice.getBondState() == BluetoothDevice.BOND_BONDING)
+                {
+                    Log.d(TAG, "BroadcastReceiver: BOND_BONDING.");
+
+                }
+                //case3: BT device is not bonded; bond broken
+                if(mDevice.getBondState() == BluetoothDevice.BOND_NONE)
+                {
+                    Log.d(TAG, "BroadcastReceiver: BOND_NONE.");
+
+                }
+            }
+        }
+    };
 
     /*
     @Override
@@ -276,13 +318,15 @@ public class BluetoothActivity extends AppCompatActivity
         Log.d(TAG, "onDestroy: is called.");
         unregisterReceiver(mBroadcastReceiver1);
         unregisterReceiver(mBroadcastReceiver2);
+        unregisterReceiver(mBroadcastReceiver3);
+        unregisterReceiver(mBroadcastReceiver4);
 
     }
 
 
     /**
      * This method is required for all devices running API23+
-     * Android must programmitically check the permissions for bluetooth. Putting he proper
+     * Android must programmitically check the permissions for bluetooth. Putting the proper
      * permissions in the manifest is not enough.
      *
      * It will only execute on versions > LOLLIPOP because it is not needed otherwise.
@@ -303,4 +347,24 @@ public class BluetoothActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+    {
+        //canceling discoverability, memory intensive
+        mBluetoothAdapter.cancelDiscovery();
+
+        //getting the device from list which you clicked on
+        Log.d(TAG, "onItemClick: you clicked on a device.");
+        String deviceName = mBTDevices.get(position).getName();
+        String deviceAddress = mBTDevices.get(position).getAddress();
+        Log.d(TAG, "onItemClick: deviceName: " + deviceName + ", deviceAddress: " + deviceAddress);
+
+        //creating the bond of my device and the clicked device from list
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2)
+        {
+            Log.d(TAG, "Trying to pair with " + deviceName);
+            mBTDevices.get(position).createBond();
+        }
+
+    }
 }

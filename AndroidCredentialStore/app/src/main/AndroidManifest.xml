@@ -3,6 +3,10 @@
     package="iaik.bacc.camilla.androidcredentialstore">
 
 
+    <uses-feature android:name="android.hardware.fingerprint"
+        android:required="false"/>
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
