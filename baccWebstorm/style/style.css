@@ -1,0 +1,22 @@
+h3{
+    color: darkgreen;
+}
+
+.hidden{
+    display:none;
+}
+
+html{
+    height: 500px;
+    width: 600px;
+}
+
+body{
+    height: 500px;
+    width: 600px;
+    font-family: "Tahoma";
+}
+
+th{
+    font-weight : bold
+}
