@@ -8,10 +8,12 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.support.v7.widget.Toolbar;
 
 import iaik.bacc.camilla.androidcredentialstore.CredentialApplication;
 import iaik.bacc.camilla.androidcredentialstore.R;
@@ -29,6 +31,8 @@ public class ShowAccountsActivity extends ListActivity
 
     ArrayList<Account> accountArrayList = new ArrayList<>();
 
+    Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -37,6 +41,9 @@ public class ShowAccountsActivity extends ListActivity
 
         DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
         accountArrayList = (ArrayList<Account>) dbHelper.getAllAccounts();
+
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_show_accounts);
+        mToolbar.setTitle(R.string.show_accounts);
 
         //show elements in the ListView <activity_show_accounts>
         final ArrayAdapter<Account> adapter = new ArrayAdapter<>(this,
@@ -56,7 +63,7 @@ public class ShowAccountsActivity extends ListActivity
         adapter.notifyDataSetChanged();
 
 
-        //FAButton switches to AddCredentialActivity
+        //FAButton switches to AddAccountActivity
         FloatingActionButton fab_app = (FloatingActionButton) findViewById(R.id.fab_addApp);
         fab_app.setOnClickListener(new View.OnClickListener()
         {
@@ -96,7 +103,7 @@ public class ShowAccountsActivity extends ListActivity
 
     public void showAddCredentialActivity(View view)
     {
-        Intent intent = new Intent(this, AddCredentialActivity.class);
+        Intent intent = new Intent(this, AddAccountActivity.class);
         startActivityForResult(intent, ADD_ACCOUNT_RESULT_CODE);
        // startActivity(intent);
     }

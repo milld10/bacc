@@ -12,135 +12,120 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    android:orientation="vertical">
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="@color/blue3"
+        android:id="@+id/LoginsSymbol"
+        android:src="@drawable/ic_account_circle_black_48px"
+        android:onClick="showLoginsActivity"
+        android:clickable="true"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="40dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true" />
 
-        <!-- Bluetooth Layout -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:clickable="true"
-            android:background="?attr/selectableItemBackground"
-            android:onClick="showLoginsActivity" >
+    <TextView
+        android:text="@string/accounts"
+        android:id="@+id/LoginsTextView"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:onClick="showLoginsActivity"
+        android:clickable="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="24sp"
+        android:layout_alignBottom="@+id/LoginsSymbol"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:layout_toEndOf="@+id/LoginsSymbol"
+        android:padding="10dp"/>
 
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="75dp"
-                android:tint="@color/green_shade1"
-                android:id="@+id/LoginsSymbol"
-                android:src="@android:drawable/ic_lock_idle_lock"
-                android:layout_gravity="center" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="@color/blue3"
+        android:src="@drawable/ic_bluetooth_black_48px"
+        android:id="@+id/BluetoothSymbol"
+        android:onClick="showBluetoothActivity"
+        android:clickable="true"
+        android:layout_below="@id/LoginsTextView"
+        android:layout_marginTop="40dp"
+        android:layout_alignStart="@+id/LoginsSymbol"
+        android:layout_toStartOf="@+id/LoginsTextView" />
 
-            <TextView
-                android:text="@string/accounts"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/LoginsTextView"
-                android:textSize="18sp"
-                android:layout_gravity="center_horizontal" />
-        </LinearLayout>
+    <TextView
+        android:text="@string/bluetooth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/BluetoothTextView"
+        android:onClick="showBluetoothActivity"
+        android:clickable="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="24sp"
+        android:layout_alignBottom="@id/BluetoothSymbol"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:layout_toEndOf="@+id/BluetoothSymbol"
+        android:padding="10dp"/>
 
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:clickable="true"
-            android:background="?attr/selectableItemBackground"
-            android:onClick="showBluetoothActivity">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="@color/blue3"
+        android:src="@drawable/ic_settings_black_48px"
+        android:id="@+id/SettingsSymbol"
+        android:onClick="showSettingsActivity"
+        android:clickable="true"
+        android:layout_below="@+id/BluetoothSymbol"
+        android:layout_marginTop="40dp"
+        android:layout_alignStart="@id/BluetoothSymbol"
+        android:layout_toStartOf="@id/BluetoothTextView"/>
 
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="75dp"
-                android:tint="@color/green_shade1"
-                app:srcCompat="@android:drawable/stat_sys_data_bluetooth"
-                android:id="@+id/BluetoothSymbol"
-                android:layout_gravity="center" />
+    <TextView
+        android:text="@string/settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/SettingsTextView"
+        android:onClick="showSettingsActivity"
+        android:clickable="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="24sp"
+        android:layout_alignBottom="@+id/SettingsSymbol"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:padding="10dp"
+        android:layout_toEndOf="@id/SettingsSymbol"/>
 
-            <TextView
-                android:text="@string/bluetooth"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/BluetoothTextView"
-                android:textSize="18sp"
-                android:layout_gravity="center_horizontal"
-                 />
-        </LinearLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="@color/blue3"
+        android:src="@drawable/ic_info_outline_black_48px"
+        android:id="@+id/AboutSymbol"
+        android:onClick="showAboutActivity"
+        android:clickable="true"
+        android:layout_below="@+id/SettingsSymbol"
+        android:layout_marginTop="40dp"
+        android:layout_alignStart="@id/SettingsSymbol"
+        android:layout_toStartOf="@id/SettingsTextView"/>
 
-        <!-- Logins Layout -->
+    <TextView
+        android:text="@string/about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/AboutTextView"
+        android:onClick="showAboutActivity"
+        android:clickable="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="24sp"
+        android:layout_alignBottom="@id/AboutSymbol"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:padding="10dp"
+        android:layout_toEndOf="@id/AboutSymbol"/>
 
-        <!-- Einstellungen Layout
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
 
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="75dp"
-                android:tint="@color/green_shade1"
-                android:onClick="showEinstellungenActivity"
-                android:layout_below="@+id/LoginsSymbol"
-                android:id="@+id/EinstellungenSymbol"
-                android:cropToPadding="false"
-                android:padding="10dp"
-                android:layout_gravity="center"
-                android:src="@android:drawable/ic_menu_preferences" />
-
-            <TextView
-                android:text="Einstellungen"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="50"
-                android:id="@+id/EinstellungenTextView"
-                android:textSize="24sp"
-                android:textAlignment="textStart"
-                android:padding="20dp"
-                android:layout_below="@+id/LoginsTextView"
-                android:layout_alignParentStart="true"
-                android:layout_gravity="center_vertical" />
-        </LinearLayout> -->
-
-        <!-- About Layout
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="75dp"
-                android:tint="@color/green_shade1"
-                android:onClick="showAboutActivity"
-                android:layout_below="@+id/EinstellungenSymbol"
-                android:id="@+id/AboutSymbol"
-                android:cropToPadding="false"
-                android:padding="10dp"
-                android:layout_gravity="center"
-                android:src="@android:drawable/ic_menu_info_details" />
-
-            <TextView
-                android:text="About"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="50"
-                android:id="@+id/AboutTextView"
-                android:textSize="24sp"
-                android:textAlignment="textStart"
-                android:padding="20dp"
-                android:layout_below="@+id/EinstellungenTextView"
-                android:layout_alignParentStart="true"
-                android:layout_gravity="center_vertical" />
-        </LinearLayout> -->
-
-    </LinearLayout>
 </RelativeLayout>

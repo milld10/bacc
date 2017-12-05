@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity
 
     /*public void showAddLoginActivity(View view)
     {
-        Intent intent = new Intent(this, AddCredentialActivity.class);
+        Intent intent = new Intent(this, AddAccountActivity.class);
         startActivity(intent);
     }*/
 
@@ -60,5 +60,13 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //TODO: more menu buttons in main activity, add functionality
+
+    public void showSettingsActivity(View view) {
+    }
+
+    public void showAboutActivity(View view) {
     }
 }

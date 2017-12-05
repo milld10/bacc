@@ -22,9 +22,9 @@ import iaik.bacc.camilla.androidcredentialstore.tools.Converter;
 import org.greenrobot.greendao.database.Database;
 
 
-public class AddCredentialActivity extends AppCompatActivity
+public class AddAccountActivity extends AppCompatActivity
 {
-    private static final String TAG = "AddCredentialActivity";
+    private static final String TAG = "AddAccountActivity";
 
     TextInputLayout accountLayout;
     TextInputEditText accountname;
@@ -42,14 +42,14 @@ public class AddCredentialActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_credential);
+        setContentView(R.layout.activity_add_account);
 
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "accounts-db");
         Database db = helper.getWritableDb();
         daoSession = new DaoMaster(db).newSession();
 
         //TODO Research: what does inflate do??
-        /*View login_data = View.inflate(this, R.layout.activity_add_credential, null);
+        /*View login_data = View.inflate(this, R.layout.activity_add_account, null);
 
         website = (EditText) login_data.findViewById(R.id.website);
         username = (EditText) login_data.findViewById(R.id.username);
@@ -113,7 +113,7 @@ public class AddCredentialActivity extends AppCompatActivity
 
                 if(flagEverythingOk)
                 {
-                    Intent intent = new Intent(AddCredentialActivity.this, ShowAccountsActivity.class);
+                    Intent intent = new Intent(AddAccountActivity.this, ShowAccountsActivity.class);
                     intent.putExtra("account", account);
 
                     DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());

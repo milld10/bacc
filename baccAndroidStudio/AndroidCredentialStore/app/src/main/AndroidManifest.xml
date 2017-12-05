@@ -16,7 +16,7 @@
     <application
         android:name="iaik.bacc.camilla.androidcredentialstore.CredentialApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_lock"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light">
@@ -41,7 +41,7 @@
         </activity>
         <activity
             android:name="iaik.bacc.camilla.androidcredentialstore.activities.ShowAccountsActivity"
-            android:label="@string/show_credentials">
+            android:label="@string/show_accounts">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,7 +51,7 @@
 
         <activity
             android:name="iaik.bacc.camilla.androidcredentialstore.activities.ChangeAccountActivity"
-            android:label="@string/change_credential"
+            android:label="@string/change_account"
             android:parentActivityName="iaik.bacc.camilla.androidcredentialstore.activities.ShowAccountsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -61,8 +61,8 @@
         </activity>
 
         <activity
-            android:name="iaik.bacc.camilla.androidcredentialstore.activities.AddCredentialActivity"
-            android:label="@string/add_credential"
+            android:name="iaik.bacc.camilla.androidcredentialstore.activities.AddAccountActivity"
+            android:label="@string/add_account"
             android:parentActivityName="iaik.bacc.camilla.androidcredentialstore.activities.ShowAccountsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

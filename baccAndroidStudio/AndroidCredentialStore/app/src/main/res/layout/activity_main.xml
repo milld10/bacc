@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".activities.MainActivity">
+    tools:context="activities.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -15,16 +15,13 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:background="@color/green_shade1"
+            android:layout_height="match_parent"
+            android:background="@color/blue2"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="@string/app_name"
-            app:titleMargin="0dp"
             app:titleTextAppearance="@style/TextAppearance.AppCompat.Headline"
             app:titleTextColor="@android:color/background_light"
-            android:verticalScrollbarPosition="defaultPosition"
-            android:minHeight="75dp"
-            android:elevation="0dp"
-            android:layout_height="75dp" />
+            android:verticalScrollbarPosition="defaultPosition" />
 
     </android.support.design.widget.AppBarLayout>
 
