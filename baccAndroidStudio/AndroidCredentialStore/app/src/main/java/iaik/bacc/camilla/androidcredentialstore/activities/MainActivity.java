@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    public void showLoginsActivity(View view)
+    public void showAccountsActivity(View view)
     {
 
         Intent intent = new Intent(this, ShowAccountsActivity.class);
@@ -68,5 +68,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void showAboutActivity(View view) {
+    }
+
+    public void authenticationActivity(View view) {
+        Intent intent = new Intent(this, AuthenticationActivity.class);
+        startActivity(intent);
     }
 }

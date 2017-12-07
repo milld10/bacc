@@ -30,6 +30,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="iaik.bacc.camilla.androidcredentialstore.activities.BluetoothActivity"
             android:label="@string/bluetooth">
@@ -39,6 +40,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="iaik.bacc.camilla.androidcredentialstore.activities.ShowAccountsActivity"
             android:label="@string/show_accounts">
@@ -71,7 +73,14 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="iaik.bacc.camilla.androidcredentialstore.activities.AuthenticationActivity"
+            android:label="@string/authentication" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
-
 </manifest>

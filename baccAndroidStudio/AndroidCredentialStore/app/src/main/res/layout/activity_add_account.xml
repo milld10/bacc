@@ -72,6 +72,5 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/saveBtn"
         android:layout_below="@+id/PasswordLayout"
-        android:clickable="true"
-        android:onClick="saveNewLogin"/>
+        android:clickable="true"/>
 </RelativeLayout>

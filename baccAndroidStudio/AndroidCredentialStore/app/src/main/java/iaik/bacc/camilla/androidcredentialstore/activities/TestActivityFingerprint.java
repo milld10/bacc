@@ -1,32 +1,32 @@
 package iaik.bacc.camilla.androidcredentialstore.activities;
 
-        import android.app.KeyguardManager;
-        import android.content.pm.PackageManager;
-        import android.hardware.fingerprint.FingerprintManager;
-        import android.Manifest;
-        import android.os.Build;
-        import android.os.Bundle;
-        import android.security.keystore.KeyGenParameterSpec;
-        import android.security.keystore.KeyPermanentlyInvalidatedException;
-        import android.security.keystore.KeyProperties;
-        import android.support.v7.app.AppCompatActivity;
-        import android.support.v4.app.ActivityCompat;
-        import android.widget.TextView;
-        import java.io.IOException;
-        import java.security.InvalidAlgorithmParameterException;
-        import java.security.InvalidKeyException;
-        import java.security.KeyStore;
-        import java.security.KeyStoreException;
-        import java.security.NoSuchAlgorithmException;
-        import java.security.NoSuchProviderException;
-        import java.security.UnrecoverableKeyException;
-        import java.security.cert.CertificateException;
-        import javax.crypto.Cipher;
-        import javax.crypto.KeyGenerator;
-        import javax.crypto.NoSuchPaddingException;
-        import javax.crypto.SecretKey;
+import android.app.KeyguardManager;
+import android.content.pm.PackageManager;
+import android.hardware.fingerprint.FingerprintManager;
+import android.Manifest;
+import android.os.Build;
+import android.os.Bundle;
+import android.security.keystore.KeyGenParameterSpec;
+import android.security.keystore.KeyPermanentlyInvalidatedException;
+import android.security.keystore.KeyProperties;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.ActivityCompat;
+import android.widget.TextView;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 
-        import iaik.bacc.camilla.androidcredentialstore.tools.FingerprintHandler;
+import iaik.bacc.camilla.androidcredentialstore.tools.FingerprintHandler;
 
 
 public class TestActivityFingerprint extends AppCompatActivity {
@@ -114,7 +114,6 @@ public class TestActivityFingerprint extends AppCompatActivity {
             keyStore.load(null);
 
             //Initialize the KeyGenerator//
-            //TODO: fix keygenerator for API below 23, because actual version is 19
             keyGenerator.init(new
                     KeyGenParameterSpec.Builder(KEY_NAME,
                     KeyProperties.PURPOSE_ENCRYPT |

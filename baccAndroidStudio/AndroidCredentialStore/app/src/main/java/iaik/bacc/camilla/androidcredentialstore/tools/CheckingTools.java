@@ -3,7 +3,7 @@ package iaik.bacc.camilla.androidcredentialstore.tools;
 import android.util.Patterns;
 
 /**
- * Class CheckingTools holds methods for checking the input of the user
+ * Class CheckingTools holds methods for checking the input of the user when adding a new account
  */
 
 public class CheckingTools
