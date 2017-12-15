@@ -16,7 +16,7 @@ import android.widget.Toast;
  */
 
 @TargetApi(Build.VERSION_CODES.M)
-public class FingerprintHandler extends FingerprintManagerCompat.AuthenticationCallback {
+public class FingerprintHandler extends FingerprintManager.AuthenticationCallback {
 
     private CancellationSignal cancellationSignal;
     private Context context;
@@ -36,7 +36,7 @@ public class FingerprintHandler extends FingerprintManagerCompat.AuthenticationC
             return;
         }
         //TODO correct authenticate of startAuth methode, api < 23
-        //manager.authenticate(cryptoObject, cancellationSignal, 0, this, null);
+        manager.authenticate(cryptoObject, cancellationSignal, 0, this, null);
     }
 
 

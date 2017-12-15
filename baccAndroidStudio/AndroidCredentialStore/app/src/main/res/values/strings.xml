@@ -4,6 +4,8 @@
     <string name="add_account">Add new Account</string>
     <string name="change_account">Change existing Account</string>
     <string name="authentication">Authentication</string>
+    <string name="label_fingerprint">Fingerprint</string>
+
     <string name="bluetooth">Bluetooth</string>
     <string name="accounts">Accounts</string>
     <string name="settings">Settings</string>
@@ -25,5 +27,9 @@
     <string name="cancel">Cancel</string>
     <string name="masterPassword">Enter your master password</string>
     <string name="fingerprint">or scan your fingerprint</string>
+
+
+    <string name="instructions">Place your fingertip on the Home button to verify your identity
+        </string>
 
 </resources>

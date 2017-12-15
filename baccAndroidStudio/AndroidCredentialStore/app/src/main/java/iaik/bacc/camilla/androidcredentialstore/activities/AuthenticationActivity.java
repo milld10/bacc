@@ -1,5 +1,6 @@
 package iaik.bacc.camilla.androidcredentialstore.activities;
 
+import android.content.Intent;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -49,6 +50,9 @@ public class AuthenticationActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 //TODO: grant access to show accounts activity
+                //for now, the accounts are shown until the password works
+                Intent intent = new Intent(AuthenticationActivity.this, ShowAccountsActivity.class);
+                startActivity(intent);
             }
         });
 

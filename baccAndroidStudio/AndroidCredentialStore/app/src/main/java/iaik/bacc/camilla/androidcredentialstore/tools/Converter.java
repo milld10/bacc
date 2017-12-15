@@ -12,26 +12,9 @@ import java.nio.charset.StandardCharsets;
 
 public class Converter {
 
-    /*
-    private static final char[] HEX_DIGITS = "0123456789abcdef".toCharArray();
-
-    private static char[] toHex(byte[] bytes)
-    {
-        char[] c = new char[bytes.length*2];
-        int index = 0;
-        for (byte b : bytes)
-        {
-            c[index++] = HEX_DIGITS[(b >> 4) & 0xf];
-            c[index++] = HEX_DIGITS[b & 0xf];
-        }
-        return c;
-    }*/
-
-
     /**
-     * converts char[] to byte[], for pw typed in by user. byte[] is needed to
-     * store into DB
-     * @return
+     * converts char[] to byte[], a pw typed in by user is given in an char[]
+     * byte[] is needed to store into DB
      */
     public static byte[] charToByte(TextInputEditText pw)
     {
@@ -47,6 +30,9 @@ public class Converter {
     }
 
 
+    /**
+     * converts the byte[] back to a char[] to be displayed in the application again.
+     */
     public static char[] byteToChar(Account account)
     {
         byte[] byteArray = account.getPassword();

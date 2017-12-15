@@ -1,5 +1,6 @@
 package iaik.bacc.camilla.androidcredentialstore.activities;
 
+import android.annotation.SuppressLint;
 import android.app.KeyguardManager;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
@@ -26,11 +27,14 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
+import iaik.bacc.camilla.androidcredentialstore.R;
 import iaik.bacc.camilla.androidcredentialstore.tools.FingerprintHandler;
 
 
-public class TestActivityFingerprint extends AppCompatActivity {
+public class FingerprintActivity extends AppCompatActivity
+{
 
+    private static final String TAG = "FingerprintActivity";
 
     // Declare a string variable for the key we’re going to use in our fingerprint authentication
     private static final String KEY_NAME = "yourKey";
@@ -42,11 +46,12 @@ public class TestActivityFingerprint extends AppCompatActivity {
     private FingerprintManager fingerprintManager;
     private KeyguardManager keyguardManager;
 
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
+        setContentView(R.id.activity_fingerprint);
 
         // If you’ve set your app’s minSdkVersion to anything lower than 23, then you’ll need to verify that the device is running Marshmallow
         // or higher before executing any fingerprint-related code
@@ -57,17 +62,17 @@ public class TestActivityFingerprint extends AppCompatActivity {
             fingerprintManager =
                     (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
 
-            //textView = (TextView) findViewById(R.id.textview);
+            textView = findViewById(R.id.mytextview);
 
             //Check whether the device has a fingerprint sensor//
             if (!fingerprintManager.isHardwareDetected()) {
                 // If a fingerprint sensor isn’t available, then inform the user that they’ll be unable to use your app’s fingerprint functionality//
-                //textView.setText("Your device doesn't support fingerprint authentication");
+                textView.setText("Your device doesn't support fingerprint authentication");
             }
             //Check whether the user has granted your app the USE_FINGERPRINT permission//
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
                 // If your app doesn't have this permission, then display the following text//
-                //textView.setText("Please enable the fingerprint permission");
+                textView.setText("Please enable the fingerprint permission");
             }
 
             //Check that the user has registered at least one fingerprint//
@@ -79,7 +84,7 @@ public class TestActivityFingerprint extends AppCompatActivity {
             //Check that the lockscreen is secured//
             if (!keyguardManager.isKeyguardSecure()) {
                 // If the user hasn’t secured their lockscreen with a PIN password or pattern, then display the following text//
-                //textView.setText("Please enable lockscreen security in your device's Settings");
+                textView.setText("Please enable lockscreen security in your device's Settings");
             } else {
                 try {
                     generateKey();
