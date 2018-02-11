@@ -6,6 +6,8 @@ import org.greenrobot.greendao.annotation.Property;
 
 import org.greenrobot.greendao.annotation.Generated;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * Created by Camilla on 02.08.2017.
  */
@@ -69,14 +71,26 @@ public class Account implements java.io.Serializable
         this.account_name = account_name;
     }
 
+    public void setAccount_name_encrypt(byte[] account_name_encrypt)
+            throws UnsupportedEncodingException
+    {
+        String help = new String(account_name_encrypt, "UTF-8");
+        this.account_name = help;
+    }
 
     public String getUsername() {
         return this.username;
     }
 
-
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setUsername_encrypt(byte[] username_encrypt)
+            throws UnsupportedEncodingException
+    {
+        String help = new String(username_encrypt, "UTF-8");
+        this.account_name = help;
     }
 
 

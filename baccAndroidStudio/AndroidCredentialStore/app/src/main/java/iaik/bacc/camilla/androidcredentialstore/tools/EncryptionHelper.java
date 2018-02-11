@@ -1,19 +1,23 @@
 package iaik.bacc.camilla.androidcredentialstore.tools;
 
+import android.os.Build;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SignatureException;
 import java.security.UnrecoverableEntryException;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 
 import javax.crypto.BadPaddingException;
@@ -23,6 +27,8 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
+
+import iaik.bacc.camilla.androidcredentialstore.CredentialApplication;
 
 /**
  * Created by Camilla on 14.12.2017.
@@ -42,9 +48,12 @@ public class EncryptionHelper
 
     KeyStore keyStore;
 
-    EncryptionHelper() throws CertificateException, NoSuchAlgorithmException, KeyStoreException,
+
+    public EncryptionHelper(CredentialApplication application)
+            throws CertificateException, NoSuchAlgorithmException, KeyStoreException,
             IOException
     {
+
         loadKeyStore();
     }
 
@@ -74,9 +83,11 @@ public class EncryptionHelper
                 ALIAS, KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT);
 
         //Properties of the Key
-        builder.setKeySize(128)
-                .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
-                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            builder.setKeySize(128)
+                    .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE);
+        }
 
 
         keyGenerator.init(builder.build());
@@ -89,8 +100,8 @@ public class EncryptionHelper
     //----------------------------------------------------------------------------------------------
     //Encryption
 
-    //no alias is handed over with function call
-    byte[] encryptText(final String textToEncrypt) throws
+    //no alias is handed over with function call, textToEncrypt is a byte[] from addaccountactivity
+    public byte[] encryptText(final byte[] textToEncrypt) throws
             UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException,
             NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, IOException,
             InvalidAlgorithmParameterException, SignatureException, BadPaddingException,
@@ -102,31 +113,30 @@ public class EncryptionHelper
         iv = cipher.getIV();
 
         //doFinal return the byte array which is the encrypted text
-        return(encryption = cipher.doFinal(textToEncrypt.getBytes("UTF-8")));
+        //here the type of textToEncrypt was "String"
+        //return(encryption = cipher.doFinal(textToEncrypt.getBytes("UTF-8")));
+        return(encryption = cipher.doFinal(textToEncrypt));
     }
 
     //TODO: check if key is the same for decrypt func, then use only one function!
     private SecretKey getKeyForEncrypt(String alias) throws UnrecoverableEntryException,
             NoSuchAlgorithmException, KeyStoreException
     {
-        /*Key key;
-        try {
-            key = KeyStore.getInstance(ANDROID_KEY_STORE).getKey(alias, null);
-        }
-        catch (KeyStoreException e)
-        {
-            Log.e(TAG, e.getMessage());
-        }
-        catch (UnrecoverableKeyException e)
-        {
-            e.printStackTrace();
-        }
-        catch (NoSuchAlgorithmException e)
-        {
-            e.printStackTrace();
-        }
+//        !!: maybe put try/catch away? not working with it; or a return in catch??
+//        try
+//        {
+//            /*Key key;
+//            key = KeyStore.getInstance(ANDROID_KEY_STORE).getKey(alias, null);
+//            // return  key.getKey(alias);*/
+//            //return ((KeyStore.SecretKeyEntry) keyStore.getEntry(alias, null)).getSecretKey();
+//        }
+//        catch (KeyStoreException | UnrecoverableKeyException | NoSuchAlgorithmException e)
+//        {
+//            Log.e(TAG, e.getMessage());
+//            e.printStackTrace();
+//        }
 
-        return  key.getKey(alias, null);*/
+//        return  key.getKey(alias, null);
         return ((KeyStore.SecretKeyEntry) keyStore.getEntry(alias, null)).getSecretKey();
     }
 
@@ -146,7 +156,7 @@ public class EncryptionHelper
 
     //no alias is handed over as parameter,
     //TODO change that only param is ecryptedData and the IV needs to be extracted
-    String decryptData(final byte[] encryptedData, final byte[] encryptionIv)
+    public String decryptData(final byte[] encryptedData, final byte[] encryptionIv)
             throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException,
             NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, IOException,
             BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException

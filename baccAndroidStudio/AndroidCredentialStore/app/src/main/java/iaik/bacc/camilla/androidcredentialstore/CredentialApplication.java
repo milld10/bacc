@@ -30,7 +30,7 @@ public class CredentialApplication extends Application
         singleton = this;
 
         try {
-            Log.w(TAG, "something");
+            Log.w(TAG, "trying to open DB");
             DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this,"credentials-db");
             //Database db = ENCRYPTED ? //encrypted : getwritabledb();
             Database db = helper.getWritableDb();

@@ -18,8 +18,23 @@ import iaik.bacc.camilla.androidcredentialstore.models.DaoMaster;
 import iaik.bacc.camilla.androidcredentialstore.models.DaoSession;
 import iaik.bacc.camilla.androidcredentialstore.tools.CheckingTools;
 import iaik.bacc.camilla.androidcredentialstore.tools.Converter;
+import iaik.bacc.camilla.androidcredentialstore.tools.EncryptionHelper;
 
 import org.greenrobot.greendao.database.Database;
+
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SignatureException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 
 public class AddAccountActivity extends AppCompatActivity
@@ -38,6 +53,7 @@ public class AddAccountActivity extends AppCompatActivity
 
     private DaoSession daoSession;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -47,6 +63,9 @@ public class AddAccountActivity extends AppCompatActivity
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "accounts-db");
         Database db = helper.getWritableDb();
         daoSession = new DaoMaster(db).newSession();
+
+        //for encryption of data before storing it into the DB
+        final EncryptionHelper encryptionHelper;
 
         //TODO Research: what does inflate do??
         /*View login_data = View.inflate(this, R.layout.activity_add_account, null);
@@ -76,6 +95,7 @@ public class AddAccountActivity extends AppCompatActivity
                 String _username = username.getText().toString();
                 byte[] _pwArray = Converter.charToByte(password);
 
+                //this object will be stored into the DB
                 final Account account = new Account();
 
                 if(CheckingTools.websiteOk(_account))
@@ -84,10 +104,33 @@ public class AddAccountActivity extends AppCompatActivity
                     {
                         if(CheckingTools.passwordOk(_pwArray))
                         {
-                            //object account gets initialized
-                            account.setAccount_name(_account);
+                            //object account gets initialized to store in DB
+                            //TODO encrypt the data after it is checked but before it is stored into the DB
+                            /*account.setAccount_name(_account);
                             account.setUsername(_username);
-                            account.setPassword(_pwArray);
+                            account.setPassword(_pwArray);*/
+                            try
+                            {
+                                EncryptionHelper encryptionHelper = new EncryptionHelper(CredentialApplication.getInstance());
+                                byte[] hlpAccount = Converter.charToByte(accountname);
+                                account.setAccount_name_encrypt(encryptionHelper.encryptText(hlpAccount));
+
+                                byte[] hlpUsername = Converter.charToByte(username);
+                                account.setUsername_encrypt(encryptionHelper.encryptText(hlpUsername));
+
+                                //_pwArray is already a byte[]; no need for convertion
+                                account.setPassword(encryptionHelper.encryptText(_pwArray));
+
+                            } catch (CertificateException | NoSuchAlgorithmException |
+                                    KeyStoreException | IOException | SignatureException |
+                                    UnrecoverableEntryException |  BadPaddingException |
+                                    InvalidKeyException | InvalidAlgorithmParameterException |
+                                    NoSuchPaddingException | NoSuchProviderException |
+                                    IllegalBlockSizeException e)
+                            {
+                                Log.e(TAG, e.getMessage());
+                                e.printStackTrace();
+                            }
 
                             flagEverythingOk = true;
                         }

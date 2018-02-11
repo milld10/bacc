@@ -16,26 +16,25 @@ import android.widget.Toast;
  */
 
 @TargetApi(Build.VERSION_CODES.M)
-public class FingerprintHandler extends FingerprintManager.AuthenticationCallback {
-
+public class FingerprintHandler extends FingerprintManager.AuthenticationCallback
+{
     private CancellationSignal cancellationSignal;
-    private Context context;
+    private Context appContext;
 
-    public FingerprintHandler(Context context1)
+    public FingerprintHandler(Context context)
     {
-        context = context1;
+        appContext = context;
     }
 
-    //startAuth responsible for starting the fingerprint authentication
+    //method responsible for starting the fingerprint authentication
     public void startAuth(FingerprintManager manager, FingerprintManager.CryptoObject cryptoObject)
     {
         cancellationSignal = new CancellationSignal();
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.USE_FINGERPRINT)
+        if (ActivityCompat.checkSelfPermission(appContext, Manifest.permission.USE_FINGERPRINT)
                 != PackageManager.PERMISSION_GRANTED)
         {
             return;
         }
-        //TODO correct authenticate of startAuth methode, api < 23
         manager.authenticate(cryptoObject, cancellationSignal, 0, this, null);
     }
 
@@ -43,35 +42,30 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     //Toasts for user:
 
     @Override
-    //onAuthenticationError is called when a fatal error has occurred. It provides the error code
-    // and error message as its parameters
+    //is called when a fatal error has occurred, provides error code and error message
     public void onAuthenticationError(int errMsgId, CharSequence errString)
     {
-        Toast.makeText(context, "Authentication error\n" + errString, Toast.LENGTH_LONG).show();
+        Toast.makeText(appContext, "Authentication error\n" + errString, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    //onAuthenticationFailed is called when the fingerprint doesn’t match with
-    // any of the fingerprints registered on the device//
+    //is called when the fingerprint doesn’t match with any of the fingerprints registered on the device
     public void onAuthenticationFailed()
     {
-        Toast.makeText(context, "Authentication failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(appContext, "Authentication failed", Toast.LENGTH_LONG).show();
     }
 
     @Override
-    //onAuthenticationHelp is called when a non-fatal error has occurred.
-    // This method provides additional information about the error
+    //is called when a non-fatal error has occurred, provides additional information about the error
     public void onAuthenticationHelp(int helpMsgId, CharSequence helpString)
     {
-        Toast.makeText(context, "Authentication help\n" + helpString, Toast.LENGTH_LONG).show();
+        Toast.makeText(appContext, "Authentication help\n" + helpString, Toast.LENGTH_LONG).show();
     }
 
-    /*
     @Override
-    //onAuthenticationSucceeded for successful match of registered prints on device
+    //for successful match of registered prints on device
     public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)
     {
-        Toast.makeText(context, "Success!", Toast.LENGTH_LONG).show();
-    }*/
-
+        Toast.makeText(appContext, "Success!", Toast.LENGTH_LONG).show();
+    }
 }

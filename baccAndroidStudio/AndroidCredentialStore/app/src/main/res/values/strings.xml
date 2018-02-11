@@ -32,4 +32,11 @@
     <string name="instructions">Place your fingertip on the Home button to verify your identity
         </string>
 
+    <string name="fpactivity_hardwaredetected">Your device does not support fingerprint authentication.</string>
+    <string name="fpactivity_permission">Fingerprint authentication permission is not enabled.</string>
+    <string name="fpactivity_enrolledfingerprints">No fingerprint configured. Please register at least one fingerprint.</string>
+    <string name="fpactivity_keyguardsecure">Lock screen security is not enabled.</string>
+    <string name="fphandler">Lock screen security is not enabled.</string>
+
+
 </resources>

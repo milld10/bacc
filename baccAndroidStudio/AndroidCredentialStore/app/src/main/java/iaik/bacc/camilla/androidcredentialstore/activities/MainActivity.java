@@ -35,13 +35,11 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    public void showAccountsActivity(View view)
-    {
-
-        Intent intent = new Intent(this, ShowAccountsActivity.class);
-        startActivity(intent);
-
-    }
+//    public void showAccountsActivity(View view)
+//    {
+//        Intent intent = new Intent(this, ShowAccountsActivity.class);
+//        startActivity(intent);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -74,7 +72,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void authenticationActivity(View view) {
-        Intent intent = new Intent(this, AuthenticationActivity.class);
+        Intent intent = new Intent(this, FingerprintActivity.class);
         startActivity(intent);
     }
 
