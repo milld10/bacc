@@ -1,17 +1,15 @@
 package iaik.bacc.camilla.androidcredentialstore.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import iaik.bacc.camilla.androidcredentialstore.R;
+import iaik.bacc.camilla.androidcredentialstore.tools.FullScreenDialog;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -19,8 +17,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        no need for toolbar, because of own settings and about menu
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
     }
 
     /*public void showAddLoginActivity(View view)
@@ -63,15 +62,20 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    //TODO: more menu buttons in main activity, add functionality
+    //TODO: add functionality
 
     public void showSettingsActivity(View view) {
     }
 
     public void showAboutActivity(View view) {
+//        Intent intent = new Intent(this, AboutDialog.class);
+//        startActivity(intent);
+        FullScreenDialog dialog = new FullScreenDialog();
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        dialog.show(fragmentTransaction, FullScreenDialog.TAG);
     }
 
-    public void authenticationActivity(View view) {
+    public void fingerprintActivity(View view) {
         Intent intent = new Intent(this, FingerprintActivity.class);
         startActivity(intent);
     }

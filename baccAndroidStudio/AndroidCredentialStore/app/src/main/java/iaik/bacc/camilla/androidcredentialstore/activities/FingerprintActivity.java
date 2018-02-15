@@ -1,7 +1,9 @@
 package iaik.bacc.camilla.androidcredentialstore.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.KeyguardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
@@ -37,7 +39,7 @@ import iaik.bacc.camilla.androidcredentialstore.R;
 import iaik.bacc.camilla.androidcredentialstore.tools.FingerprintHandler;
 
 
-public class FingerprintActivity extends AppCompatActivity
+public class FingerprintActivity extends Activity
 {
     private static final String TAG = "FingerprintActivity";
 
@@ -52,6 +54,7 @@ public class FingerprintActivity extends AppCompatActivity
     private FingerprintManager fingerprintManager;
     private KeyguardManager keyguardManager;
 
+    private Context context;
 
     TextInputLayout masterPasswordLayout;
     TextInputEditText masterPassword;
@@ -65,6 +68,7 @@ public class FingerprintActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fingerprint);
 
+
         masterPasswordLayout = (TextInputLayout) findViewById(R.id.masterPasswordLayout);
         masterPassword = (TextInputEditText) findViewById(R.id.masterPassword);
 
@@ -77,16 +81,14 @@ public class FingerprintActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 //TODO: grant access to show accounts activity
-                //for now, the accounts are shown until the password works
-                Intent intent = new Intent(FingerprintActivity.this, ShowAccountsActivity.class);
-                startActivity(intent);
+                //TODO: ONLY need button for master password, if fingerprint, it does it automatic
             }
         });
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            Log.d(TAG, "now in big first if");
+//            Log.d(TAG, "now in big first if");
             //verifying the secure lock screen with keyguardManager and fingerprintManager
             keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
             fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
@@ -96,28 +98,27 @@ public class FingerprintActivity extends AppCompatActivity
 
 
             //If device has a fingerprint sensor
-            if (!fingerprintManager.isHardwareDetected()) {
-                Log.d(TAG, "1. little if");
+            if (!fingerprintManager.isHardwareDetected())
+            {
                 textView.setText(R.string.fpactivity_hardwaredetected);
             }
 
             //If user has granted your app the USE_FINGERPRINT permission
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT)
-                    != PackageManager.PERMISSION_GRANTED) {
-                Log.d(TAG, "2. little if");
+                    != PackageManager.PERMISSION_GRANTED)
+            {
                 textView.setText(R.string.fpactivity_permission);
             }
 
             //Check if user has registered at least one fingerprint
-            if (!fingerprintManager.hasEnrolledFingerprints()) {
-                Log.d(TAG, "3. little if");
+            if (!fingerprintManager.hasEnrolledFingerprints())
+            {
                 textView.setText(R.string.fpactivity_enrolledfingerprints);
             }
 
             //Check that the lockscreen is secured
             if (!keyguardManager.isKeyguardSecure())
             {
-                Log.d(TAG, "4. little if");
                 textView.setText(R.string.fpactivity_keyguardsecure);
             }
             //if its secured, then generate key, init cipher and startAuth

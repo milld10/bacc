@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.AboutDialog"
+    android:layout_alignParentTop="true">
+
+    <TextView
+        android:id="@+id/titel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="@string/about_title" />
+
+    <View
+        android:id="@+id/bold_line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/titel"
+        android:background="@color/blue2"/>
+
+    <TextView
+        android:id="@+id/institute"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/bold_line"
+        android:textSize="18sp"
+        android:text="@string/about_institute" />
+
+
+    <!-- Project -->
+    <TextView
+        android:id="@+id/project"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/institute"
+        android:textSize="26sp"
+        android:text="@string/about_project" />
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_below="@id/project"
+        android:layout_margin="10dp"
+        android:layout_height="1dp"
+        android:background="@color/blue2"/>
+
+    <!-- Author -->
+    <TextView
+        android:id="@+id/author"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:layout_below="@+id/line1"
+        android:text="Author" />
+
+    <TextView
+        android:id="@+id/author_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:layout_below="@+id/author"
+        android:text="@string/about_author" />
+
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="10dp"
+        android:layout_below="@id/author_name"
+        android:background="@color/blue2"/>
+
+
+    <!-- Advisor -->
+
+
+    <TextView
+        android:id="@+id/advisor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:layout_below="@id/line2"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:text="Advisor" />
+
+
+    <TextView
+        android:id="@+id/advisor_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:layout_below="@id/advisor"
+        android:textSize="20sp"
+        android:text="@string/about_advisor" />
+
+    <View
+        android:id="@+id/line3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="10dp"
+        android:layout_below="@id/advisor_name"
+        android:background="@color/blue2"/>
+
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:layout_below="@+id/line3"
+        android:textSize="18sp" />
+
+</RelativeLayout>
+

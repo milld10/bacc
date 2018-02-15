@@ -9,11 +9,12 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textViewAuthen"
-        android:layout_marginTop="38dp"
+        android:layout_marginTop="45dp"
         android:textSize="24sp"
         android:textAlignment="center"
         android:text="@string/masterPassword"
@@ -29,7 +30,7 @@
         app:passwordToggleEnabled="true"
         android:layout_below="@+id/textViewAuthen"
         android:layout_alignStart="@id/textViewAuthen"
-        android:layout_marginTop="25dp">
+        android:layout_marginTop="30dp">
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,7 +58,7 @@
         android:text="@string/button_access"
         android:layout_below="@+id/masterPasswordLayout"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:clickable="true" />
 
 
@@ -72,7 +73,7 @@
         android:text="@string/fingerprint"
         android:layout_below="@+id/button_access"
         android:layout_alignStart="@+id/masterPasswordLayout"
-        android:layout_marginTop="40dp" />
+        android:layout_marginTop="70dp" />
 
 
     <ImageView

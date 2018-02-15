@@ -1,7 +1,9 @@
 package iaik.bacc.camilla.androidcredentialstore.tools;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.Manifest;
@@ -9,15 +11,22 @@ import android.os.Build;
 import android.os.CancellationSignal;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
+import android.util.Log;
 import android.widget.Toast;
+
+import iaik.bacc.camilla.androidcredentialstore.activities.FingerprintActivity;
+import iaik.bacc.camilla.androidcredentialstore.activities.ShowAccountsActivity;
 
 /**
  * Created by Camilla on 03.11.2017.
  */
 
+
 @TargetApi(Build.VERSION_CODES.M)
 public class FingerprintHandler extends FingerprintManager.AuthenticationCallback
 {
+    private static final String TAG = "FingerprintHandler";
+
     private CancellationSignal cancellationSignal;
     private Context appContext;
 
@@ -45,7 +54,7 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     //is called when a fatal error has occurred, provides error code and error message
     public void onAuthenticationError(int errMsgId, CharSequence errString)
     {
-        Toast.makeText(appContext, "Authentication error\n" + errString, Toast.LENGTH_LONG).show();
+//        Toast.makeText(appContext, "Authentication error\n" + errString, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -66,6 +75,11 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     //for successful match of registered prints on device
     public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)
     {
-        Toast.makeText(appContext, "Success!", Toast.LENGTH_LONG).show();
+//      Toast.makeText(appContext, "Success!", Toast.LENGTH_LONG).show();
+//      Log.d(TAG, "This is my result of success: " + result.toString());
+
+        ((Activity) appContext).finish();
+        Intent intent = new Intent(appContext, ShowAccountsActivity.class);
+        appContext.startActivity(intent);
     }
 }

@@ -84,5 +84,15 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="iaik.bacc.camilla.androidcredentialstore.activities.AboutDialog"
+            android:label="@string/label_about">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
     </application>
 </manifest>
