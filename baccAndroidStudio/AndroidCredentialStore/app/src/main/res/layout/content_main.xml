@@ -18,7 +18,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:tint="@color/blue3"
+        android:tint="@color/blue2"
         android:id="@+id/LoginsSymbol"
         android:src="@drawable/ic_account_circle_black_48px"
         android:onClick="fingerprintActivity"
@@ -46,7 +46,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:tint="@color/blue3"
+        android:tint="@color/blue2"
         android:src="@drawable/ic_bluetooth_black_48px"
         android:id="@+id/BluetoothSymbol"
         android:onClick="showBluetoothActivity"
@@ -74,7 +74,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:tint="@color/blue3"
+        android:tint="@color/blue2"
         android:src="@drawable/ic_settings_black_48px"
         android:id="@+id/SettingsSymbol"
         android:onClick="showSettingsActivity"
@@ -102,7 +102,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:tint="@color/blue3"
+        android:tint="@color/blue2"
         android:src="@drawable/ic_info_outline_black_48px"
         android:id="@+id/AboutSymbol"
         android:onClick="showAboutActivity"

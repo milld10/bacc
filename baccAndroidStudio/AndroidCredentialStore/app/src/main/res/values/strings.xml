@@ -14,10 +14,15 @@
 
     <string name="about">About</string>
     <string name="about_title">Bachelor\'s Project</string>
+    <string name="author">Author</string>
     <string name="about_author">Camilla Reis</string>
+    <string name="advisor">Advisor</string>
     <string name="about_advisor">Dipl.-Ing. Dominik Ziegler</string>
     <string name="about_institute">Institute of Applied Information Processing and Communications</string>
     <string name="about_project">Android Credential Manager</string>
+    <string name="about_description">Lorem ipsum dolor ... sdfjkljdsfj ljflsjdlfj lsdjflsjldfjl
+        lsjdflslkdflks sldfjlsjdf lsjdflsjldfjls dfsjdlfjsldf lsjdfl sdjflsje oifmslejlf sjfiels
+        ifnse lsjfsjefiseljf sfijslejfisef slfj seijfslejfisje)</string>
 
 
 

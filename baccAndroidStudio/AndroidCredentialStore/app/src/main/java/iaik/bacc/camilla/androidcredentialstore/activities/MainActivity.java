@@ -68,11 +68,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void showAboutActivity(View view) {
-//        Intent intent = new Intent(this, AboutDialog.class);
-//        startActivity(intent);
-        FullScreenDialog dialog = new FullScreenDialog();
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        dialog.show(fragmentTransaction, FullScreenDialog.TAG);
+        Intent intent = new Intent(this, AboutDialog.class);
+        startActivity(intent);
+
+//        now the about is a normal activity, but can also be a dialog:
+//        FullScreenDialog dialog = new FullScreenDialog();
+//        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+//        dialog.show(fragmentTransaction, FullScreenDialog.TAG);
     }
 
     public void fingerprintActivity(View view) {

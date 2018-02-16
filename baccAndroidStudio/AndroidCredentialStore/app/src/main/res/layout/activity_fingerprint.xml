@@ -30,13 +30,16 @@
         app:passwordToggleEnabled="true"
         android:layout_below="@+id/textViewAuthen"
         android:layout_alignStart="@id/textViewAuthen"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="30dp"
+        style="@style/Base.Theme.AppCompat.Light">
+
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:maxLines="1"
-            android:id="@+id/masterPassword" />
+            android:shadowColor="@color/blue2"
+            android:id="@+id/masterPassword"/>
     </android.support.design.widget.TextInputLayout>
 
     <!--

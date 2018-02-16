@@ -21,8 +21,9 @@
         android:id="@+id/bold_line"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_margin="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_below="@id/titel"
         android:background="@color/blue2"/>
 
@@ -49,35 +50,57 @@
         android:textSize="26sp"
         android:text="@string/about_project" />
 
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/project"
+        android:textSize="14sp"
+        android:text="@string/about_description" />
+
     <View
         android:id="@+id/line1"
         android:layout_width="match_parent"
-        android:layout_below="@id/project"
+        android:layout_below="@id/description"
         android:layout_margin="10dp"
         android:layout_height="1dp"
         android:background="@color/blue2"/>
 
     <!-- Author -->
-    <TextView
-        android:id="@+id/author"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textSize="24sp"
         android:layout_below="@+id/line1"
-        android:text="Author" />
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:id="@+id/linlayout_author">
 
-    <TextView
-        android:id="@+id/author_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:layout_below="@+id/author"
-        android:text="@string/about_author" />
+        <TextView
+            android:id="@+id/author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="30dp"
+            android:gravity="start"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_weight="0.7"
+            android:text="@string/author"/>
+
+        <TextView
+            android:id="@+id/author_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="start"
+            android:textSize="18sp"
+            android:layout_weight="0.3"
+            android:text="@string/about_author"/>
+    </LinearLayout>
+
 
 
     <View
@@ -85,41 +108,50 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_margin="10dp"
-        android:layout_below="@id/author_name"
+        android:layout_below="@id/linlayout_author"
         android:background="@color/blue2"/>
 
 
     <!-- Advisor -->
-
-
-    <TextView
-        android:id="@+id/advisor"
+    <LinearLayout
+        android:id="@+id/linlayout_advisor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:layout_below="@id/line2"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        android:text="Advisor" />
+        android:layout_below="@+id/line2"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/advisor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="0.7"
+            android:gravity="start"
+            android:text="@string/advisor"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/advisor_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="0.3"
+            android:gravity="start"
+            android:text="@string/about_advisor"
+            android:textSize="18sp" />
+    </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/advisor_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:layout_below="@id/advisor"
-        android:textSize="20sp"
-        android:text="@string/about_advisor" />
 
     <View
         android:id="@+id/line3"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_margin="10dp"
-        android:layout_below="@id/advisor_name"
+        android:layout_below="@id/linlayout_advisor"
         android:background="@color/blue2"/>
 
 

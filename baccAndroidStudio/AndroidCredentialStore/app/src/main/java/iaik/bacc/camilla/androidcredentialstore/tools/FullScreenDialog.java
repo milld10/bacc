@@ -32,8 +32,8 @@ public class FullScreenDialog extends DialogFragment
         Dialog dialog = getDialog();
         if (dialog != null)
         {
-            int width = ViewGroup.LayoutParams.MATCH_PARENT;
-            int height = ViewGroup.LayoutParams.MATCH_PARENT;
+            int width = getResources().getDisplayMetrics().widthPixels;
+            int height = getResources().getDisplayMetrics().heightPixels;
             dialog.getWindow().setLayout(width, height);
         }
     }

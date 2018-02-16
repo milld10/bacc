@@ -4,20 +4,27 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/blue2</item>
         <item name="colorPrimaryDark">@color/blue1</item>
-        <item name="colorAccent">@color/blue3</item>
-        <item name="actionBarStyle">@color/blue2</item>
+
+
+
+        <item name="actionBarStyle">@color/blue3</item>
+
     </style>
+
+
+
+
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="Base.ThemeOverlay.AppCompat.Light" />
 
     <style name="AppTheme.PopupOverlay" parent="Base.ThemeOverlay.AppCompat.Light" />
 
-    <style name="FullScreenDialogStyle" parent="android:Theme">
+    <style name="FullScreenDialogStyle" parent="AlertDialog.AppCompat.Light">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowIsFloating">false</item>

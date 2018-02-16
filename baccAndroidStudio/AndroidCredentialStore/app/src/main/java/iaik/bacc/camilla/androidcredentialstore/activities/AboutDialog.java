@@ -1,5 +1,6 @@
 package iaik.bacc.camilla.androidcredentialstore.activities;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +16,7 @@ import iaik.bacc.camilla.androidcredentialstore.R;
  * Created by Camilla on 15.02.2018.
  */
 
-public class AboutDialog extends AppCompatActivity
+public class AboutDialog extends Activity
 {
     private static final String TAG = "AboutDialog";
 

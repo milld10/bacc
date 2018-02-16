@@ -16,16 +16,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/AccountLayout"
-        android:hint="@string/hint_account"
+
         android:layout_alignParentStart="true"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
-        android:ems="10">
+        android:hint="@string/hint_account"
+        android:ems="10" >
+
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:id="@+id/account" />
+            android:id="@+id/account"/>
             <requestFocus/>
     </android.support.design.widget.TextInputLayout>
 
