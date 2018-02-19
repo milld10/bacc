@@ -106,20 +106,30 @@ public class AddAccountActivity extends AppCompatActivity
                         {
                             //object account gets initialized to store in DB
                             //TODO encrypt the data after it is checked but before it is stored into the DB
-                            /*account.setAccount_name(_account);
-                            account.setUsername(_username);
-                            account.setPassword(_pwArray);*/
+                            account.setAccount_name(_account);
+//                            account.setUsername(_username);
+//                            account.setPassword(_pwArray);
                             try
                             {
                                 EncryptionHelper encryptionHelper = new EncryptionHelper(CredentialApplication.getInstance());
-                                byte[] hlpAccount = Converter.charToByte(accountname);
-                                account.setAccount_name_encrypt(encryptionHelper.encryptText(hlpAccount));
+//                                Log.d(TAG, "just about to convert the account to an byte array: " + accountname);
+//                                byte[] hlpAccount = Converter.charToByte(accountname);
+//                                Log.d(TAG, "converted account to byte array, success! " + hlpAccount);
+//                                account.setAccount_name_encrypted(encryptionHelper.encryptText(hlpAccount));
+//                                Log.d(TAG, "account is now set in the object");
 
+                                //Dont encrypt account name, for list in show accounts
+//                                account.setAccount_name(_account);
+
+                                Log.d(TAG, "about to convert username: " + username);
                                 byte[] hlpUsername = Converter.charToByte(username);
-                                account.setUsername_encrypt(encryptionHelper.encryptText(hlpUsername));
+                                Log.d(TAG, "converted username to byte array, success! " + hlpUsername);
+                                account.setUsername_encrypted(encryptionHelper.encryptText(hlpUsername));
+                                Log.d(TAG, "username is now set in the object");
 
                                 //_pwArray is already a byte[]; no need for convertion
                                 account.setPassword(encryptionHelper.encryptText(_pwArray));
+                                Log.d(TAG, "pw is now set in the object, the object is now complete!");
 
                             } catch (CertificateException | NoSuchAlgorithmException |
                                     KeyStoreException | IOException | SignatureException |
@@ -162,7 +172,7 @@ public class AddAccountActivity extends AppCompatActivity
                     DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
                     dbHelper.insertNewAccount(account);
 
-                    Log.w(TAG, "new account added to DB");
+                    Log.d(TAG, "new (encrypted) account added to DB");
 
                     setResult(RESULT_OK, intent);
                     finish();

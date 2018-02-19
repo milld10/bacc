@@ -2,14 +2,12 @@ package iaik.bacc.camilla.androidcredentialstore.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import iaik.bacc.camilla.androidcredentialstore.R;
-import iaik.bacc.camilla.androidcredentialstore.tools.FullScreenDialog;
 
 public class MainActivity extends AppCompatActivity
 {

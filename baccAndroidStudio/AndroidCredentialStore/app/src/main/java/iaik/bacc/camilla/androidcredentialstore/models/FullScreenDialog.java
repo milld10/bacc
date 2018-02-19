@@ -1,4 +1,4 @@
-package iaik.bacc.camilla.androidcredentialstore.tools;
+package iaik.bacc.camilla.androidcredentialstore.models;
 
 import android.app.Dialog;
 import android.app.DialogFragment;

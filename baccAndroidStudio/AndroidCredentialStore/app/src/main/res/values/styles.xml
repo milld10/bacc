@@ -4,16 +4,8 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/blue2</item>
         <item name="colorPrimaryDark">@color/blue1</item>
-
-
-
         <item name="actionBarStyle">@color/blue3</item>
-
     </style>
-
-
-
-
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

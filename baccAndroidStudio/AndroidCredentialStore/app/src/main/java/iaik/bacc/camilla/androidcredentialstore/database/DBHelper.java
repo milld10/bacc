@@ -21,12 +21,9 @@ public class DBHelper
         this.daoSession = application.getDaoSession();
     }
 
+    /** Add new Login (Application and Credentials for it) */
     public long insertNewAccount(Account account)
     {
-        /**
-         * Add new Login (Application and Credentials for it)
-         */
-
         AccountDao accountDao = this.daoSession.getAccountDao();
         long id_app = accountDao.insert(account);
 
@@ -42,13 +39,9 @@ public class DBHelper
         return account;
     }
 
-
+    /** Deletes just one Credential out the List, which is held by the Account Obj. */
     public void deleteAccount(Account account)
     {
-        /**
-         * Deletes just one Credential out the List, which is held by the Account Obj.
-         */
-
         AccountDao accountDao = this.daoSession.getAccountDao();
         accountDao.delete(account);
     }
@@ -60,12 +53,9 @@ public class DBHelper
         accountDao.delete(account);
     }
 
+    /** Returns all listed Apps (for the Adapter) */
     public List<Account> getAllAccounts()
     {
-        /**
-         * Returns all listed Apps (for the Adapter)
-         */
-
         AccountDao accountDao = this.daoSession.getAccountDao();
 
         List<Account> listOfAccounts = accountDao.queryBuilder().
@@ -75,11 +65,10 @@ public class DBHelper
     }
 
 
-
+    /**TODO: Update account upon changes (and saves it back again to DB?) */
     public void updateAccount(Account account)
     {
-        /**
-         * Update account upon changes (and saves it back again to DB?)
-         */
+
     }
+
 }

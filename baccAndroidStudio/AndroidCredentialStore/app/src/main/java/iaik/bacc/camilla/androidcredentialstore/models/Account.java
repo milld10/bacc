@@ -56,22 +56,20 @@ public class Account implements java.io.Serializable
         return this.account_id;
     }
 
-
     public void setAccount_id(Long account_id) {
         this.account_id = account_id;
     }
-
 
     public String getAccount_name() {
         return this.account_name;
     }
 
-
     public void setAccount_name(String account_name) {
         this.account_name = account_name;
     }
 
-    public void setAccount_name_encrypt(byte[] account_name_encrypt)
+    //New setter for encrypted data, which takes a byte[]
+    public void setAccount_name_encrypted(byte[] account_name_encrypt)
             throws UnsupportedEncodingException
     {
         String help = new String(account_name_encrypt, "UTF-8");
@@ -86,24 +84,19 @@ public class Account implements java.io.Serializable
         this.username = username;
     }
 
-    public void setUsername_encrypt(byte[] username_encrypt)
+    //New setter for encrypted data, which takes a byte[]
+    public void setUsername_encrypted(byte[] username_encrypt)
             throws UnsupportedEncodingException
     {
         String help = new String(username_encrypt, "UTF-8");
         this.account_name = help;
     }
 
-
     public byte[] getPassword() {
         return this.password;
     }
 
-
     public void setPassword(byte[] password) {
         this.password = password;
     }
-
-
-
-
 }

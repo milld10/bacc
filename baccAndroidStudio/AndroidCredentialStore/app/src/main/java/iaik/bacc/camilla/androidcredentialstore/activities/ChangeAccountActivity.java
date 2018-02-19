@@ -20,8 +20,17 @@ import iaik.bacc.camilla.androidcredentialstore.models.DaoMaster;
 import iaik.bacc.camilla.androidcredentialstore.models.DaoSession;
 import iaik.bacc.camilla.androidcredentialstore.tools.CheckingTools;
 import iaik.bacc.camilla.androidcredentialstore.tools.Converter;
+import iaik.bacc.camilla.androidcredentialstore.tools.EncryptionHelper;
 
 import org.greenrobot.greendao.database.Database;
+
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
 
 
 /**
@@ -75,19 +84,33 @@ public class ChangeAccountActivity extends AppCompatActivity
         deleteButton = (Button) findViewById(R.id.delBtn);
 
         final Intent intent = getIntent();
-        final Account accountGotten = (Account) intent.getSerializableExtra("clickedAccount");
+        final Account clickedAccount = (Account) intent.getSerializableExtra("clickedAccount");
 
-        id = accountGotten.getAccount_id();
+        id = clickedAccount.getAccount_id();
 
-        Log.w("CHANGE_ACCOUNT", "got the extras: " + accountGotten.toString());
-        Log.w("CHANGE_ACCOUNT", "id of account: " + accountGotten.getAccount_id());
+        Log.w("CHANGE_ACCOUNT", "got the extras: " + clickedAccount.toString());
+        Log.w("CHANGE_ACCOUNT", "id of account: " + clickedAccount.getAccount_id());
 
 
-        accountname.setText(accountGotten.getAccount_name());
-        username.setText(accountGotten.getUsername());
+        /** TODO decrypt text before displaying it back onto the screen */
+        accountname.setText(clickedAccount.getAccount_name());
+        username.setText(clickedAccount.getUsername());
 
-        int length = accountGotten.getPassword().length;
-        password.setText(Converter.byteToChar(accountGotten), 0, length);
+        int length = clickedAccount.getPassword().length;
+        password.setText(Converter.byteToChar(clickedAccount), 0, length);
+
+//        try {
+//            EncryptionHelper encryptionHelper = new EncryptionHelper(CredentialApplication.getInstance());
+//            encryptionHelper.decryptDataWithoutIv(clickedAccount.getUsername());
+//
+//        } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException |
+//                UnrecoverableEntryException | NoSuchProviderException |
+//                InvalidAlgorithmParameterException | IOException e) {
+//            e.printStackTrace();
+//        }
+
+
+//        char[] _accountName = Converter.byteToChar();
 
 
         saveButton.setOnClickListener(new View.OnClickListener()
@@ -96,7 +119,7 @@ public class ChangeAccountActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 //delete the clicked account first
-                dbHelper.deleteAccount(accountGotten);
+                dbHelper.deleteAccount(clickedAccount);
 
 
                 String _account = accountname.getText().toString();
@@ -179,6 +202,8 @@ public class ChangeAccountActivity extends AppCompatActivity
 
         //setResult(ShowAccountsActivity.RESULT_OK, intentRetour);
     }
+
+
 
 
 
