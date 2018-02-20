@@ -1,6 +1,7 @@
 package iaik.bacc.camilla.androidcredentialstore.activities;
 
 import android.content.Intent;
+import android.icu.text.LocaleDisplayNames;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -42,11 +43,11 @@ public class AddAccountActivity extends AppCompatActivity
     private static final String TAG = "AddAccountActivity";
 
     TextInputLayout accountLayout;
-    TextInputEditText accountname;
+    TextInputEditText edittext_accountname;
     TextInputLayout usernameLayout;
-    TextInputEditText username;
+    TextInputEditText edittext_username;
     TextInputLayout passwordLayout;
-    TextInputEditText password;
+    TextInputEditText edittext_password;
     Button saveButton;
 
     boolean flagEverythingOk = false;
@@ -64,24 +65,21 @@ public class AddAccountActivity extends AppCompatActivity
         Database db = helper.getWritableDb();
         daoSession = new DaoMaster(db).newSession();
 
-        //for encryption of data before storing it into the DB
-        final EncryptionHelper encryptionHelper;
-
         //TODO Research: what does inflate do??
         /*View login_data = View.inflate(this, R.layout.activity_add_account, null);
 
         website = (EditText) login_data.findViewById(R.id.website);
-        username = (EditText) login_data.findViewById(R.id.username);
-        password = (EditText) login_data.findViewById(R.id.password);*/
+        edittext_username = (EditText) login_data.findViewById(R.id.edittext_username);
+        edittext_password = (EditText) login_data.findViewById(R.id.edittext_password);*/
 
         accountLayout = (TextInputLayout) findViewById(R.id.AccountLayout);
-        accountname = (TextInputEditText) findViewById(R.id.account);
+        edittext_accountname = (TextInputEditText) findViewById(R.id.account);
 
         usernameLayout = (TextInputLayout) findViewById(R.id.UsernameLayout);
-        username = (TextInputEditText) findViewById(R.id.username);
+        edittext_username = (TextInputEditText) findViewById(R.id.username);
 
         passwordLayout = (TextInputLayout) findViewById(R.id.PasswordLayout);
-        password = (TextInputEditText) findViewById(R.id.password);
+        edittext_password = (TextInputEditText) findViewById(R.id.password);
 
         saveButton = (Button) findViewById(R.id.saveBtn);
 
@@ -91,45 +89,59 @@ public class AddAccountActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                String _account = accountname.getText().toString();
-                String _username = username.getText().toString();
-                byte[] _pwArray = Converter.charToByte(password);
+//                String accountForDb = edittext_accountname.getText().toString();
+//                String usernameForDb = edittext_username.getText().toString();
+//                byte[] passwordForDb = Converter.charToByte(edittext_password);
 
                 //this object will be stored into the DB
                 final Account account = new Account();
 
-                if(CheckingTools.websiteOk(_account))
+                if(CheckingTools.websiteOk(edittext_accountname.getText().toString()))
                 {
-                    if(CheckingTools.usernameOk(_username))
+                    if(CheckingTools.usernameOk(edittext_username.getText().toString()))
                     {
-                        if(CheckingTools.passwordOk(_pwArray))
+                        if(CheckingTools.passwordOk(Converter.charToByte(edittext_password)))
                         {
-                            //object account gets initialized to store in DB
-                            //TODO encrypt the data after it is checked but before it is stored into the DB
-                            account.setAccount_name(_account);
-//                            account.setUsername(_username);
-//                            account.setPassword(_pwArray);
+//                            String accountForDb = edittext_accountname;
+                            byte[] usernameForDb = Converter.charToByte(edittext_username);
+                            byte[] passwordForDb = Converter.charToByte(edittext_password);
+
                             try
                             {
+                                //TODO encrypt the data after it is checked but before it is stored into the DB
                                 EncryptionHelper encryptionHelper = new EncryptionHelper(CredentialApplication.getInstance());
-//                                Log.d(TAG, "just about to convert the account to an byte array: " + accountname);
-//                                byte[] hlpAccount = Converter.charToByte(accountname);
-//                                Log.d(TAG, "converted account to byte array, success! " + hlpAccount);
-//                                account.setAccount_name_encrypted(encryptionHelper.encryptText(hlpAccount));
-//                                Log.d(TAG, "account is now set in the object");
 
-                                //Dont encrypt account name, for list in show accounts
-//                                account.setAccount_name(_account);
+                                //------------Account
+                                //TODO maybe don't even encrypt edittext_accountname, for easier display in arraylist adapter??
 
-                                Log.d(TAG, "about to convert username: " + username);
-                                byte[] hlpUsername = Converter.charToByte(username);
-                                Log.d(TAG, "converted username to byte array, success! " + hlpUsername);
-                                account.setUsername_encrypted(encryptionHelper.encryptText(hlpUsername));
-                                Log.d(TAG, "username is now set in the object");
+                                Log.d(TAG, "plaintext account_name: " + edittext_accountname.getText().toString());
+//                                Log.d(TAG, "account_name as a byte[]: " + accountForDb);
+//                                Log.d(TAG, "account_name as a char[]: " + Converter.byteToChar(accountForDb));
+//
+//                                byte[] encrypted = encryptionHelper.encryptText(accountForDb);
+//                                Log.d(TAG, "account_name encrypted as a byte[]: " + encrypted);
+//
+//                                byte[] decrypted = encryptionHelper.decryptDataWithoutIv(accountForDb);
+//                                Log.d(TAG, "account_name decrypted again a byte[]: " + decrypted);
 
-                                //_pwArray is already a byte[]; no need for convertion
-                                account.setPassword(encryptionHelper.encryptText(_pwArray));
-                                Log.d(TAG, "pw is now set in the object, the object is now complete!");
+
+
+                                account.setAccount_name(edittext_accountname.getText().toString());
+                                Log.d(TAG, "account is now set (not encrypted in plaintext) in the object");
+
+
+                                //------------Username
+                                account.setUsername(encryptionHelper.encrypt(usernameForDb));
+                                Log.d(TAG, "edittext_username is now set in the object");
+
+
+                                //------------Password
+                                account.setPassword(encryptionHelper.encrypt(passwordForDb));
+                                Log.d(TAG, "pw is now set in the object");
+
+                                Log.d(TAG, "the object is now complete!");
+
+                                flagEverythingOk = true;
 
                             } catch (CertificateException | NoSuchAlgorithmException |
                                     KeyStoreException | IOException | SignatureException |
@@ -141,27 +153,21 @@ public class AddAccountActivity extends AppCompatActivity
                                 Log.e(TAG, e.getMessage());
                                 e.printStackTrace();
                             }
-
-                            flagEverythingOk = true;
                         }
-                        else
-                        {
+                        else {
                             Toast.makeText(getApplicationContext(), "Password is not valid!",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
-                    else
-                    {
+                    else {
                         Toast.makeText(getApplicationContext(), "Username is not valid!",
                                 Toast.LENGTH_SHORT).show();
                     }
                 }
-                else
-                {
+                else {
                     Toast.makeText(getApplicationContext(), "Website is not valid!",
                             Toast.LENGTH_SHORT).show();
                 }
-
 
 
                 if(flagEverythingOk)

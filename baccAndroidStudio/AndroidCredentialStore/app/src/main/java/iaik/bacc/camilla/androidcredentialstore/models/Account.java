@@ -8,6 +8,8 @@ import org.greenrobot.greendao.annotation.Generated;
 
 import java.io.UnsupportedEncodingException;
 
+import iaik.bacc.camilla.androidcredentialstore.tools.Converter;
+
 /**
  * Created by Camilla on 02.08.2017.
  */
@@ -24,15 +26,14 @@ public class Account implements java.io.Serializable
     private String account_name;
 
     @Property(nameInDb = "USERNAME")
-    private String username;
+    private byte[] username;
 
     @Property(nameInDb = "PASSWORD")
     private byte[] password;
 
 
-    @Generated(hash = 985418116)
-    public Account(Long account_id, String account_name, String username,
-            byte[] password) {
+    @Generated(hash = 1072503481)
+    public Account(Long account_id, String account_name, byte[] username, byte[] password) {
         this.account_id = account_id;
         this.account_name = account_name;
         this.username = username;
@@ -45,6 +46,7 @@ public class Account implements java.io.Serializable
     }
 
 
+    //takes a byte[] and converts it into String, to display in array list adapter
     @Override
     public String toString()
     {
@@ -60,36 +62,16 @@ public class Account implements java.io.Serializable
         this.account_id = account_id;
     }
 
-    public String getAccount_name() {
-        return this.account_name;
-    }
+    public String getAccount_name() { return this.account_name; }
 
-    public void setAccount_name(String account_name) {
-        this.account_name = account_name;
-    }
+    public void setAccount_name(String account_name) { this.account_name = account_name; }
 
-    //New setter for encrypted data, which takes a byte[]
-    public void setAccount_name_encrypted(byte[] account_name_encrypt)
-            throws UnsupportedEncodingException
-    {
-        String help = new String(account_name_encrypt, "UTF-8");
-        this.account_name = help;
-    }
-
-    public String getUsername() {
+    public byte[] getUsername() {
         return this.username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(byte[] username) {
         this.username = username;
-    }
-
-    //New setter for encrypted data, which takes a byte[]
-    public void setUsername_encrypted(byte[] username_encrypt)
-            throws UnsupportedEncodingException
-    {
-        String help = new String(username_encrypt, "UTF-8");
-        this.account_name = help;
     }
 
     public byte[] getPassword() {

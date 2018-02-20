@@ -8,6 +8,7 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -15,6 +16,7 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
 import java.security.SignatureException;
 import java.security.UnrecoverableEntryException;
 import java.security.UnrecoverableKeyException;
@@ -40,13 +42,20 @@ public class EncryptionHelper
     private final static String TAG = "EncryptionHelper";
     private final static String ALIAS = "aliasCredentialManager";
 
+    private final static int AUTH_TAG_LEN = 128;
+
     private static final String TRANSFORMATION = "AES/GCM/NoPadding";
     private static final String ANDROID_KEY_STORE = "AndroidKeyStore";
 
     private CredentialApplication application;
 
+    private byte[] cipherText;
+//    private byte[] cipherMessage; //don't make global?
+
     private byte[] encryption;
-    private byte[] iv;
+
+    //iv size 12 byte, not 16!
+    private byte[] iv = new byte[12];
 
     KeyStore keyStore;
 
@@ -84,7 +93,7 @@ public class EncryptionHelper
         if(keyStore.containsAlias(alias))
         {
             Log.d(TAG, "secret key has already been generated: " + keyStore.getEntry(alias, null));
-            //not needed to get a key, key is "getted" when encryption a text
+            //not needed to get a key right now, key is used when encrypting a text
 //            getKeyForEncrypt(alias);
         }
         else
@@ -132,82 +141,138 @@ public class EncryptionHelper
     //----------------------------------------------------------------------------------------------
     //Encryption
 
-
+    //TODO: maybe create a encrypt method for strings instead of byte[]; for account_name?
     /**
      * Method is used in AddAccountActivity to encrypt the handed over byte array of credentials
      * no alias is needed as a parameter.
      */
-    public byte[] encryptText(final byte[] textToEncrypt) throws
+    public byte[] encrypt(final byte[] plainText) throws
             UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException,
             NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, IOException,
             InvalidAlgorithmParameterException, SignatureException, BadPaddingException,
             IllegalBlockSizeException, CertificateException
     {
+
+        Log.d(TAG, "encrypt method has been called!");
+
+        SecureRandom secureRandom = new SecureRandom();
+        secureRandom.nextBytes(iv);
+
         final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-        cipher.init(Cipher.ENCRYPT_MODE, getKeyForEncrypt(ALIAS));
+//        GCMParameterSpec parameterSpec = new GCMParameterSpec(AUTH_TAG_LEN, iv);
+
+        cipher.init(Cipher.ENCRYPT_MODE, getKey(ALIAS));
 
         iv = cipher.getIV();
+        Log.d(TAG, "iv after cipher.getIV(): " + iv);
 
-        //doFinal return the byte array which is the encrypted text
-        //here the type of textToEncrypt was "String"
+        cipherText = cipher.doFinal(plainText);
+
+
+        //doFinal return the byte array which is the encrypted text, previously the type of textToEncrypt was "String"
         //return(encryption = cipher.doFinal(textToEncrypt.getBytes("UTF-8")));
-        return(encryption = cipher.doFinal(textToEncrypt));
-    }
 
 
-    //TODO: check if key is the same for decrypt func, then use only one function!
-    private SecretKey getKeyForEncrypt(String alias) throws UnrecoverableEntryException,
-            NoSuchAlgorithmException, KeyStoreException
-    {
-        return ((KeyStore.SecretKeyEntry) keyStore.getEntry(alias, null)).getSecretKey();
+        //Concat all information into a single message
+        ByteBuffer byteBuffer = ByteBuffer.allocate(4 + iv.length + cipherText.length);
+
+        byteBuffer.putInt(iv.length);
+        byteBuffer.put(iv);
+        byteBuffer.put(cipherText);
+        byte[] cipherMessage = byteBuffer.array();
+
+        return cipherMessage;
     }
+
 
     //getter for encryption and IV
     //are key needed? idk for what?
-    byte[] getEncryption()
-    {
-        return encryption;
-    }
-
-    byte[] getIV()
-    {
-        return iv;
-    }
+//    byte[] getEncryption()
+//    {
+//        return encryption;
+//    }
+//
+//    byte[] getIV()
+//    {
+//        return iv;
+//    }
 
     //----------------------------------------------------------------------------------------------
     //Decryption
 
     //no alias is handed over as parameter,
     //TODO change that only param is ecryptedData and the IV needs to be extracted
-    public String decryptData(final byte[] encryptedData, final byte[] encryptionIv)
+//    public String decryptData(final byte[] encryptedData, final byte[] encryptionIv)
+//            throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException,
+//            NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, IOException,
+//            BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException
+//    {
+//        final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+//        final GCMParameterSpec spec = new GCMParameterSpec(AUTH_TAG_LEN, encryptionIv);
+//        cipher.init(Cipher.DECRYPT_MODE, getKeyForDecrypt(ALIAS), spec);
+//
+//        return new String(cipher.doFinal(encryptedData), "UTF-8");
+//    }
+
+    public byte[] decrypt(final byte[] cipherMessage)
             throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException,
             NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, IOException,
             BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException
     {
-        final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-        final GCMParameterSpec spec = new GCMParameterSpec(128, encryptionIv);
-        cipher.init(Cipher.DECRYPT_MODE, getKeyForDecrypt(ALIAS), spec);
+        Log.d(TAG, "decrypt method has been called!");
 
-        return new String(cipher.doFinal(encryptedData), "UTF-8");
+
+        //deconstruction of the cipherText and IV:
+        ByteBuffer byteBuffer = ByteBuffer.wrap(cipherMessage);
+        int ivLength = byteBuffer.getInt();
+//        byte[] iv = new byte[ivLength];
+        iv = new byte[ivLength];
+        byteBuffer.get(iv);
+//        byte[] cipherText = new byte[byteBuffer.remaining()];
+        cipherText = new byte[byteBuffer.remaining()];
+        byteBuffer.get(cipherText);
+
+
+
+        final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+        Log.d(TAG, "cipher getInstance worked!");
+
+//        byte[] iv = cipher.getIV();
+//        Log.d(TAG, "iv from cipher.getIV(): " + iv);
+
+        final GCMParameterSpec parameterSpec = new GCMParameterSpec(AUTH_TAG_LEN, iv);
+        Log.d(TAG, "iv: " + iv);
+        Log.d(TAG, "new gcmparameter spec worked!");
+
+        cipher.init(Cipher.DECRYPT_MODE, getKey(ALIAS), parameterSpec);
+        Log.d(TAG, "cipher.init worked!");
+
+//        return new String(cipher.doFinal(encryptedData), "UTF-8");
+        Log.d(TAG, "before cipher.doFinal!");
+        return cipher.doFinal(cipherText);
     }
 
-    public String decryptDataWithoutIv(final byte[] encryptedData)
-            throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException,
-            NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, IOException,
-            BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException
-    {
-        final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-        final GCMParameterSpec spec = new GCMParameterSpec(128, cipher.getIV());
-        cipher.init(Cipher.DECRYPT_MODE, getKeyForDecrypt(ALIAS), spec);
-
-        return new String(cipher.doFinal(encryptedData), "UTF-8");
-    }
 
     //TODO maybe same as for encrypt --> check
-    private SecretKey getKeyForDecrypt(final String alias) throws NoSuchAlgorithmException,
-            UnrecoverableEntryException, KeyStoreException
+//    private SecretKey getKeyForDecrypt(final String alias) throws NoSuchAlgorithmException,
+//            UnrecoverableEntryException, KeyStoreException
+//    {
+//        return ((KeyStore.SecretKeyEntry) keyStore.getEntry(alias, null)).getSecretKey();
+//    }
+
+
+    //TODO: check if key is the same for decrypt func, then use only one function!
+//    private SecretKey getKeyForEncrypt(String alias) throws UnrecoverableEntryException,
+//            NoSuchAlgorithmException, KeyStoreException
+//    {
+//        Log.d(TAG, "getKeyforEncrypt has been called!");
+//        return ((KeyStore.SecretKeyEntry) keyStore.getEntry(alias, null)).getSecretKey();
+//    }
+
+    private SecretKey getKey(String alias) throws UnrecoverableEntryException, KeyStoreException,
+            NoSuchAlgorithmException
     {
+        Log.d(TAG, "getKey has been called!");
         return ((KeyStore.SecretKeyEntry) keyStore.getEntry(alias, null)).getSecretKey();
     }
-
 }

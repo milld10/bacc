@@ -81,7 +81,7 @@ public class FingerprintActivity extends Activity
             public void onClick(View view)
             {
                 //TODO: grant access to show accounts activity
-                //TODO: ONLY need button for master password, if fingerprint, it does it automatic
+                //TODO: ONLY need button for master edittext_password, if fingerprint, it does it automatic
             }
         });
 

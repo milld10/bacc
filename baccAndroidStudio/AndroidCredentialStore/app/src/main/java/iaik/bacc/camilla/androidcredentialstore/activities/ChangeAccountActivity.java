@@ -26,11 +26,17 @@ import org.greenrobot.greendao.database.Database;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.SignatureException;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 
 /**
@@ -42,11 +48,12 @@ public class ChangeAccountActivity extends AppCompatActivity
     private static final String TAG = "ChangeAccountActivity";
 
     TextInputLayout accountLayout;
-    TextInputEditText accountname;
+    TextInputEditText edittext_accountname;
     TextInputLayout usernameLayout;
-    TextInputEditText username;
+    TextInputEditText edittext_username;
     TextInputLayout passwordLayout;
-    TextInputEditText password;
+    TextInputEditText edittext_password;
+
     Button saveButton;
     Button deleteButton;
 
@@ -56,6 +63,7 @@ public class ChangeAccountActivity extends AppCompatActivity
 
     //global account id for deleting in alert dialog
     Long id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -70,15 +78,15 @@ public class ChangeAccountActivity extends AppCompatActivity
 
         final DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
 
-
         accountLayout = (TextInputLayout) findViewById(R.id.AccountLayout);
-        accountname = (TextInputEditText) findViewById(R.id.account);
+        edittext_accountname = (TextInputEditText) findViewById(R.id.account);
 
         usernameLayout = (TextInputLayout) findViewById(R.id.UsernameLayout);
-        username = (TextInputEditText) findViewById(R.id.username);
+        edittext_username = (TextInputEditText) findViewById(R.id.username);
 
         passwordLayout = (TextInputLayout) findViewById(R.id.PasswordLayout);
-        password = (TextInputEditText) findViewById(R.id.password);
+        edittext_password = (TextInputEditText) findViewById(R.id.password);
+
 
         saveButton = (Button) findViewById(R.id.saveBtn);
         deleteButton = (Button) findViewById(R.id.delBtn);
@@ -88,73 +96,94 @@ public class ChangeAccountActivity extends AppCompatActivity
 
         id = clickedAccount.getAccount_id();
 
+
         Log.w("CHANGE_ACCOUNT", "got the extras: " + clickedAccount.toString());
         Log.w("CHANGE_ACCOUNT", "id of account: " + clickedAccount.getAccount_id());
 
 
-        /** TODO decrypt text before displaying it back onto the screen */
-        accountname.setText(clickedAccount.getAccount_name());
-        username.setText(clickedAccount.getUsername());
+        try {
+            Log.d(TAG, "now with the try catch of encryption");
+            final EncryptionHelper encryptionHelper = new EncryptionHelper(CredentialApplication.getInstance());
+            Log.d(TAG, "new encryptionHelper object has been generated");
 
-        int length = clickedAccount.getPassword().length;
-        password.setText(Converter.byteToChar(clickedAccount), 0, length);
+            //Decryption of data retrieved from DB
+            Log.d(TAG, "before decrypting the username");
+            byte[] usernameHlp = encryptionHelper.decrypt(clickedAccount.getUsername());
+            Log.d(TAG, "after decrypting the username. username in byte[]: " + usernameHlp);
+            Log.d(TAG, "converted username to text: " + Converter.byteToChar(usernameHlp).toString());
+            byte[] passwordHlp = encryptionHelper.decrypt(clickedAccount.getPassword());
 
-//        try {
-//            EncryptionHelper encryptionHelper = new EncryptionHelper(CredentialApplication.getInstance());
-//            encryptionHelper.decryptDataWithoutIv(clickedAccount.getUsername());
-//
-//        } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException |
-//                UnrecoverableEntryException | NoSuchProviderException |
-//                InvalidAlgorithmParameterException | IOException e) {
-//            e.printStackTrace();
-//        }
+            edittext_accountname.setText(clickedAccount.getAccount_name());
+
+            int lengthUsername = usernameHlp.length;
+            edittext_username.setText(Converter.byteToChar(usernameHlp), 0, lengthUsername);
+
+            int lengthPw = passwordHlp.length;
+            edittext_password.setText(Converter.byteToChar(passwordHlp), 0, lengthPw);
 
 
-//        char[] _accountName = Converter.byteToChar();
+        } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException | IOException |
+            NoSuchProviderException | InvalidAlgorithmParameterException | BadPaddingException |
+                NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException |
+            UnrecoverableEntryException e)
+        {
+            e.printStackTrace();
+        }
 
 
+        //Similar to AddAccountActivity
         saveButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                //delete the clicked account first
+                //First: delete the clicked account
                 dbHelper.deleteAccount(clickedAccount);
 
-
-                String _account = accountname.getText().toString();
-                String _username = username.getText().toString();
-                byte[] _pwArray = Converter.charToByte(password);
-
+                //New account to store changed account into DB
                 final Account account = new Account();
 
-                if(CheckingTools.websiteOk(_account))
+                if(CheckingTools.websiteOk(edittext_accountname.getText().toString()))
                 {
-                    if(CheckingTools.usernameOk(_username))
+                    if(CheckingTools.usernameOk(edittext_username.getText().toString()))
                     {
-                        if(CheckingTools.passwordOk(_pwArray))
+                        if(CheckingTools.passwordOk(Converter.charToByte(edittext_password)))
                         {
-                            //object account gets initialized
-                            account.setAccount_name(_account);
-                            account.setUsername(_username);
-                            account.setPassword(_pwArray);
+                            byte[] usernameForDb = Converter.charToByte(edittext_username);
+                            byte[] passwordForDb = Converter.charToByte(edittext_password);
 
-                            flagEverythingOk = true;
+                            try {
+                                EncryptionHelper encryptionHelper = new EncryptionHelper(CredentialApplication.getInstance());
+
+                                account.setAccount_name(edittext_accountname.getText().toString());
+                                account.setUsername(encryptionHelper.encrypt(usernameForDb));
+                                account.setPassword(encryptionHelper.encrypt(passwordForDb));
+
+                                Log.d(TAG, "the object is now complete and encrypted!");
+
+                                flagEverythingOk = true;
+
+                            } catch (CertificateException | NoSuchAlgorithmException |
+                                    KeyStoreException | IOException | SignatureException |
+                                    UnrecoverableEntryException |  BadPaddingException |
+                                    InvalidKeyException | InvalidAlgorithmParameterException |
+                                    NoSuchPaddingException | NoSuchProviderException |
+                                    IllegalBlockSizeException e) {
+                                Log.e(TAG, e.getMessage());
+                                e.printStackTrace();
+                            }
                         }
-                        else
-                        {
+                        else {
                             Toast.makeText(getApplicationContext(), "Password is not valid!",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
-                    else
-                    {
+                    else {
                         Toast.makeText(getApplicationContext(), "Username is not valid!",
                                 Toast.LENGTH_SHORT).show();
                     }
                 }
-                else
-                {
+                else {
                     Toast.makeText(getApplicationContext(), "Website is not valid!",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -173,8 +202,7 @@ public class ChangeAccountActivity extends AppCompatActivity
                     setResult(RESULT_OK, intent);
                     finish();
                 }
-                else
-                {
+                else {
                     Log.d(TAG, "Intent could not be sent!");
 
                     Toast.makeText(getApplicationContext(), "The account cannot be changed!",
@@ -202,9 +230,6 @@ public class ChangeAccountActivity extends AppCompatActivity
 
         //setResult(ShowAccountsActivity.RESULT_OK, intentRetour);
     }
-
-
-
 
 
     private AlertDialog AskToDelete()

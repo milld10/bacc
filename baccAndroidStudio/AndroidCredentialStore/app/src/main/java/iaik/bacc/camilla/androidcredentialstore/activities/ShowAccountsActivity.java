@@ -19,8 +19,12 @@ import iaik.bacc.camilla.androidcredentialstore.CredentialApplication;
 import iaik.bacc.camilla.androidcredentialstore.R;
 import iaik.bacc.camilla.androidcredentialstore.database.DBHelper;
 import iaik.bacc.camilla.androidcredentialstore.models.Account;
+import iaik.bacc.camilla.androidcredentialstore.tools.Converter;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class ShowAccountsActivity extends ListActivity
 {
@@ -45,18 +49,12 @@ public class ShowAccountsActivity extends ListActivity
         mToolbar = (Toolbar) findViewById(R.id.toolbar_show_accounts);
         mToolbar.setTitle(R.string.show_accounts);
 
+
         //show elements in the ListView <activity_show_accounts>
         final ArrayAdapter<Account> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
                 accountArrayList);
 
-        //TODO: sort list from a-z
-        /*adapter.sort(new Comparator<Account>() {
-            @Override
-            public int compare(String s1, String s2) {
-                return s1.compareTo(s2);
-            }
-        });*/
 
         setListAdapter(adapter);
         //what does notifyDataSetChanged do??
@@ -84,8 +82,8 @@ public class ShowAccountsActivity extends ListActivity
     {
         super.onListItemClick(listView, view, position, id);
 
-
         Account account = accountArrayList.get(position);
+
 
         Intent intent = new Intent(ShowAccountsActivity.this, ChangeAccountActivity.class);
         intent.putExtra("clickedAccount",account);
@@ -95,9 +93,6 @@ public class ShowAccountsActivity extends ListActivity
 
         startActivityForResult(intent, CHANGE_ACCOUNT_RESULT_CODE);
     }
-
-
-
 
 
 
