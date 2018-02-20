@@ -113,6 +113,8 @@ public class ChangeAccountActivity extends AppCompatActivity
             Log.d(TAG, "converted username to text: " + Converter.byteToChar(usernameHlp).toString());
             byte[] passwordHlp = encryptionHelper.decrypt(clickedAccount.getPassword());
 
+            Log.d(TAG, "after decrypting password. Object has been decrypted successfully!");
+
             edittext_accountname.setText(clickedAccount.getAccount_name());
 
             int lengthUsername = usernameHlp.length;
