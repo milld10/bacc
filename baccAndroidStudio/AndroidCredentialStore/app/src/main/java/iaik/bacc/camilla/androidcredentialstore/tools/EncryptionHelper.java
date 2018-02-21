@@ -4,14 +4,12 @@ import android.os.Build;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -19,9 +17,10 @@ import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.security.SignatureException;
 import java.security.UnrecoverableEntryException;
-import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.util.Arrays;
 
+import javax.crypto.AEADBadTagException;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -40,22 +39,13 @@ import iaik.bacc.camilla.androidcredentialstore.CredentialApplication;
 public class EncryptionHelper
 {
     private final static String TAG = "EncryptionHelper";
+
     private final static String ALIAS = "aliasCredentialManager";
-
     private final static int AUTH_TAG_LEN = 128;
-
     private static final String TRANSFORMATION = "AES/GCM/NoPadding";
     private static final String ANDROID_KEY_STORE = "AndroidKeyStore";
 
     private CredentialApplication application;
-
-    private byte[] cipherText;
-//    private byte[] cipherMessage; //don't make global?
-
-    private byte[] encryption;
-
-    //iv size 12 byte, not 16!
-    private byte[] iv = new byte[12];
 
     KeyStore keyStore;
 
@@ -87,13 +77,14 @@ public class EncryptionHelper
      */
     private void generateKeyAfterCheck(String alias) throws KeyStoreException, IOException,
             InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException,
-            CertificateException, UnrecoverableEntryException {
-
+            CertificateException, UnrecoverableEntryException
+    {
         loadKeyStore();
+
         if(keyStore.containsAlias(alias))
         {
             Log.d(TAG, "secret key has already been generated: " + keyStore.getEntry(alias, null));
-            //not needed to get a key right now, key is used when encrypting a text
+            //no need to get a key right now, key is used when en-/decrypting a text
 //            getKeyForEncrypt(alias);
         }
         else
@@ -110,7 +101,7 @@ public class EncryptionHelper
             NoSuchProviderException, InvalidAlgorithmParameterException, CertificateException,
             KeyStoreException, IOException
     {
-        //keystore should already be loaded
+        //keystore is already loaded in generateKeyAfterCheck
 //        loadKeyStore();
 
         //getting instance of KeyGenerator and save the key in AndroidKeyStore
@@ -143,136 +134,135 @@ public class EncryptionHelper
 
     //TODO: maybe create a encrypt method for strings instead of byte[]; for account_name?
     /**
-     * Method is used in AddAccountActivity to encrypt the handed over byte array of credentials
-     * no alias is needed as a parameter.
+     * Method is used to encrypt the handed over byte array of plainText
      */
     public byte[] encrypt(final byte[] plainText) throws
             UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException,
             NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, IOException,
             InvalidAlgorithmParameterException, SignatureException, BadPaddingException,
-            IllegalBlockSizeException, CertificateException
+            IllegalBlockSizeException, CertificateException, IllegalStateException
     {
-
         Log.d(TAG, "encrypt method has been called!");
+        Log.d(TAG, "this is the given plaintext to encrypt: "+ new String(plainText, "UTF-8"));
 
-        SecureRandom secureRandom = new SecureRandom();
-        secureRandom.nextBytes(iv);
+
+        byte[] iv = new byte[12];
+
+        Log.d(TAG, "iv after creation: " + Converter.bytesToHex(iv));
+
+//        SecureRandom secureRandom = new SecureRandom();
+//        secureRandom.nextBytes(iv);
+//        Log.d(TAG, "iv after secureRandom.nextBytes(): " + Converter.bytesToHex(iv));
 
         final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
 //        GCMParameterSpec parameterSpec = new GCMParameterSpec(AUTH_TAG_LEN, iv);
 
+        iv = cipher.getIV();
+        Log.d(TAG, "iv after cipher.getIV(): " + Converter.bytesToHex(iv));
+
         cipher.init(Cipher.ENCRYPT_MODE, getKey(ALIAS));
 
-        iv = cipher.getIV();
-        Log.d(TAG, "iv after cipher.getIV(): " + iv);
+//        //TODO NEW
+//        cipher.updateAAD("MyAAD".getBytes("UTF-8"));
 
-        cipherText = cipher.doFinal(plainText);
 
+
+        byte[] cipherText = cipher.doFinal(plainText);
+
+        Log.d(TAG, "encrypt doFinal worked!");
+        Log.d(TAG, "cipherText in hex: " + Converter.bytesToHex(cipherText));
 
         //doFinal return the byte array which is the encrypted text, previously the type of textToEncrypt was "String"
         //return(encryption = cipher.doFinal(textToEncrypt.getBytes("UTF-8")));
 
 
         //Concat all information into a single message
+
         ByteBuffer byteBuffer = ByteBuffer.allocate(4 + iv.length + cipherText.length);
 
+        Log.d(TAG, "byteBuffer empty: " + byteBuffer);
         byteBuffer.putInt(iv.length);
         byteBuffer.put(iv);
         byteBuffer.put(cipherText);
         byte[] cipherMessage = byteBuffer.array();
+        Log.d(TAG, "cipherMessage: " + Converter.bytesToHex(cipherMessage));
 
         return cipherMessage;
     }
 
 
-    //getter for encryption and IV
-    //are key needed? idk for what?
-//    byte[] getEncryption()
-//    {
-//        return encryption;
-//    }
-//
-//    byte[] getIV()
-//    {
-//        return iv;
-//    }
-
     //----------------------------------------------------------------------------------------------
     //Decryption
-
-    //no alias is handed over as parameter,
-    //TODO change that only param is ecryptedData and the IV needs to be extracted
-//    public String decryptData(final byte[] encryptedData, final byte[] encryptionIv)
-//            throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException,
-//            NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, IOException,
-//            BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException
-//    {
-//        final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-//        final GCMParameterSpec spec = new GCMParameterSpec(AUTH_TAG_LEN, encryptionIv);
-//        cipher.init(Cipher.DECRYPT_MODE, getKeyForDecrypt(ALIAS), spec);
-//
-//        return new String(cipher.doFinal(encryptedData), "UTF-8");
-//    }
-
-    public byte[] decrypt(final byte[] cipherMessage)
-            throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException,
-            NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, IOException,
-            BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException
+    /**
+     * Method is used to decrypt the handed over cipherMessage, containing the IV and the cipherText
+     */
+    public byte[] decrypt(final byte[] cipherMessage) throws NoSuchPaddingException,
+            NoSuchAlgorithmException, UnrecoverableEntryException, KeyStoreException,
+            InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException,
+            IllegalBlockSizeException, IOException, NoSuchProviderException, AEADBadTagException
     {
         Log.d(TAG, "decrypt method has been called!");
 
 
         //deconstruction of the cipherText and IV:
+        Log.d(TAG, "--------------- begin deconstruction");
+        Log.d(TAG, "handed over cipherMessage: "+ Converter.bytesToHex(cipherMessage));
         ByteBuffer byteBuffer = ByteBuffer.wrap(cipherMessage);
         int ivLength = byteBuffer.getInt();
-//        byte[] iv = new byte[ivLength];
-        iv = new byte[ivLength];
-        byteBuffer.get(iv);
-//        byte[] cipherText = new byte[byteBuffer.remaining()];
-        cipherText = new byte[byteBuffer.remaining()];
+        Log.d(TAG, "ivLength: " + ivLength);
+
+        byte[] iv_decrypt = new byte[ivLength];
+        Log.d(TAG, "iv declared with ivLength: " + Converter.bytesToHex(iv_decrypt));
+        byteBuffer.get(iv_decrypt);
+        Log.d(TAG, "iv after byteBuffer.get(iv): " + Converter.bytesToHex(iv_decrypt));
+        byte[] cipherText = new byte[byteBuffer.remaining()];
         byteBuffer.get(cipherText);
+        Log.d(TAG, "cipherText: "+ Converter.bytesToHex(cipherText));
+        Log.d(TAG, "--------------- end deconstruction");
 
 
-
+        //actual decryption work:
         final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         Log.d(TAG, "cipher getInstance worked!");
 
 //        byte[] iv = cipher.getIV();
-//        Log.d(TAG, "iv from cipher.getIV(): " + iv);
+//        Log.d(TAG, "iv from cipher.getIV(): " + Converter.bytesToHex(iv));
 
-        final GCMParameterSpec parameterSpec = new GCMParameterSpec(AUTH_TAG_LEN, iv);
-        Log.d(TAG, "iv: " + iv);
-        Log.d(TAG, "new gcmparameter spec worked!");
+//        iv_decrypt = cipher.getIV();
+//        Log.d(TAG, "iv_decrypt from cipher.getIV(): " + Converter.bytesToHex(iv_decrypt));
 
-        cipher.init(Cipher.DECRYPT_MODE, getKey(ALIAS), parameterSpec);
-        Log.d(TAG, "cipher.init worked!");
 
-//        return new String(cipher.doFinal(encryptedData), "UTF-8");
+        GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(AUTH_TAG_LEN, iv_decrypt);
+
+        Log.d(TAG, "iv after gcmParameterSpec: " + Converter.bytesToHex(iv_decrypt));
+        Log.d(TAG, "GCMParameterSpec worked; parameterSpec is: " + gcmParameterSpec);
+
+
+        Log.d(TAG, "right before cipher.init in decrypt function!");
+        cipher.init(Cipher.DECRYPT_MODE, getKey(ALIAS), gcmParameterSpec);
+
+//        cipher.updateAAD("MyAAD".getBytes("UTF-8"));
+
+
         Log.d(TAG, "before cipher.doFinal!");
-        return cipher.doFinal(cipherText);
+
+        byte[] plaintext = cipher.doFinal(cipherText);
+
+
+        Log.d(TAG, "plaintext is: " + plaintext);
+        Log.d(TAG, "plaintext in String is: " + Converter.bytesToHex(plaintext));
+
+        return plaintext;
     }
 
 
-    //TODO maybe same as for encrypt --> check
-//    private SecretKey getKeyForDecrypt(final String alias) throws NoSuchAlgorithmException,
-//            UnrecoverableEntryException, KeyStoreException
-//    {
-//        return ((KeyStore.SecretKeyEntry) keyStore.getEntry(alias, null)).getSecretKey();
-//    }
-
-
-    //TODO: check if key is the same for decrypt func, then use only one function!
-//    private SecretKey getKeyForEncrypt(String alias) throws UnrecoverableEntryException,
-//            NoSuchAlgorithmException, KeyStoreException
-//    {
-//        Log.d(TAG, "getKeyforEncrypt has been called!");
-//        return ((KeyStore.SecretKeyEntry) keyStore.getEntry(alias, null)).getSecretKey();
-//    }
-
-    private SecretKey getKey(String alias) throws UnrecoverableEntryException, KeyStoreException,
-            NoSuchAlgorithmException
+    private SecretKey getKey(String alias) throws UnrecoverableEntryException,
+            NoSuchAlgorithmException, KeyStoreException
     {
         Log.d(TAG, "getKey has been called!");
         return ((KeyStore.SecretKeyEntry) keyStore.getEntry(alias, null)).getSecretKey();
     }
+
+
+    //TODO return new String(cipher.doFinal(encryptedData), "UTF-8"); function for en/decryption of Strings?
 }

@@ -101,10 +101,10 @@ public class ChangeAccountActivity extends AppCompatActivity
         Log.w("CHANGE_ACCOUNT", "id of account: " + clickedAccount.getAccount_id());
 
 
-        try {
-            Log.d(TAG, "now with the try catch of encryption");
+        try
+        {
             final EncryptionHelper encryptionHelper = new EncryptionHelper(CredentialApplication.getInstance());
-            Log.d(TAG, "new encryptionHelper object has been generated");
+            Log.d(TAG, "new encryptionHelper object has been generated (within try/catch");
 
             //Decryption of data retrieved from DB
             Log.d(TAG, "before decrypting the username");
@@ -158,6 +158,8 @@ public class ChangeAccountActivity extends AppCompatActivity
                                 EncryptionHelper encryptionHelper = new EncryptionHelper(CredentialApplication.getInstance());
 
                                 account.setAccount_name(edittext_accountname.getText().toString());
+                                Log.d(TAG,"before encrypting username, this is the plaintext: " + Converter.byteToString(usernameForDb));
+
                                 account.setUsername(encryptionHelper.encrypt(usernameForDb));
                                 account.setPassword(encryptionHelper.encrypt(passwordForDb));
 
@@ -199,7 +201,7 @@ public class ChangeAccountActivity extends AppCompatActivity
 
                     dbHelper.insertNewAccount(account);
 
-                    Log.w(TAG, "account changes successfully and added to DB");
+                    Log.w(TAG, "account changed successfully and added to DB");
 
                     setResult(RESULT_OK, intent);
                     finish();
@@ -207,7 +209,7 @@ public class ChangeAccountActivity extends AppCompatActivity
                 else {
                     Log.d(TAG, "Intent could not be sent!");
 
-                    Toast.makeText(getApplicationContext(), "The account cannot be changed!",
+                    Toast.makeText(getApplicationContext(), "The account could not be changed!",
                             Toast.LENGTH_SHORT).show();
                 }
             }
