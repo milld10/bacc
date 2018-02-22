@@ -6,6 +6,8 @@ import android.security.keystore.KeyProperties;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import org.greenrobot.greendao.annotation.Convert;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.security.InvalidAlgorithmParameterException;
@@ -45,7 +47,6 @@ public class EncryptionHelper
     private static final String TRANSFORMATION = "AES/GCM/NoPadding";
     private static final String ANDROID_KEY_STORE = "AndroidKeyStore";
 
-    private CredentialApplication application;
 
     KeyStore keyStore;
 
@@ -55,6 +56,8 @@ public class EncryptionHelper
             IOException, NoSuchProviderException, InvalidAlgorithmParameterException,
             UnrecoverableEntryException
     {
+        private CredentialApplication application;
+
         this.application = application;
 
 //        loadKeyStore(); //is done in generateKeyAfterCheck.
@@ -143,49 +146,35 @@ public class EncryptionHelper
             IllegalBlockSizeException, CertificateException, IllegalStateException
     {
         Log.d(TAG, "encrypt method has been called!");
-        Log.d(TAG, "this is the given plaintext to encrypt: "+ new String(plainText, "UTF-8"));
 
+//        Log.d(TAG, "plaintext (in String) is: "+ new String(plainText, "UTF-8"));
+//        Log.d(TAG, "plaintext (in hex) is: "+ Converter.bytesToHex(plainText));
 
         byte[] iv = new byte[12];
 
-        Log.d(TAG, "iv after creation: " + Converter.bytesToHex(iv));
-
+        //creating my own secureRandom for IV throws the problem of an AEADBadTagException!
 //        SecureRandom secureRandom = new SecureRandom();
 //        secureRandom.nextBytes(iv);
 //        Log.d(TAG, "iv after secureRandom.nextBytes(): " + Converter.bytesToHex(iv));
 
         final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-//        GCMParameterSpec parameterSpec = new GCMParameterSpec(AUTH_TAG_LEN, iv);
+
+        cipher.init(Cipher.ENCRYPT_MODE, getKey(ALIAS));
 
         iv = cipher.getIV();
         Log.d(TAG, "iv after cipher.getIV(): " + Converter.bytesToHex(iv));
 
-        cipher.init(Cipher.ENCRYPT_MODE, getKey(ALIAS));
-
-//        //TODO NEW
-//        cipher.updateAAD("MyAAD".getBytes("UTF-8"));
-
-
-
         byte[] cipherText = cipher.doFinal(plainText);
-
-        Log.d(TAG, "encrypt doFinal worked!");
-        Log.d(TAG, "cipherText in hex: " + Converter.bytesToHex(cipherText));
-
-        //doFinal return the byte array which is the encrypted text, previously the type of textToEncrypt was "String"
-        //return(encryption = cipher.doFinal(textToEncrypt.getBytes("UTF-8")));
 
 
         //Concat all information into a single message
-
         ByteBuffer byteBuffer = ByteBuffer.allocate(4 + iv.length + cipherText.length);
-
-        Log.d(TAG, "byteBuffer empty: " + byteBuffer);
         byteBuffer.putInt(iv.length);
         byteBuffer.put(iv);
         byteBuffer.put(cipherText);
+        Log.d(TAG, "cipherText in hex: " + Converter.bytesToHex(cipherText));
         byte[] cipherMessage = byteBuffer.array();
-        Log.d(TAG, "cipherMessage: " + Converter.bytesToHex(cipherMessage));
+        Log.d(TAG, "cipherMessage in hex: " + Converter.bytesToHex(cipherMessage));
 
         return cipherMessage;
     }
@@ -203,16 +192,12 @@ public class EncryptionHelper
     {
         Log.d(TAG, "decrypt method has been called!");
 
-
         //deconstruction of the cipherText and IV:
         Log.d(TAG, "--------------- begin deconstruction");
         Log.d(TAG, "handed over cipherMessage: "+ Converter.bytesToHex(cipherMessage));
         ByteBuffer byteBuffer = ByteBuffer.wrap(cipherMessage);
         int ivLength = byteBuffer.getInt();
-        Log.d(TAG, "ivLength: " + ivLength);
-
         byte[] iv_decrypt = new byte[ivLength];
-        Log.d(TAG, "iv declared with ivLength: " + Converter.bytesToHex(iv_decrypt));
         byteBuffer.get(iv_decrypt);
         Log.d(TAG, "iv after byteBuffer.get(iv): " + Converter.bytesToHex(iv_decrypt));
         byte[] cipherText = new byte[byteBuffer.remaining()];
@@ -221,36 +206,18 @@ public class EncryptionHelper
         Log.d(TAG, "--------------- end deconstruction");
 
 
-        //actual decryption work:
+        //actual decryption:
         final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-        Log.d(TAG, "cipher getInstance worked!");
-
-//        byte[] iv = cipher.getIV();
-//        Log.d(TAG, "iv from cipher.getIV(): " + Converter.bytesToHex(iv));
-
-//        iv_decrypt = cipher.getIV();
-//        Log.d(TAG, "iv_decrypt from cipher.getIV(): " + Converter.bytesToHex(iv_decrypt));
-
 
         GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(AUTH_TAG_LEN, iv_decrypt);
 
-        Log.d(TAG, "iv after gcmParameterSpec: " + Converter.bytesToHex(iv_decrypt));
-        Log.d(TAG, "GCMParameterSpec worked; parameterSpec is: " + gcmParameterSpec);
-
-
-        Log.d(TAG, "right before cipher.init in decrypt function!");
         cipher.init(Cipher.DECRYPT_MODE, getKey(ALIAS), gcmParameterSpec);
 
-//        cipher.updateAAD("MyAAD".getBytes("UTF-8"));
-
-
-        Log.d(TAG, "before cipher.doFinal!");
+        iv_decrypt = cipher.getIV();
+        Log.d(TAG, "iv_decrypt from cipher.getIV(): " + Converter.bytesToHex(iv_decrypt));
 
         byte[] plaintext = cipher.doFinal(cipherText);
-
-
-        Log.d(TAG, "plaintext is: " + plaintext);
-        Log.d(TAG, "plaintext in String is: " + Converter.bytesToHex(plaintext));
+        Log.d(TAG, "plaintext (in hex) is: " + Converter.bytesToHex(plaintext));
 
         return plaintext;
     }
