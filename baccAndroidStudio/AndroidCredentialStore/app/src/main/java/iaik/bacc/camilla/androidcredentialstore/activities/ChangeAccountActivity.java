@@ -103,17 +103,18 @@ public class ChangeAccountActivity extends AppCompatActivity
 
         try
         {
-            final EncryptionHelper encryptionHelper = new EncryptionHelper(CredentialApplication.getInstance());
+            final EncryptionHelper encryptionHelper =
+                    new EncryptionHelper(CredentialApplication.getInstance());
             Log.d(TAG, "new encryptionHelper object has been generated (within try/catch");
 
             //Decryption of data retrieved from DB
-            Log.d(TAG, "before decrypting the username");
+//            Log.d(TAG, "before decrypting the username");
             byte[] usernameHlp = encryptionHelper.decrypt(clickedAccount.getUsername());
-            Log.d(TAG, "after decrypting the username. username in byte[]: " + usernameHlp);
-            Log.d(TAG, "converted username to text: " + Converter.byteToChar(usernameHlp).toString());
+//            Log.d(TAG, "after decrypting the username. username in byte[]: " + usernameHlp);
+//            Log.d(TAG, "converted username to text: " + Converter.byteToChar(usernameHlp).toString());
             byte[] passwordHlp = encryptionHelper.decrypt(clickedAccount.getPassword());
 
-            Log.d(TAG, "after decrypting password. Object has been decrypted successfully!");
+//            Log.d(TAG, "after decrypting password. Object has been decrypted successfully!");
 
             edittext_accountname.setText(clickedAccount.getAccount_name());
 
@@ -155,11 +156,10 @@ public class ChangeAccountActivity extends AppCompatActivity
                             byte[] passwordForDb = Converter.charToByte(edittext_password);
 
                             try {
-                                EncryptionHelper encryptionHelper = new EncryptionHelper(CredentialApplication.getInstance());
+                                EncryptionHelper encryptionHelper =
+                                        new EncryptionHelper(CredentialApplication.getInstance());
 
                                 account.setAccount_name(edittext_accountname.getText().toString());
-                                Log.d(TAG,"before encrypting username, this is the plaintext: " + Converter.byteToString(usernameForDb));
-
                                 account.setUsername(encryptionHelper.encrypt(usernameForDb));
                                 account.setPassword(encryptionHelper.encrypt(passwordForDb));
 

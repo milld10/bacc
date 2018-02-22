@@ -66,11 +66,7 @@ public class AddAccountActivity extends AppCompatActivity
         daoSession = new DaoMaster(db).newSession();
 
         //TODO Research: what does inflate do??
-        /*View login_data = View.inflate(this, R.layout.activity_add_account, null);
-
-        website = (EditText) login_data.findViewById(R.id.website);
-        edittext_username = (EditText) login_data.findViewById(R.id.edittext_username);
-        edittext_password = (EditText) login_data.findViewById(R.id.edittext_password);*/
+//        View login_data = View.inflate(this, R.layout.activity_add_account, null);
 
         accountLayout = (TextInputLayout) findViewById(R.id.AccountLayout);
         edittext_accountname = (TextInputEditText) findViewById(R.id.account);
@@ -89,10 +85,6 @@ public class AddAccountActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-//                String accountForDb = edittext_accountname.getText().toString();
-//                String usernameForDb = edittext_username.getText().toString();
-//                byte[] passwordForDb = Converter.charToByte(edittext_password);
-
                 //this object will be stored into the DB
                 final Account account = new Account();
 
@@ -108,36 +100,21 @@ public class AddAccountActivity extends AppCompatActivity
 
                             try
                             {
-                                //TODO encrypt the data after it is checked but before it is stored into the DB
-                                EncryptionHelper encryptionHelper = new EncryptionHelper(CredentialApplication.getInstance());
+                                //TODO encrypt the data after it is checked but before it is stored
+                                // into the DB
+                                EncryptionHelper encryptionHelper =
+                                        new EncryptionHelper(CredentialApplication.getInstance());
 
-                                //------------Account
-                                //TODO maybe don't even encrypt edittext_accountname, for easier display in arraylist adapter??
-
-                                Log.d(TAG, "plaintext account_name: " + edittext_accountname.getText().toString());
-//                                Log.d(TAG, "account_name as a byte[]: " + accountForDb);
-//                                Log.d(TAG, "account_name as a char[]: " + Converter.byteToChar(accountForDb));
-//
-//                                byte[] encrypted = encryptionHelper.encryptText(accountForDb);
-//                                Log.d(TAG, "account_name encrypted as a byte[]: " + encrypted);
-//
-//                                byte[] decrypted = encryptionHelper.decryptDataWithoutIv(accountForDb);
-//                                Log.d(TAG, "account_name decrypted again a byte[]: " + decrypted);
-
-
-
+                                //TODO maybe don't even encrypt edittext_accountname, for easier
+                                // display in arraylist adapter??
+                                Log.d(TAG, "plaintext account_name: " +
+                                        edittext_accountname.getText().toString());
                                 account.setAccount_name(edittext_accountname.getText().toString());
-                                Log.d(TAG, "account is now set (not encrypted in plaintext) in the object");
 
-
-                                //------------Username
                                 account.setUsername(encryptionHelper.encrypt(usernameForDb));
-                                Log.d(TAG, "edittext_username is now set in the object");
 
-
-                                //------------Password
                                 account.setPassword(encryptionHelper.encrypt(passwordForDb));
-                                Log.d(TAG, "pw is now set in the object");
+//                                Log.d(TAG, "pw is now set in the object");
 
                                 Log.d(TAG, "the object is now complete!");
 

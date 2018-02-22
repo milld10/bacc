@@ -84,23 +84,20 @@ public class ShowAccountsActivity extends ListActivity
 
         Account account = accountArrayList.get(position);
 
-
         Intent intent = new Intent(ShowAccountsActivity.this, ChangeAccountActivity.class);
         intent.putExtra("clickedAccount",account);
 
-        Log.w(TAG, "before sending intent to change account activity");
-        Log.w(TAG, "account-name: " + account.getAccount_name() + " with id: " + account.getAccount_id());
+        Log.d(TAG, "before sending intent to change account activity");
+        Log.d(TAG, "account-name: " + account.getAccount_name() + " with id: " + account.getAccount_id());
 
         startActivityForResult(intent, CHANGE_ACCOUNT_RESULT_CODE);
     }
-
 
 
     public void showAddCredentialActivity(View view)
     {
         Intent intent = new Intent(this, AddAccountActivity.class);
         startActivityForResult(intent, ADD_ACCOUNT_RESULT_CODE);
-       // startActivity(intent);
     }
 
 
@@ -112,8 +109,6 @@ public class ShowAccountsActivity extends ListActivity
             case ADD_ACCOUNT_RESULT_CODE:
                 if (resultCode == ShowAccountsActivity.RESULT_OK)
                 {
-                    //Credential credential_extras = (Credential) intent.getSerializableExtra("login");
-
                     Account extras = (Account) intent.getSerializableExtra("credential");
                     //only add to arrayList if not null
                     if (extras != null) {
@@ -123,7 +118,7 @@ public class ShowAccountsActivity extends ListActivity
                         accountArrayList.add(extras);
                         getListAdapter().notify();
 
-                        Log.w(TAG, "NEW account added to the arraylist");
+                        Log.d(TAG, "NEW account added to the arraylist");
                     }
                 }
                 break;
@@ -133,12 +128,12 @@ public class ShowAccountsActivity extends ListActivity
                     Account extras = (Account) intent.getSerializableExtra("credential");
                     //only add to arrayList if not null
                     if (extras != null) {
-                        Log.w(TAG, "website: " + extras + ", id: " + extras.getAccount_id());
+                        Log.d(TAG, "website: " + extras + ", id: " + extras.getAccount_id());
 
                         //update the listView with changed account
                         accountArrayList.add(extras);
 
-                        Log.w(TAG, "CHANGED account added to the arraylist");
+                        Log.d(TAG, "CHANGED account added to the arraylist");
                     }
                 }
                 break;

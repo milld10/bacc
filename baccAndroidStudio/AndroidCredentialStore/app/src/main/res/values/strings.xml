@@ -20,11 +20,8 @@
     <string name="about_advisor">Dipl.-Ing. Dominik Ziegler</string>
     <string name="about_institute">Institute of Applied Information Processing and Communications</string>
     <string name="about_project">Android Credential Manager</string>
-    <string name="about_description">Lorem ipsum dolor ... sdfjkljdsfj ljflsjdlfj lsdjflsjldfjl
-        lsjdflslkdflks sldfjlsjdf lsjdflsjldfjls dfsjdlfjsldf lsjdfl sdjflsje oifmslejlf sjfiels
-        ifnse lsjfsjefiseljf sfijslejfisef slfj seijfslejfisje)</string>
-
-
+    <string name="about_description">Here a short description of bacc thesis, what I have done and
+    which technologies have been used. What is the project for and the motivation behind it.</string>
 
 
     <string name="title_activity_web_logins">Web Logins</string>
@@ -49,9 +46,11 @@
     <string name="instructions">Place your fingertip on the Home button to verify your identity
         </string>
 
-    <string name="fpactivity_hardwaredetected">Your device does not support fingerprint authentication.</string>
+    <string name="fpactivity_hardwaredetected">Your device does not support fingerprint
+        authentication.</string>
     <string name="fpactivity_permission">Fingerprint authentication permission is not enabled.</string>
-    <string name="fpactivity_enrolledfingerprints">No fingerprint configured. Please register at least one fingerprint.</string>
+    <string name="fpactivity_enrolledfingerprints">No fingerprint configured. Please register at
+        least one fingerprint.</string>
     <string name="fpactivity_keyguardsecure">Lock screen security is not enabled.</string>
     <string name="fphandler">Lock screen security is not enabled.</string>
 

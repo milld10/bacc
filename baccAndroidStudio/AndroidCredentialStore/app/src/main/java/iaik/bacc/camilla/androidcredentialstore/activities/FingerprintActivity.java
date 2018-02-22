@@ -46,7 +46,7 @@ public class FingerprintActivity extends Activity
     final String KEYSTORE_PROVIDER = "AndroidKeyStore";
 
     // Declare a string variable for the key we’re going to use in our fingerprint authentication
-    private static final String KEY_NAME = "yourKey";
+    private static final String KEY_NAME = "myKey";
     private Cipher cipher;
     private KeyStore keyStore;
     private KeyGenerator keyGenerator;
@@ -86,13 +86,11 @@ public class FingerprintActivity extends Activity
         });
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-//            Log.d(TAG, "now in big first if");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
             //verifying the secure lock screen with keyguardManager and fingerprintManager
             keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
             fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
-
 
             TextView textView = findViewById(R.id.mytextview);
 
@@ -138,13 +136,12 @@ public class FingerprintActivity extends Activity
                 }
             }
         }
+
     }
 
-    //OnCreate end
 
 
-
-//method to gain access to Android keystore and generate the encryption key
+    //method to gain access to Android keystore and generate the encryption key
     private void generateKeyForFingerprint() throws FingerprintException {
         try {
             keyStore = KeyStore.getInstance("AndroidKeyStore");
@@ -207,11 +204,11 @@ public class FingerprintActivity extends Activity
     }
 
 
-
-    private class FingerprintException extends Exception {
+    private class FingerprintException extends Exception
+    {
         public FingerprintException(Exception e) {
             super(e);
         }
     }
-}
 
+}

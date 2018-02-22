@@ -61,7 +61,8 @@ public class BluetoothActivity extends AppCompatActivity implements AdapterView.
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         registerReceiver(mBroadcastReceiver4, filter);
 
-        //todo search through pairedDevices before performing device discovery and write them to the list of devices
+        //todo search through pairedDevices before performing device discovery and write them
+        // to the list of devices
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
 
         if(mBluetoothAdapter.isEnabled())
@@ -150,7 +151,8 @@ public class BluetoothActivity extends AppCompatActivity implements AdapterView.
             String action = intent.getAction();
             if(action.equals(mBluetoothAdapter.ACTION_STATE_CHANGED))
             {
-                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, mBluetoothAdapter.ERROR);
+                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
+                        mBluetoothAdapter.ERROR);
 
                 switch(state)
                 {
@@ -201,7 +203,8 @@ public class BluetoothActivity extends AppCompatActivity implements AdapterView.
             String action = intent.getAction();
             if(action.equals(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED))
             {
-                int mode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, BluetoothAdapter.ERROR);
+                int mode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE,
+                        BluetoothAdapter.ERROR);
 
                 switch(mode)
                 {
@@ -211,10 +214,12 @@ public class BluetoothActivity extends AppCompatActivity implements AdapterView.
                         break;
                     //Device not in discoverable mode
                     case BluetoothAdapter.SCAN_MODE_CONNECTABLE:
-                        Log.d(TAG, "mBroadcastReceiver2: Discoverability Disabled. Able to receive connections.");
+                        Log.d(TAG, "mBroadcastReceiver2: Discoverability Disabled. Able to " +
+                                "receive connections.");
                         break;
                     case BluetoothAdapter.SCAN_MODE_NONE:
-                        Log.d(TAG, "mBroadcastReceiver2: Discoverability Disabled. Not able to receive connections.");
+                        Log.d(TAG, "mBroadcastReceiver2: Discoverability Disabled. Not able to " +
+                                "receive connections.");
                         break;
                     case BluetoothAdapter.STATE_CONNECTING:
                         Log.d(TAG, "mBroadcastReceiver2: Connecting...");
@@ -280,7 +285,8 @@ public class BluetoothActivity extends AppCompatActivity implements AdapterView.
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 mBTDevices.add(device);
                 Log.d(TAG, "onReceive: " + device.getName() + ": " + device.getAddress());
-                deviceListAdapter = new DeviceListAdapter(context, R.layout.device_adapter_view, mBTDevices);
+                deviceListAdapter = new DeviceListAdapter(context, R.layout.device_adapter_view,
+                        mBTDevices);
                 lvNewDevices.setAdapter(deviceListAdapter);
             }
         }
@@ -350,7 +356,8 @@ public class BluetoothActivity extends AppCompatActivity implements AdapterView.
             permissionCheck += this.checkSelfPermission("Manifest.permission.ACCESS_COARSE_LOCATION");
             if(permissionCheck != 0)
             {
-                this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1001);
+                this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION}, 1001);
             }
             else
             {

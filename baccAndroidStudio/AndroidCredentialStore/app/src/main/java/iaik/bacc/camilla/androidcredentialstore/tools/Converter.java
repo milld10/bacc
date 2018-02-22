@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
  * class Converter holds various methods for conversions of different data types
  * - byte[] to char[] and vice versa
  * - String to byte[] and vice versa
+ * - byte[] to hex value
  */
 
 public class Converter {
@@ -39,8 +40,6 @@ public class Converter {
      */
     public static char[] byteToChar(byte[] byteArray)
     {
-//        byte[] byteArray = account.getPassword();
-
         CharBuffer buffer = StandardCharsets.UTF_8.decode(ByteBuffer.wrap(byteArray));
         char[] charArray = new char[buffer.limit()];
         buffer.get(charArray);
@@ -58,7 +57,7 @@ public class Converter {
     }
 
     /**
-     * converts String to byte[] to be saved in the DB
+     * converts String to byte[]
      */
     @NonNull
     public static byte[] StringToByte(String string) throws UnsupportedEncodingException
@@ -66,6 +65,9 @@ public class Converter {
         return string.getBytes("UTF-8");
     }
 
+    /**
+     * converts a given byte[] to hex value
+     */
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
     public static String bytesToHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];

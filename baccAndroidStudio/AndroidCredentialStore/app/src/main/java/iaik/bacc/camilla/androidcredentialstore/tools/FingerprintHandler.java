@@ -48,7 +48,6 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     }
 
 
-    //Toasts for user:
 
     @Override
     //is called when a fatal error has occurred, provides error code and error message
@@ -75,9 +74,6 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     //for successful match of registered prints on device
     public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)
     {
-//      Toast.makeText(appContext, "Success!", Toast.LENGTH_LONG).show();
-//      Log.d(TAG, "This is my result of success: " + result.toString());
-
         ((Activity) appContext).finish();
         Intent intent = new Intent(appContext, ShowAccountsActivity.class);
         appContext.startActivity(intent);
