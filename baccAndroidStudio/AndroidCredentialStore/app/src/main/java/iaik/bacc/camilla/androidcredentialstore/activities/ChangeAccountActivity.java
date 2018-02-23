@@ -203,6 +203,9 @@ public class ChangeAccountActivity extends AppCompatActivity
 
                     Log.w(TAG, "account changed successfully and added to DB");
 
+                    //close db:
+                    daoSession.getDatabase().close();
+
                     setResult(RESULT_OK, intent);
                     finish();
                 }

@@ -1,7 +1,6 @@
 package iaik.bacc.camilla.androidcredentialstore.activities;
 
 import android.content.Intent;
-import android.icu.text.LocaleDisplayNames;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;

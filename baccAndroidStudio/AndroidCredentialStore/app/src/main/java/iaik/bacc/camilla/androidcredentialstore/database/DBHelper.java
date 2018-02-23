@@ -1,19 +1,14 @@
 package iaik.bacc.camilla.androidcredentialstore.database;
 
 
-import org.greenrobot.greendao.annotation.Convert;
-
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import iaik.bacc.camilla.androidcredentialstore.CredentialApplication;
 import iaik.bacc.camilla.androidcredentialstore.models.Account;
 import iaik.bacc.camilla.androidcredentialstore.models.AccountDao;
 import iaik.bacc.camilla.androidcredentialstore.models.DaoSession;
-import iaik.bacc.camilla.androidcredentialstore.tools.Converter;
-
+import iaik.bacc.camilla.androidcredentialstore.models.MasterPassword;
+import iaik.bacc.camilla.androidcredentialstore.models.MasterPasswordDao;
 
 public class DBHelper
 {
@@ -28,21 +23,18 @@ public class DBHelper
     }
 
     /** Add new Login (Application and Credentials for it) */
-    public long insertNewAccount(Account account)
+    public void insertNewAccount(Account account)
     {
         AccountDao accountDao = this.daoSession.getAccountDao();
-        long id_app = accountDao.insert(account);
 
-
-        return id_app;
+        accountDao.insert(account);
     }
 
     public Account getAccountById(Long id)
     {
         AccountDao accountDao = this.daoSession.getAccountDao();
-        Account account = accountDao.load(id);
 
-        return account;
+        return accountDao.load(id);
     }
 
     /** Deletes just one Credential out the List, which is held by the Account Obj. */
@@ -63,7 +55,6 @@ public class DBHelper
     /** Returns all listed Apps (for the Adapter); objects of Account */
     public List<Account> getAllAccounts()
     {
-        //TODO: convert them into strings before putting them into list.
         AccountDao accountDao = this.daoSession.getAccountDao();
 
         List<Account> listOfAccounts = accountDao.queryBuilder().
@@ -73,30 +64,37 @@ public class DBHelper
     }
 
 
-//    public List<String> getAllAccountStrings() throws UnsupportedEncodingException {
-//        //TODO: convert them into strings before putting them into list.
-//        AccountDao accountDao = this.daoSession.getAccountDao();
-//
-//        List<Account> listOfAccounts = accountDao.queryBuilder().
-//                orderAsc(AccountDao.Properties.Account_name).list();
-//
-//
-//        List<String> strings = new ArrayList<>();
-//
-//        Iterator<Account> iterator = listOfAccounts.iterator();
-//        while(iterator.hasNext()) {
-//            Account item = iterator.next();
-//
-//            strings.add(Converter.byteToString(item.getAccount_name()));
-//        }
-//
-//        return strings;
-//    }
-
-    /**TODO: Update account upon changes (and saves it back again to DB?) */
-    public void updateAccount(Account account)
+    //TODO needed?
+    public void closeDB()
     {
-
+        daoSession.getDatabase().close();
     }
+
+
+
+    //--------------------- Methods for masterPassword
+
+    public long insertNewMasterPassword(MasterPassword masterPassword)
+    {
+        MasterPasswordDao masterPasswordDao = this.daoSession.getMasterPasswordDao();
+
+        return masterPasswordDao.insert(masterPassword);
+    }
+
+    //TODO call delete methods in future settings activity, so that user can change the master password
+    public void deleteMasterPasswordById(Long id)
+    {
+        MasterPasswordDao masterPasswordDao = this.daoSession.getMasterPasswordDao();
+        MasterPassword masterPassword = masterPasswordDao.load(id);
+        masterPasswordDao.delete(masterPassword);
+    }
+
+    public void deleteMasterPassword(MasterPassword masterPassword)
+    {
+        MasterPasswordDao masterPasswordDao = this.daoSession.getMasterPasswordDao();
+        masterPasswordDao.delete(masterPassword);
+    }
+
+
 
 }

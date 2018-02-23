@@ -13,7 +13,7 @@ import org.greenrobot.greendao.database.Database;
 
 public class CredentialApplication extends Application
 {
-    private static final String TAG = "APPLICATION";
+    private static final String TAG = "CredentialApplication";
 
     public static final boolean ENCRYPTED = true;
 
@@ -31,7 +31,7 @@ public class CredentialApplication extends Application
         try {
             Log.d(TAG, "trying to open DB");
             DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this,"credentials-db");
-            //Database db = ENCRYPTED ? //encrypted : getwritabledb();
+//            Database db = ENCRYPTED ? encrypted : getWritableDb();
             Database db = helper.getWritableDb();
             daoSession = new DaoMaster(db).newSession();
             Log.d(TAG, "db successfully opened!");
@@ -42,6 +42,8 @@ public class CredentialApplication extends Application
 
     }
 
+
+
     public DaoSession getDaoSession()
     {
         return daoSession;
@@ -51,4 +53,7 @@ public class CredentialApplication extends Application
     {
         return singleton;
     }
+
+
+
 }

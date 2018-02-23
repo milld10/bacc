@@ -6,8 +6,6 @@ import android.security.keystore.KeyProperties;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import org.greenrobot.greendao.annotation.Convert;
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.security.InvalidAlgorithmParameterException;
@@ -20,7 +18,6 @@ import java.security.SecureRandom;
 import java.security.SignatureException;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
-import java.util.Arrays;
 
 import javax.crypto.AEADBadTagException;
 import javax.crypto.BadPaddingException;
@@ -47,6 +44,8 @@ public class EncryptionHelper
     private static final String TRANSFORMATION = "AES/GCM/NoPadding";
     private static final String ANDROID_KEY_STORE = "AndroidKeyStore";
 
+    private CredentialApplication application;
+
 
     KeyStore keyStore;
 
@@ -56,8 +55,6 @@ public class EncryptionHelper
             IOException, NoSuchProviderException, InvalidAlgorithmParameterException,
             UnrecoverableEntryException
     {
-        private CredentialApplication application;
-
         this.application = application;
 
 //        loadKeyStore(); //is done in generateKeyAfterCheck.

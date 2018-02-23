@@ -8,7 +8,6 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -19,12 +18,8 @@ import iaik.bacc.camilla.androidcredentialstore.CredentialApplication;
 import iaik.bacc.camilla.androidcredentialstore.R;
 import iaik.bacc.camilla.androidcredentialstore.database.DBHelper;
 import iaik.bacc.camilla.androidcredentialstore.models.Account;
-import iaik.bacc.camilla.androidcredentialstore.tools.Converter;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public class ShowAccountsActivity extends ListActivity
 {
@@ -37,13 +32,15 @@ public class ShowAccountsActivity extends ListActivity
 
     Toolbar mToolbar;
 
+    DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_accounts);
 
-        DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
+//        DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
         accountArrayList = (ArrayList<Account>) dbHelper.getAllAccounts();
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar_show_accounts);
@@ -145,7 +142,7 @@ public class ShowAccountsActivity extends ListActivity
     public void onResume()
     {
         super.onResume();
-        DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
+//        DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
         accountArrayList = (ArrayList<Account>) dbHelper.getAllAccounts();
 
         ArrayAdapter<Account> adapter = new ArrayAdapter<>(this,
@@ -154,4 +151,14 @@ public class ShowAccountsActivity extends ListActivity
  
         setListAdapter(adapter);
     }
+
+
+//    @Override
+//    public void onDestroy()
+//    {
+//        super.onDestroy();
+//        dbHelper.closeDB();
+//        Log.d(TAG, "db has been closed!");
+//
+//    }
 }
