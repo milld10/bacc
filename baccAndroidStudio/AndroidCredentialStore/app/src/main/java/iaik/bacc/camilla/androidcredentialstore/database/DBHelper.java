@@ -72,7 +72,7 @@ public class DBHelper
 
 
 
-    //--------------------- Methods for masterPassword
+    //--------------------- Methods for masterPassword:
 
     public long insertNewMasterPassword(MasterPassword masterPassword)
     {
