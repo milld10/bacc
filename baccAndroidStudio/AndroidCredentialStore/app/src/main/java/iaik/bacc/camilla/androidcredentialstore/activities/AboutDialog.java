@@ -50,7 +50,7 @@ public class AboutDialog extends Activity
 
         date = (TextView) findViewById(R.id.date);
 
-        date.setText("14.02.2018");
+        date.setText("11.03.2018");
 
     }
 }

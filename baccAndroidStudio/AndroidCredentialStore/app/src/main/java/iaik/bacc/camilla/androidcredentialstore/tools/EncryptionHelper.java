@@ -81,20 +81,16 @@ public class EncryptionHelper
     {
         loadKeyStore();
 
-        if(keyStore.containsAlias(alias))
-        {
+        if(keyStore.containsAlias(alias)) {
             Log.d(TAG, "secret key has already been generated: " + keyStore.getEntry(alias, null));
             //no need to get a key right now, key is used when en-/decrypting a text
 //            getKeyForEncrypt(alias);
         }
-        else
-        {
+        else {
             Log.d(TAG, "keystore did not contain key with alias, a new one will be created!");
             generateSecretKey();
         }
     }
-
-
 
     @NonNull
     private SecretKey generateSecretKey() throws NoSuchAlgorithmException,
@@ -150,15 +146,15 @@ public class EncryptionHelper
         byte[] iv = new byte[12];
 
         //creating my own secureRandom for IV throws the problem of an AEADBadTagException!
-//        SecureRandom secureRandom = new SecureRandom();
-//        secureRandom.nextBytes(iv);
-//        Log.d(TAG, "iv after secureRandom.nextBytes(): " + Converter.bytesToHex(iv));
+        SecureRandom secureRandom = new SecureRandom();
+        secureRandom.nextBytes(iv);
+        Log.d(TAG, "iv after secureRandom.nextBytes(): " + Converter.bytesToHex(iv));
 
         final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
 
         cipher.init(Cipher.ENCRYPT_MODE, getKey(ALIAS));
 
-        iv = cipher.getIV();
+//        iv = cipher.getIV();
         Log.d(TAG, "iv after cipher.getIV(): " + Converter.bytesToHex(iv));
 
         byte[] cipherText = cipher.doFinal(plainText);
@@ -210,8 +206,9 @@ public class EncryptionHelper
 
         cipher.init(Cipher.DECRYPT_MODE, getKey(ALIAS), gcmParameterSpec);
 
-        iv_decrypt = cipher.getIV();
-        Log.d(TAG, "iv_decrypt from cipher.getIV(): " + Converter.bytesToHex(iv_decrypt));
+        //TODO: is getIV() needed?
+//        iv_decrypt = cipher.getIV();
+//        Log.d(TAG, "iv_decrypt from cipher.getIV(): " + Converter.bytesToHex(iv_decrypt));
 
         byte[] plaintext = cipher.doFinal(cipherText);
         Log.d(TAG, "plaintext (in hex) is: " + Converter.bytesToHex(plaintext));

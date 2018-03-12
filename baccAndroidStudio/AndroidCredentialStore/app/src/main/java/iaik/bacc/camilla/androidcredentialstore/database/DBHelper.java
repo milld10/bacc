@@ -95,6 +95,13 @@ public class DBHelper
         masterPasswordDao.delete(masterPassword);
     }
 
+    public boolean isEntryInMasterPasswordTable()
+    {
+        MasterPasswordDao masterPasswordDao = this.daoSession.getMasterPasswordDao();
+        List<MasterPassword> masterPasswordList = masterPasswordDao.loadAll();
+
+        return masterPasswordList.isEmpty();
+    }
 
 
 }
