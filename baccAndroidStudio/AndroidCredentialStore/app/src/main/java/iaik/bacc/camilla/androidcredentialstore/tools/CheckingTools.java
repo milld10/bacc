@@ -35,6 +35,8 @@ public class CheckingTools
     }
 
 
+
+    //here
     public static boolean passwordOk(byte[] password)
     {
         if(password.length > 0)
