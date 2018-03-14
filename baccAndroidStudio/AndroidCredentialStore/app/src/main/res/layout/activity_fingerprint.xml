@@ -76,17 +76,17 @@
         android:text="@string/fingerprint"
         android:layout_below="@+id/button_access"
         android:layout_alignStart="@+id/masterPasswordLayout"
-        android:layout_marginTop="70dp" />
+        android:layout_marginTop="50dp" />
 
 
     <ImageView
-        android:layout_width="60dp"
+        android:layout_width="70dp"
         android:src="@drawable/ic_fingerprint_black_48px"
         android:tint="@color/blue2"
         android:layout_below="@id/textViewFingerprint"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
         android:id="@+id/img_fingerprint"/>
 
     <TextView
@@ -95,7 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/img_fingerprint"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginTop="35dp"/>
 
 
 

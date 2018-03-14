@@ -1,16 +1,18 @@
 
 
 $( document ).ready(function() {
-
-    createBluetoothButton();    
- 
+    createBluetoothButton();
 });
 
 
 
 function createBluetoothButton(){
-    var $bluetooth = $('<button id="bluetooth">Test Bluetooth</button>');
-    $bluetooth.appendTo($("body"));
+    //var $bluetooth = $('<button id="bluetooth">Test</button>');
+    //image not working!! why??
+    var $bluetooth = $('<button id="bluetooth"><img src="../img/icon16.png"></button>');
+    //$bluetooth.append('<img src="../img/icon16.png">');
+
+    $('input:PASSWORD').after($bluetooth);
 
 
     $('#bluetooth').click(function() {
@@ -25,7 +27,5 @@ function createBluetoothButton(){
         console.log(error); 
       });
     });
-
-
 
 }

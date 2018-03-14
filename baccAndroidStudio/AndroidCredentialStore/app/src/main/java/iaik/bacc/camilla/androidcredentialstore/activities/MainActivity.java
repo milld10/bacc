@@ -21,50 +21,13 @@ public class MainActivity extends Activity
 {
     private static final String TAG = "MainActivity";
 
-    private static final int SET_MASTER_PASSWORD_CODE = 10;
-
-    private DaoSession daoSession;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-//        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "masterpassword-db");
-//        Database db = helper.getWritableDb();
-//        daoSession = new DaoMaster(db).newSession();
-//
-//        DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
-//
-//        if(dbHelper.isEntryInMasterPasswordTable())
-//        {
-//            Log.d(TAG, "the master password table is empty!");
-//            Intent intent = new Intent(this, SetMasterPassword.class);
-//            startActivityForResult(intent, SET_MASTER_PASSWORD_CODE);
-//        }
-//        else
-//        {
-//            Log.d(TAG, "the master password table is not empty! " +
-//                    "don't show the set master password activity");
-//            //don't do anything, just show the normal main activity
-//
-//        }
-
     }
-
-
-//    //TODO: idk if the onactivityresult is needed??
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent intent)
-//    {
-//        if(requestCode == MainActivity.RESULT_OK)
-//        {
-//            Log.d(TAG, "a master password has been set, now showing the normal main activity");
-//        }
-//    }
-
 
     public void fingerprintActivity(View view)
     {
@@ -110,7 +73,7 @@ public class MainActivity extends Activity
     public void showSettingsActivity(View view)
     {
         //TODO: add functionality
-        //change the master password
+        //here the master password can be changed
     }
 
     public void showAboutActivity(View view)

@@ -52,7 +52,7 @@ public class DBHelper
     }
 
 
-    /** Returns all listed Apps (for the Adapter); objects of Account */
+    /** Returns all listed accounts (for the Adapter); objects of Account */
     public List<Account> getAllAccounts()
     {
         AccountDao accountDao = this.daoSession.getAccountDao();
@@ -64,15 +64,7 @@ public class DBHelper
     }
 
 
-    //TODO needed?
-    public void closeDB()
-    {
-        daoSession.getDatabase().close();
-    }
-
-
-
-    //--------------------- Methods for masterPassword:
+    //Methods for masterPassword: ------------------------------------------------------------------
 
     public long insertNewMasterPassword(MasterPassword masterPassword)
     {
@@ -94,14 +86,5 @@ public class DBHelper
         MasterPasswordDao masterPasswordDao = this.daoSession.getMasterPasswordDao();
         masterPasswordDao.delete(masterPassword);
     }
-
-    public boolean isEntryInMasterPasswordTable()
-    {
-        MasterPasswordDao masterPasswordDao = this.daoSession.getMasterPasswordDao();
-        List<MasterPassword> masterPasswordList = masterPasswordDao.loadAll();
-
-        return masterPasswordList.isEmpty();
-    }
-
 
 }

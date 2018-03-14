@@ -1,40 +1,26 @@
 {
   "manifest_version": 2,
-  "name": "Credential Store Extension",
+  "name": "Credential Store Bluetooth Component",
   "version": "1.0",
-  "description": "Addition to the Credential Store Application",
-  "icons": {
-    "16": "img/icon16.png",
-    "48": "img/icon48.png",
-    "128": "img/icon128.png"
-  },
-
-  //instead of page_action because it should work for all pages
-  "browser_action": {
-    "default_title": "Credential Store Extension",
-    "default_popup": "popup.html",
-    "default_icon": "img/icon16.png"
-  },
-
-  "background": {
-    "scripts": ["js/background.js"],
-
-    //ONLY difference from a background page, now its an event page
-    "persistent": false
-  },
-
-  //needed for manipulating the DOM and inserting credential into login site
-  "content_scripts": [
-    {
-      "matches": ["https://*/*"],
-      "js": ["js/content.js", "js/jquery-3.2.1.min.js"]
-    }
+  "description": "Addition to the Android Credential Store Application",
+  "permissions": [
+      "tabs", "<all_urls>"
   ],
 
 
-  "permissions": [
-    "tabs"
-  ]
+  "browser_action":
+  {
+    "default_icon": "img/icon16.png"
+  },
 
-
+  //needed for manipulating the DOM and inserting button into login site
+  "content_scripts": [
+  {
+      "matches": [
+          "http://*/*",
+          "https://*/*"
+      ],
+      "js": ["scripts/jquery-3.3.1.js", "scripts/content.js"],
+      "run_at": "document_end" // pay attention to this line; button is not at end of doc, should be next to input type password!
+  }]
 }

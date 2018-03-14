@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED"/>
 
+
     <application
         android:name="iaik.bacc.camilla.androidcredentialstore.CredentialApplication"
         android:allowBackup="true"

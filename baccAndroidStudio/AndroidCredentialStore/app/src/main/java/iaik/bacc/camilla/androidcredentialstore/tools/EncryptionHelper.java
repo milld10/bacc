@@ -115,7 +115,8 @@ public class EncryptionHelper
         {
             SpecBuilder.setKeySize(128)
                     .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
-                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE);
+                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                    .setRandomizedEncryptionRequired(false);
         }
 
         keyGenerator.init(SpecBuilder.build());
@@ -140,21 +141,18 @@ public class EncryptionHelper
     {
         Log.d(TAG, "encrypt method has been called!");
 
-//        Log.d(TAG, "plaintext (in String) is: "+ new String(plainText, "UTF-8"));
-//        Log.d(TAG, "plaintext (in hex) is: "+ Converter.bytesToHex(plainText));
-
         byte[] iv = new byte[12];
 
-        //creating my own secureRandom for IV throws the problem of an AEADBadTagException!
+        //creating my own secureRandom for IV
         SecureRandom secureRandom = new SecureRandom();
         secureRandom.nextBytes(iv);
         Log.d(TAG, "iv after secureRandom.nextBytes(): " + Converter.bytesToHex(iv));
 
         final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
 
-        cipher.init(Cipher.ENCRYPT_MODE, getKey(ALIAS));
+        GCMParameterSpec spec = new GCMParameterSpec(AUTH_TAG_LEN, iv);
+        cipher.init(Cipher.ENCRYPT_MODE, getKey(ALIAS), spec);
 
-//        iv = cipher.getIV();
         Log.d(TAG, "iv after cipher.getIV(): " + Converter.bytesToHex(iv));
 
         byte[] cipherText = cipher.doFinal(plainText);
@@ -206,10 +204,6 @@ public class EncryptionHelper
 
         cipher.init(Cipher.DECRYPT_MODE, getKey(ALIAS), gcmParameterSpec);
 
-        //TODO: is getIV() needed?
-//        iv_decrypt = cipher.getIV();
-//        Log.d(TAG, "iv_decrypt from cipher.getIV(): " + Converter.bytesToHex(iv_decrypt));
-
         byte[] plaintext = cipher.doFinal(cipherText);
         Log.d(TAG, "plaintext (in hex) is: " + Converter.bytesToHex(plaintext));
 
@@ -224,6 +218,4 @@ public class EncryptionHelper
         return ((KeyStore.SecretKeyEntry) keyStore.getEntry(alias, null)).getSecretKey();
     }
 
-
-    //TODO return new String(cipher.doFinal(encryptedData), "UTF-8"); function for en/decryption of Strings?
 }
