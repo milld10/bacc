@@ -11,11 +11,11 @@ function createBluetoothButton(){
     //var $bluetooth = $('<button id="bluetooth"> </button>');
     //$("bluetooth").append('<img src="../img/icon16.png">');
 
-    var $bluetooth = $('<button id="bluetooth">BT</button>');
+    let $bluetooth = $('<button id="bluetooth">BT</button>');
 
     $('input:password').before($bluetooth);
 
-    var $test = $('<button id="testbtn">Test</button>');
+    let $test = $('<button id="testbtn">Test</button>');
 
     $('input:password').after($test);
 
@@ -34,15 +34,31 @@ function createBluetoothButton(){
     });
     */
 
+/*    $('#bluetooth').click(function() {
+    navigator.bluetooth.requestDevice([acceptAllDevices[true]])
+        .then(function(bluetoothDevice){
+            console.log("Bluetooth working!");
+        })
+});*/
+
+    let options = {};
+    options.acceptAllDevices = true;
+
     $('#bluetooth').click(function() {
-        navigator.bluetooth.requestDevice([acceptAllDevices[true]])
-            .then(function(bluetoothDevice){
-                console.log("Bluetooth working!");
-            })
+        navigator.bluetooth.requestDevice(options)
+        .then(device => {
+            alert("BLUETOOTH!");
+            log('connected!');
+        })
+        .catch(error => {
+            log("EEEEEEERRRRRRRRRRRRORRRRRRR: " + error);
+        });
+
     });
 
     $('#testbtn').click(function() {
         alert("HEEEEEEEERE!!!!!!!!!!!!!!!!!!!!")
     });
+
 
 }
