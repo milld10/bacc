@@ -28,7 +28,10 @@
         android:id="@+id/lin_layout"
         android:layout_below="@+id/toolbar_show_available_accounts"
         android:weightSum="1"
-        android:layout_margin="10dp">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -36,23 +39,34 @@
             android:id="@+id/notification_bluetooth"
             android:text="@string/hint_bluetoothOFF"
             android:textSize="20sp"
-            android:layout_weight="0.8"/>
+            android:layout_weight="0.8"
+            android:layout_gravity="center"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/bluetooth_button_onoff"
             android:text="@string/button_bluetooth"
-            android:layout_weight="0.2"/>
+            android:layout_weight="0.2"
+            android:layout_gravity="right"/>
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_below="@id/lin_layout"
+        android:layout_height="1dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/blue2"/>
 
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/lin_layout">
+        android:layout_below="@+id/line1">
     </ListView>
 
 </RelativeLayout>

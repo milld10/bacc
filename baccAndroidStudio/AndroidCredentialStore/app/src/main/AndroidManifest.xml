@@ -32,6 +32,7 @@
             </intent-filter>
         </activity>
 
+        <!--
         <activity
             android:name="iaik.bacc.camilla.androidcredentialstore.activities.BluetoothActivity"
             android:label="@string/bluetooth">
@@ -41,6 +42,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        -->
 
         <activity
             android:name="iaik.bacc.camilla.androidcredentialstore.activities.ShowAvailableAccountsActivity"
