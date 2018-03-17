@@ -54,7 +54,6 @@ public class ShowAccountsActivity extends ListActivity
 
 
         setListAdapter(adapter);
-        //what does notifyDataSetChanged do??
         adapter.notifyDataSetChanged();
 
 
@@ -67,11 +66,7 @@ public class ShowAccountsActivity extends ListActivity
                 showAddCredentialActivity(view);
             }
         });
-
-
     }
-
-    //onCreate end
 
 
     @Override

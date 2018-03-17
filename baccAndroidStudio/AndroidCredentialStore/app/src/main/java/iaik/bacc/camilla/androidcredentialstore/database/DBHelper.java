@@ -63,6 +63,20 @@ public class DBHelper
         return listOfAccounts;
     }
 
+    public List<Account> getAvailableAccounts()
+    {
+        //TODO: now this is the same method than getAllAccount!
+        //need to be changes, so that only account from the given website are shown.
+
+        AccountDao accountDao = this.daoSession.getAccountDao();
+
+        List<Account> listOfAccounts = accountDao.queryBuilder().
+                orderAsc(AccountDao.Properties.Account_name).list();
+
+        return listOfAccounts;
+
+    }
+
 
     //Methods for masterPassword: ------------------------------------------------------------------
 

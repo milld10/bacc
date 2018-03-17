@@ -3,19 +3,11 @@ package iaik.bacc.camilla.androidcredentialstore.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.greenrobot.greendao.database.Database;
-
-import iaik.bacc.camilla.androidcredentialstore.CredentialApplication;
 import iaik.bacc.camilla.androidcredentialstore.R;
-import iaik.bacc.camilla.androidcredentialstore.database.DBHelper;
-import iaik.bacc.camilla.androidcredentialstore.models.DaoMaster;
-import iaik.bacc.camilla.androidcredentialstore.models.DaoSession;
 
 public class MainActivity extends Activity
 {
@@ -37,7 +29,7 @@ public class MainActivity extends Activity
 
     public void showBluetoothActivity(View view)
     {
-        Intent intent = new Intent(this, BluetoothActivity.class);
+        Intent intent = new Intent(this, ShowAvailableAccountsActivity.class);
         startActivity(intent);
     }
 
