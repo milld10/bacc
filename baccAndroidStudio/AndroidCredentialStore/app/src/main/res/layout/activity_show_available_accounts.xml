@@ -48,7 +48,7 @@
             android:id="@+id/bluetooth_button_onoff"
             android:text="@string/button_bluetooth"
             android:layout_weight="0.2"
-            android:layout_gravity="right"/>
+            android:layout_gravity="end"/>
 
     </LinearLayout>
 
