@@ -3,12 +3,17 @@ package iaik.bacc.camilla.androidcredentialstore.activities;
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 
+import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,6 +21,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -39,6 +45,8 @@ public class ShowAvailableAccountsActivity extends ListActivity
 
     private BluetoothAdapter mBluetoothAdapter;
 
+    Context mContext;
+
     Toolbar mToolbar;
 
     TextView bluetooth_notification;
@@ -47,6 +55,48 @@ public class ShowAvailableAccountsActivity extends ListActivity
     ArrayList<Account> accountArrayList = new ArrayList<>();
 
     DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
+
+
+
+
+    public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
+    public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
+
+    private TextView mConnectionState;
+    private TextView mDataField;
+    private String mDeviceName;
+    private String mDeviceAddress;
+    private ExpandableListView mGattServicesList;
+    private BluetoothLeService mBluetoothLeService;
+    private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
+            new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
+    private boolean mConnected = false;
+    private BluetoothGattCharacteristic mNotifyCharacteristic;
+
+    private final String LIST_NAME = "NAME";
+    private final String LIST_UUID = "UUID";
+
+
+
+    // Code to manage Service lifecycle.
+    private final ServiceConnection mServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder service) {
+            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
+//            if (!mBluetoothLeService.initialize()) {
+//                Log.e(TAG, "Unable to initialize Bluetooth");
+//                finish();
+//            }
+//            // Automatically connects to the device upon successful start-up initialization.
+//            mBluetoothLeService.connect(mDeviceAddress);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mBluetoothLeService = null;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -64,7 +114,21 @@ public class ShowAvailableAccountsActivity extends ListActivity
         bluetooth_notification = (TextView) findViewById(R.id.notification_bluetooth);
         bluetooth_button = (Button) findViewById(R.id.bluetooth_button_onoff);
 
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+
+
+
+
+
+        //******** android dev site
+        //        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        final BluetoothManager bluetoothManager =
+                (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+
+        mBluetoothAdapter = bluetoothManager.getAdapter();
+
+
 
         final ArrayAdapter<Account> adapter = new ArrayAdapter<Account>(this,
                 android.R.layout.simple_list_item_1,
@@ -73,11 +137,6 @@ public class ShowAvailableAccountsActivity extends ListActivity
         setListAdapter(adapter);
         adapter.notifyDataSetChanged();
 
-
-        final BluetoothManager bluetoothManager =
-                (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-
-        mBluetoothAdapter = bluetoothManager.getAdapter();
 
 
         if(mBluetoothAdapter.isEnabled())
@@ -96,6 +155,7 @@ public class ShowAvailableAccountsActivity extends ListActivity
         });
 
     }
+
 
     @Override
     protected void onStart()
@@ -124,6 +184,8 @@ public class ShowAvailableAccountsActivity extends ListActivity
 
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivity(enableIntent);
+
+            mBluetoothAdapter.startDiscovery();
 
             IntentFilter BTIntent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
             registerReceiver(mBroadcastReceiver1, BTIntent);
@@ -196,6 +258,11 @@ public class ShowAvailableAccountsActivity extends ListActivity
                 accountArrayList);
 
         setListAdapter(adapter);
+
+//        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE))
+//        {
+//            finish();
+//        }
     }
 
 

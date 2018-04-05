@@ -14,10 +14,10 @@ function createBluetoothButton(){
     let $bluetooth = $('<button id="bluetooth">BT</button>');
 
     $('input:password').before($bluetooth);
-
-    let $test = $('<button id="testbtn">Test</button>');
-
-    $('input:password').after($test);
+    //
+    // let $test = $('<button id="testbtn">Test</button>');
+    //
+    // $('input:password').after($test);
 
 
     /*
@@ -25,11 +25,11 @@ function createBluetoothButton(){
       navigator.bluetooth.requestDevice({
         acceptAllDevices: true
       })
-      .then(device => { 
+      .then(device => {
         alert("Bluetooth working!")
       })
-      .catch(error => { 
-        console.log(error); 
+      .catch(error => {
+        console.log(error);
       });
     });
     */
@@ -41,24 +41,15 @@ function createBluetoothButton(){
         })
 });*/
 
-    let options = {};
-    options.acceptAllDevices = true;
+    // let options = {};
+    // options.acceptAllDevices = true;
 
     $('#bluetooth').click(function() {
-        // navigator.bluetooth.requestDevice(options)
-        // .then(device => {
-        //     alert("BLUETOOTH!");
-        //     console.log('connected!');
-        // })
-        // .catch(error => {
-        //     console.log("EEEEEEERRRRRRRRRRRRORRRRRRR: " + error);
-        // });
-
-
-
-
-
-        navigator.bluetooth.requestDevice({ filters: [{ services: ['battery_service'] }] })
+        navigator.bluetooth.requestDevice({
+            filters: [{ services: ['battery_service'] }]
+            // acceptAllDevices: true
+            // optionalServices: ['battery_service']
+        })
             .then(device => {
                 // Human-readable name of the device.
                 console.log(device.name);
@@ -66,9 +57,27 @@ function createBluetoothButton(){
                 // Attempts to connect to remote GATT Server.
                 return device.gatt.connect();
             })
-            .catch(error => { console.log("HELP ERROR: " + error);; });
+            .then(server => {
+                return server.getPrimaryService('battery_service');
+            })
+            .then(service => {
+                return service.getCharacteristic('battery_level');
+            })
+            .then(characteristic => {
+                return characteristic.readValue();
+            })
+            .then(value => {
+                console.log('Battery percentage is ' + value.getUint8(0));
+            })
+            .catch(error => { console.log("HELP ERROR: " + error); });
 
     });
+
+
+
+
+
+
 
     $('#testbtn').click(function() {
         alert("HEEEEEEEERE!!!!!!!!!!!!!!!!!!!!")

@@ -34,7 +34,7 @@
 
         <!--
         <activity
-            android:name="iaik.bacc.camilla.androidcredentialstore.activities.BluetoothActivity"
+            android:naiaik.bacc.camilla.androidcredentialstore.activities.BluetoothLeServiceevity"
             android:label="@string/bluetooth">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

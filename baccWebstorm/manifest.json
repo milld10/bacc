@@ -4,8 +4,15 @@
   "version": "1.1",
   "description": "Addition to the Android Credential Store Application",
   "permissions": [
+//    "<all_urls>"
       "tabs", "<all_urls>"
   ],
+
+//  "app": {
+//    "background": {
+//      "scripts": ["background.js", "scripts/jquery-3.3.1.js"]
+//    }
+//  },
 
   "icons": {
     "16": "img/icon16.png",
@@ -22,7 +29,7 @@
     "default_icon": "img/icon16.png"
   },
 
-  //needed for manipulating the DOM and inserting button into login site
+//  needed for manipulating the DOM and inserting button into login site
   "content_scripts": [
   {
       "matches": [
@@ -30,6 +37,10 @@
           "https://*/*"
       ],
       "js": ["scripts/jquery-3.3.1.js", "content.js"],
-      "run_at": "document_end" // pay attention to this line; button is not at end of doc, should be next to input type password!
+      "run_at": "document_end"
   }]
+
+//  "bluetooth":{
+//    "uuids": [ "180D", "1809", "180F", "180A" ]
+//  }
 }

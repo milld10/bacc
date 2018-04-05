@@ -67,6 +67,7 @@ public class DBHelper
     {
         //TODO: now this is the same method than getAllAccount!
         //need to be changes, so that only account from the given website are shown.
+        //or show all the usernames from account == tugonline.com for example
 
         AccountDao accountDao = this.daoSession.getAccountDao();
 
