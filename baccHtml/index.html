@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Sample illustrating the use of Web Bluetooth / Device Info.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Web Bluetooth / Device Info Sample</title>
+</head>
+
+<body>
+    <h1>Android Bluetooth Credential Store</h1>
+    <form>
+        Username:<br>
+        <input type="text" id="username" name="username"><br>
+        User password:<br>
+        <input type="password" id="password" name="psw">
+        <button id="bluetooth">Connect with Android App</button>
+    </form>
+
+
+    <script>
+
+
+    function onButtonClick() {
+
+
+        navigator.bluetooth.requestDevice({
+                filters: [{ services: ['battery_service'] }]
+                // acceptAllDevices: true
+                // optionalServices: ['battery_service']
+            })
+            .then(device => {
+                // Human-readable name of the device.
+                console.log(device.name);
+
+                // Attempts to connect to remote GATT Server.
+                return device.gatt.connect();
+            })
+            .then(server => {
+                return server.getPrimaryService('battery_service');
+            })
+            .then(service => {
+                return service.getCharacteristic('battery_level');
+            })
+            .then(characteristic => {
+                return characteristic.readValue();
+            })
+            .then(value => {
+                console.log('Battery percentage is ' + value.getUint8(0));
+                document.getElementById("username").value = value.getUint8(0);
+                document.getElementById("password").value = value.getUint8(0);
+            })
+            .catch(error => { console.log("HELP ERROR: " + error); });
+
+    }
+    </script>
+    
+    
+    <script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        onButtonClick();
+
+    });
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" />
+</body>
+
+</html>

@@ -7,17 +7,11 @@ $( document ).ready(function() {
 
 
 function createBluetoothButton(){
-    //image not working!! why??
-    //var $bluetooth = $('<button id="bluetooth"> </button>');
-    //$("bluetooth").append('<img src="../img/icon16.png">');
+    // image not working, check again
+    // let $bluetooth = $('<button id="bluetooth"> <img src="../img/icon16.png"> </button>');
 
     let $bluetooth = $('<button id="bluetooth">BT</button>');
-
     $('input:password').before($bluetooth);
-    //
-    // let $test = $('<button id="testbtn">Test</button>');
-    //
-    // $('input:password').after($test);
 
 
     /*
@@ -72,16 +66,5 @@ function createBluetoothButton(){
             .catch(error => { console.log("HELP ERROR: " + error); });
 
     });
-
-
-
-
-
-
-
-    $('#testbtn').click(function() {
-        alert("HEEEEEEEERE!!!!!!!!!!!!!!!!!!!!")
-    });
-
 
 }
