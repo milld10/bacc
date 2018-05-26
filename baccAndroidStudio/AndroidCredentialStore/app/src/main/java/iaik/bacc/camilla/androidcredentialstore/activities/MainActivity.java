@@ -29,7 +29,7 @@ public class MainActivity extends Activity
 
     public void showBluetoothActivity(View view)
     {
-        Intent intent = new Intent(this, ShowAvailableAccountsActivity.class);
+        Intent intent = new Intent(this, PeripheralActivity.class);
         startActivity(intent);
     }
 

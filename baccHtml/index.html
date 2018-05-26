@@ -22,30 +22,40 @@
 
     <script>
 
+    const customServiceUUID = '0000a000-0000-1000-8000-00805f9b34fb';
+    const characteristicUsernameUUID = "0000a001-0000-1000-8000-00805f9b34fb";
+    const characteristicPasswordUUID = "0000a002-0000-1000-8000-00805f9b34fb";
 
     function onButtonClick() {
-
-
         navigator.bluetooth.requestDevice({
-                filters: [{ services: ['battery_service'] }]
-                // acceptAllDevices: true
-                // optionalServices: ['battery_service']
+                filters: [{
+                  services: [customServiceUUID]
+                }]
             })
             .then(device => {
                 // Human-readable name of the device.
-                console.log(device.name);
+                console.log("Device name: " + device.name);
 
                 // Attempts to connect to remote GATT Server.
                 return device.gatt.connect();
+                console.log("connected to gatt!");
             })
             .then(server => {
-                return server.getPrimaryService('battery_service');
+                console.log("before getting primary service");
+                return server.getPrimaryService(customServiceUUID);
+                
             })
             .then(service => {
-                return service.getCharacteristic('battery_level');
+                console.log("getting characteristics");
+                service.getCharacteristic(characteristicUsernameUUID);
+                service.getCharacteristic(characteristicPasswordUUID);
             })
             .then(characteristic => {
-                return characteristic.readValue();
+                characteristic.addEventListener('characteristicvaluechanged', handleCharacteristicValueChanged)
+                let data = event.target.value;
+
+                //characteristic.readValue();
+
             })
             .then(value => {
                 console.log('Battery percentage is ' + value.getUint8(0));
@@ -55,6 +65,28 @@
             .catch(error => { console.log("HELP ERROR: " + error); });
 
     }
+    
+    //when device gets disconneted
+    navigator.bluetooth.requestDevice({ 
+                filters: [{
+                  services: [customServiceUUID]
+                }] })
+    .then(device => {
+      // Set up event listener for when device gets disconnected.
+      device.addEventListener('gattserverdisconnected', onDisconnected);
+
+      // Attempts to connect to remote GATT Server.
+      return device.gatt.connect();
+    })
+    .then(server => { /* ... */ })
+    .catch(error => { console.log(error); });
+
+  
+    function onDisconnected(event) {
+      let device = event.target;
+      console.log('Device ' + device.name + ' is disconnected.');
+    }
+    
     </script>
     
     

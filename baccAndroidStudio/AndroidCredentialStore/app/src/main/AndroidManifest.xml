@@ -45,7 +45,7 @@
         -->
 
         <activity
-            android:name="iaik.bacc.camilla.androidcredentialstore.activities.ShowAvailableAccountsActivity"
+            android:name="iaik.bacc.camilla.androidcredentialstore.activities.PeripheralActivity"
             android:label="@string/available_accounts">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

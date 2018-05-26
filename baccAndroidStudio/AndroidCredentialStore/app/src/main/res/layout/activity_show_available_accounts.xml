@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.ShowAvailableAccountsActivity"
+    tools:context=".activities.PeripheralActivity"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_alignParentTop="true">
 
@@ -52,15 +52,34 @@
 
     </LinearLayout>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/status_layout"
+        android:orientation="vertical"
+        android:layout_below="@id/lin_layout"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/advertise_status"
+            android:textSize="12sp"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
     <View
         android:id="@+id/line1"
         android:layout_width="match_parent"
-        android:layout_below="@id/lin_layout"
+        android:layout_below="@+id/status_layout"
         android:layout_height="1dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:background="@color/blue2"/>
-
 
     <ListView
         android:id="@android:id/list"
