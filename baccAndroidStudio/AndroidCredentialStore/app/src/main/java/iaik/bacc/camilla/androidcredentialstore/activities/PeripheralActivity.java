@@ -39,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.KeyStoreException;
@@ -138,7 +139,7 @@ public class PeripheralActivity extends ListActivity
         bluetooth_button = (Button) findViewById(R.id.bluetooth_button_onoff);
 
         mAdvStatus = (TextView) findViewById(R.id.advertise_status);
-        mAdvStatus.setText("Not yet advertising!");
+        mAdvStatus.setText(R.string.status_click_to_advertise);
 
         mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = mBluetoothManager.getAdapter();
@@ -200,18 +201,24 @@ public class PeripheralActivity extends ListActivity
         mBleCustomServiceFragment = new BluetoothLeService();
 
         //** Encryption of data before advertising it.
-        byte[] encrypted_username = new byte[0];
-        byte[] encrypted_password = new byte[0];
+        byte[] decrypted_username = new byte[0];
+        byte[] decrypted_password = new byte[0];
 
         try {
             final EncryptionHelper encryptionHelper =
                     new EncryptionHelper(CredentialApplication.getInstance());
-            Log.d(TAG, "new encryptionHelper object has been generated (within try/catch");
+            Log.d(TAG, "new encryptionHelper object has been generated (within try/catch)");
 
             //Decryption of data retrieved from DB
-            encrypted_username = encryptionHelper.decrypt(account.getUsername());
-            encrypted_password = encryptionHelper.decrypt(account.getPassword());
+            decrypted_username = encryptionHelper.decrypt(account.getUsername());
+            decrypted_password = encryptionHelper.decrypt(account.getPassword());
 
+            mBleCustomServiceFragment.setCharacteristics(decrypted_username, decrypted_password);
+
+            Log.d(TAG, "Decrypted data: username: " +
+                    Converter.byteToString(decrypted_username) +
+                    " | password: " +
+                    Converter.byteToString(decrypted_password));
 
         } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException | IOException |
                 NoSuchProviderException | InvalidAlgorithmParameterException | BadPaddingException |
@@ -220,7 +227,6 @@ public class PeripheralActivity extends ListActivity
             e.printStackTrace();
         }
 
-        mBleCustomServiceFragment.setCharacteristics(encrypted_username, encrypted_password);
 
         mBluetoothGattService = mBleCustomServiceFragment.getBluetoothGattService();
 

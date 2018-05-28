@@ -4,7 +4,11 @@ import android.app.Fragment;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.os.ParcelUuid;
+
+import java.io.UnsupportedEncodingException;
 import java.util.UUID;
+
+import iaik.bacc.camilla.androidcredentialstore.tools.Converter;
 
 /**
  * This class represents the implementation of a Service for the Gatt Service of BLE.
@@ -74,9 +78,19 @@ public class BluetoothLeService extends Fragment
     }
 
     public void setCharacteristics(byte[] username, byte[] password)
+            throws UnsupportedEncodingException
     {
-        mUsernameCharacteristic.setValue(username);
-        mPasswordCharacteristic.setValue(password);
+
+        try
+        {
+            //TODO converted to strings, maybe better for JS .readValue() method?
+            mUsernameCharacteristic.setValue(Converter.byteToString(username));
+            mPasswordCharacteristic.setValue(Converter.byteToString(password));
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
+        }
 
     }
 

@@ -38,10 +38,9 @@
 
                 // Attempts to connect to remote GATT Server.
                 return device.gatt.connect();
-                console.log("connected to gatt!");
             })
             .then(server => {
-                console.log("before getting primary service");
+                console.log("getting primary service");
                 return server.getPrimaryService(customServiceUUID);
                 
             })
@@ -52,11 +51,8 @@
                 return service;
             })
             .then(characteristic => {
-                //characteristic.addEventListener('characteristicvaluechanged', handleCharacteristicValueChanged)
-                //let data = event.target.value;
-//                characteristic.readValue();
-            
-                return characteristic;
+                console.log("reading value of characteristics");
+                return characteristic.readValue();
 
             })
             .then(value => {
@@ -72,25 +68,25 @@
     }
     
     //when device gets disconneted
-    navigator.bluetooth.requestDevice({ 
-                filters: [{
-                  services: [customServiceUUID]
-                }] })
-    .then(device => {
-      // Set up event listener for when device gets disconnected.
-      device.addEventListener('gattserverdisconnected', onDisconnected);
-
-      // Attempts to connect to remote GATT Server.
-      return device.gatt.connect();
-    })
-    .then(server => { /* ... */ })
-    .catch(error => { console.log(error); });
-
-  
-    function onDisconnected(event) {
-      let device = event.target;
-      console.log('Device ' + device.name + ' is disconnected.');
-    }
+//    navigator.bluetooth.requestDevice({
+//                filters: [{
+//                  services: [customServiceUUID]
+//                }] })
+//    .then(device => {
+//      // Set up event listener for when device gets disconnected.
+//      device.addEventListener('gattserverdisconnected', onDisconnected);
+//
+//      // Attempts to connect to remote GATT Server.
+//      return device.gatt.connect();
+//    })
+//    .then(server => { /* ... */ })
+//    .catch(error => { console.log(error); });
+//
+//
+//    function onDisconnected(event) {
+//      let device = event.target;
+//      console.log('Device ' + device.name + ' is disconnected.');
+//    }
     
     </script>
     

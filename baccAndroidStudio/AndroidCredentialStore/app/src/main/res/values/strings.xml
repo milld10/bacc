@@ -41,7 +41,8 @@
         discoverable.
     </string>
 
-    <!-- Avertising -->
+    <!-- Advertising -->
+    <string name="status_click_to_advertise">"Not yet Advertising. Select credential to advertise."</string>
     <string name="status_advertising">Now Advertising, please keep screen on</string>
     <string name="status_notAdvertising">Not Advertising</string>
     <string name="status_advDataTooLarge">Not Advertising. Advertisement is larger than 31 bytes.</string>
