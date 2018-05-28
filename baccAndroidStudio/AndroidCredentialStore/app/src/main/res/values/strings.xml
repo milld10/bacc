@@ -23,24 +23,26 @@
     <string name="about_institute">Institute of Applied Information Processing and Communications</string>
     <string name="about_project">Android Credential Manager</string>
     <string name="about_description">The motivation of this project is to provide availability and
-        safety of user credentials by using a mobile password manager. Is provides a secure transfer
+        safety of user credentials by using a mobile password manager. It provides a secure transfer
         environment through Bluetooth without relying on cloud services. </string>
 
     <!-- Bluetooth -->
-    <string name="bluetoothNotSupported">BLE Peripheral Simulator closing: Bluetooth Not Supported</string>
-    <string name="bluetoothNotEnabled">BLE Peripheral Simulator closing: Bluetooth is Not Enabled</string>
-    <string name="bluetoothAdvertisingNotSupported">BLE Peripheral Simulator closing: BLE Advertising Not Supported</string>
+    <string name="bluetoothNotSupported">Bluetooth Not Supported</string>
+    <string name="bluetoothNotEnabled">Bluetooth is Not Enabled</string>
+    <string name="bluetoothAdvertisingNotSupported">BLE Advertising Not Supported</string>
+    <string name="hint_bluetoothOFF">Bluetooth is turned off.</string>
+    <string name="hint_bluetoothON">Bluetooth is turned on.</string>
 
     <!-- Connection -->
     <string name="label_connectionStatus">Connection Status</string>
     <string name="status_devicesConnected">Devices Connected:</string>
     <string name="status_errorWhenConnecting">An error occurred when connecting to a device. Error Code</string>
-    <string name="status_noLeAdv">LE Advertising is not available. Please pair with a device to be
+    <string name="status_noLeAdv">Advertising is not available. Please pair with a device to be
         discoverable.
     </string>
 
     <!-- Avertising -->
-    <string name="status_advertising">Advertising (Keep Screen On)</string>
+    <string name="status_advertising">Now Advertising, please keep screen on</string>
     <string name="status_notAdvertising">Not Advertising</string>
     <string name="status_advDataTooLarge">Not Advertising. Advertisement is larger than 31 bytes.</string>
     <string name="status_advFeatureUnsupported">Not Advertising. Advertising not supported.</string>
@@ -48,17 +50,18 @@
     <string name="status_advTooManyAdvertisers">Not Advertising. No advertising instance is available.</string>
 
 
-    <string name="title_activity_web_logins">Web Logins</string>
+    <!-- Buttons -->
     <string name="button_save">SAVE</string>
     <string name="button_delete">DELETE</string>
     <string name="button_bluetooth">ON/OFF</string>
     <string name="button_discoverable">enable discoverable</string>
     <string name="button_access">access</string>
+
+
+    <string name="title_activity_web_logins">Web Logins</string>
     <string name="hint_username">Insert a username</string>
     <string name="hint_password">Insert a password</string>
     <string name="hint_account">Insert a website</string>
-    <string name="hint_bluetoothOFF">Bluetooth is turned off.</string>
-    <string name="hint_bluetoothON">Bluetooth is turned on.</string>
     <string name="dialog_delete_title">Delete</string>
     <string name="dialog_delete_message">Do you want to delete this account?</string>
     <string name="delete">DELETE</string>
@@ -68,10 +71,10 @@
 
     <string name="setMasterPassword">Set a master password</string>
 
-
     <string name="instructions">Place your fingertip on the Home button to verify your identity
         </string>
 
+    <!-- Fingerprint -->
     <string name="fpactivity_hardwaredetected">Your device does not support fingerprint
         authentication.</string>
     <string name="fpactivity_permission">Fingerprint authentication permission is not enabled.</string>

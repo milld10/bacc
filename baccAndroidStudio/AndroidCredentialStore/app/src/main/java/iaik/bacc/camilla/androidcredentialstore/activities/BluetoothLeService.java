@@ -35,6 +35,7 @@ public class BluetoothLeService extends Fragment
     private BluetoothGattCharacteristic mPasswordCharacteristic;
 
     //Constructor of BLEService
+    //TODO hand over parameters of username and password to create the BLEService?
     public BluetoothLeService()
     {
         mUsernameCharacteristic = new BluetoothGattCharacteristic(USERNAME_UUID,
@@ -44,7 +45,6 @@ public class BluetoothLeService extends Fragment
         mPasswordCharacteristic = new BluetoothGattCharacteristic(PASSWORD_UUID,
                 BluetoothGattCharacteristic.PROPERTY_READ,
                 BluetoothGattCharacteristic.PERMISSION_READ);
-
 
         mUsernameCharacteristic.addDescriptor(PeripheralActivity.
                 getClientCharacteristicConfigurationDescriptor());
@@ -62,6 +62,7 @@ public class BluetoothLeService extends Fragment
         //adding 2 characteristics: username and password
         mCustomService.addCharacteristic(mPasswordCharacteristic);
         mCustomService.addCharacteristic(mUsernameCharacteristic);
+
     }
 
     public BluetoothGattService getBluetoothGattService() {
@@ -70,6 +71,13 @@ public class BluetoothLeService extends Fragment
 
     public ParcelUuid getServiceUUID() {
         return new ParcelUuid(CUSTOM_SERVICE_UUID);
+    }
+
+    public void setCharacteristics(byte[] username, byte[] password)
+    {
+        mUsernameCharacteristic.setValue(username);
+        mPasswordCharacteristic.setValue(password);
+
     }
 
 
@@ -90,37 +98,6 @@ public class BluetoothLeService extends Fragment
     {
         throw new UnsupportedOperationException("Method notificationsEnabled not overridden");
     }
-
-
-
-    //*************************those methods probably not needed anymore
-    //TODO delete afterwards
-    // was for "extends Service"
-
-//    public class LocalBinder extends Binder {
-//        BluetoothLeService getService() {
-//            return BluetoothLeService.this;
-//        }
-//    }
-//
-//    @Override
-//    public IBinder onBind(Intent intent) {
-//        return mBinder;
-//    }
-//
-//
-//
-//    @Override
-//    public boolean onUnbind(Intent intent) {
-//        // After using a given device, you should make sure that BluetoothGatt.close() is called
-//        // such that resources are cleaned up properly.  In this particular example, close() is
-//        // invoked when the UI is disconnected from the Service.
-//        //TODO check if bluetoothgatt is needed?
-////        mBluetoothGatt.close();
-//        return super.onUnbind(intent);
-//    }
-//
-//    private final IBinder mBinder = new LocalBinder();
 
 }
 

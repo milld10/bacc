@@ -38,14 +38,28 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import iaik.bacc.camilla.androidcredentialstore.CredentialApplication;
 import iaik.bacc.camilla.androidcredentialstore.R;
 import iaik.bacc.camilla.androidcredentialstore.database.DBHelper;
 import iaik.bacc.camilla.androidcredentialstore.models.Account;
+import iaik.bacc.camilla.androidcredentialstore.tools.Converter;
+import iaik.bacc.camilla.androidcredentialstore.tools.EncryptionHelper;
 
 
 /**
@@ -101,6 +115,153 @@ public class PeripheralActivity extends ListActivity
     private static final int STATE_CONNECTING = 1;
     private static final int STATE_CONNECTED = 2;
 
+
+
+
+    //***********************************************
+    //Lifecycle
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_show_available_accounts);
+
+        Log.d(TAG, "onCreate: is called.");
+
+        accountArrayList = (ArrayList<Account>) dbHelper.getAvailableAccounts();
+
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_show_available_accounts);
+        mToolbar.setTitle(R.string.available_accounts);
+
+        bluetooth_notification = (TextView) findViewById(R.id.notification_bluetooth);
+        bluetooth_button = (Button) findViewById(R.id.bluetooth_button_onoff);
+
+        mAdvStatus = (TextView) findViewById(R.id.advertise_status);
+        mAdvStatus.setText("Not yet advertising!");
+
+        mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        mBluetoothAdapter = mBluetoothManager.getAdapter();
+
+        final ArrayAdapter<Account> adapter = new ArrayAdapter<Account>(this,
+                android.R.layout.simple_list_item_1,
+                accountArrayList);
+        setListAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+
+        //information textview if BT is on or off
+        if(mBluetoothAdapter.isEnabled())
+            bluetooth_notification.setText(R.string.hint_bluetoothON);
+        else
+            bluetooth_notification.setText(R.string.hint_bluetoothOFF);
+
+        bluetooth_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Log.d(TAG, "onClick: enabling/disabling bt");
+//                enableDisableBT();
+                ensureBleFeaturesAvailable();
+            }
+        });
+    }
+
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+        // If the user disabled Bluetooth when the app was in the background,
+        // openGattServer() will return null.
+        mGattServer = mBluetoothManager.openGattServer(this, mGattServerCallback);
+        if (mGattServer == null)
+        {
+            ensureBleFeaturesAvailable();
+            //TODO not know if needed?? does enableDisableBT do the same than ensureBleFeatureAvailable()?
+//            enableDisableBT();
+//            return;
+        }
+    }
+
+
+    @Override
+    protected void onListItemClick(ListView listView, View view, int position, long id)
+    {
+        super.onListItemClick(listView, view, position, id);
+//        mBluetoothAdapter.cancelDiscovery();
+
+        //TODO is a list of accounts that are shown, and user has to select one to send
+        //put the clicked item into the advertising data!!
+
+        Account account = accountArrayList.get(position);
+
+        mBleCustomServiceFragment = new BluetoothLeService();
+
+        //** Encryption of data before advertising it.
+        byte[] encrypted_username = new byte[0];
+        byte[] encrypted_password = new byte[0];
+
+        try {
+            final EncryptionHelper encryptionHelper =
+                    new EncryptionHelper(CredentialApplication.getInstance());
+            Log.d(TAG, "new encryptionHelper object has been generated (within try/catch");
+
+            //Decryption of data retrieved from DB
+            encrypted_username = encryptionHelper.decrypt(account.getUsername());
+            encrypted_password = encryptionHelper.decrypt(account.getPassword());
+
+
+        } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException | IOException |
+                NoSuchProviderException | InvalidAlgorithmParameterException | BadPaddingException |
+                NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException |
+                UnrecoverableEntryException e) {
+            e.printStackTrace();
+        }
+
+        mBleCustomServiceFragment.setCharacteristics(encrypted_username, encrypted_password);
+
+        mBluetoothGattService = mBleCustomServiceFragment.getBluetoothGattService();
+
+        mAdvSettings = new AdvertiseSettings.Builder()
+                .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED)
+                .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
+                .setConnectable(true)
+                .build();
+        mAdvData = new AdvertiseData.Builder()
+                .setIncludeTxPowerLevel(true)
+                .addServiceUuid(mBleCustomServiceFragment.getServiceUUID())
+                .build();
+        mAdvScanResponse = new AdvertiseData.Builder()
+                .setIncludeDeviceName(true)
+                .build();
+
+
+        startToAdvertiseCredentials();
+
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        //TODO change the getAvailableAccounts method, maybe with parameter of website user is on
+        accountArrayList = (ArrayList<Account>) dbHelper.getAvailableAccounts();
+
+        ArrayAdapter<Account> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1,
+                accountArrayList);
+
+        setListAdapter(adapter);
+
+
+        if(mBluetoothAdapter.isEnabled())
+            bluetooth_notification.setText(R.string.hint_bluetoothON);
+        else
+            bluetooth_notification.setText(R.string.hint_bluetoothOFF);
+
+    }
 
 
     //***********************************************
@@ -284,116 +445,12 @@ public class PeripheralActivity extends ListActivity
     };
 
 
-
-
-
-
-
-
-
-
-    // Code to manage Service lifecycle.
-//    private final ServiceConnection mServiceConnection = new ServiceConnection() {
-//
-//        @Override
-//        public void onServiceConnected(ComponentName componentName, IBinder service) {
-////            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
-////            if (!mBluetoothLeService.initialize()) {
-////                Log.e(TAG, "Unable to initialize Bluetooth");
-////                finish();
-////            }
-////            // Automatically connects to the device upon successful start-up initialization.
-////            mBluetoothLeService.connect(mDeviceAddress);
-//        }
-//
-//        @Override
-//        public void onServiceDisconnected(ComponentName componentName) {
-////            mBluetoothLeService = null;
-//        }
-//    };
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
+    private void startToAdvertiseCredentials()
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_available_accounts);
-
-        Log.d(TAG, "onCreate: is called.");
-
-        accountArrayList = (ArrayList<Account>) dbHelper.getAvailableAccounts();
-
-        mToolbar = (Toolbar) findViewById(R.id.toolbar_show_available_accounts);
-        mToolbar.setTitle(R.string.available_accounts);
-
-        bluetooth_notification = (TextView) findViewById(R.id.notification_bluetooth);
-        bluetooth_button = (Button) findViewById(R.id.bluetooth_button_onoff);
-
-        mAdvStatus = (TextView) findViewById(R.id.advertise_status);
-        mAdvStatus.setText("Not yet advertising!");
-
-        mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-        mBluetoothAdapter = mBluetoothManager.getAdapter();
-
-        final ArrayAdapter<Account> adapter = new ArrayAdapter<Account>(this,
-                android.R.layout.simple_list_item_1,
-                accountArrayList);
-        setListAdapter(adapter);
-        adapter.notifyDataSetChanged();
-
-
-        //information textview is BT is on or off
-        if(mBluetoothAdapter.isEnabled())
-            bluetooth_notification.setText(R.string.hint_bluetoothON);
-        else
-            bluetooth_notification.setText(R.string.hint_bluetoothOFF);
-
-        bluetooth_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                Log.d(TAG, "onClick: enabling/disabling bt");
-//                enableDisableBT();
-                ensureBleFeaturesAvailable();
-            }
-        });
-
-
-        mBleCustomServiceFragment = new BluetoothLeService();
-
-        mBluetoothGattService = mBleCustomServiceFragment.getBluetoothGattService();
-
-        mAdvSettings = new AdvertiseSettings.Builder()
-                .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED)
-                .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
-                .setConnectable(true)
-                .build();
-        mAdvData = new AdvertiseData.Builder()
-                .setIncludeTxPowerLevel(true)
-                .addServiceUuid(mBleCustomServiceFragment.getServiceUUID())
-                .build();
-        mAdvScanResponse = new AdvertiseData.Builder()
-                .setIncludeDeviceName(true)
-                .build();
-
-    }
-
-
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-//        IntentFilter intentFilter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-//        registerReceiver(mBroadcastReceiver1, intentFilter);
-
-        // If the user disabled Bluetooth when the app was in the background,
-        // openGattServer() will return null.
-        mGattServer = mBluetoothManager.openGattServer(this, mGattServerCallback);
-        if (mGattServer == null) {
-            ensureBleFeaturesAvailable();
-            //TODO not know if needed?? does enableDisableBT do the same than ensureBleFeatureAvailable()?
-//            enableDisableBT();
-            return;
-        }
+        /**
+         * Method to start advertising only after the user clicked on a list item. otherwise
+         * there is no data to be advertised. (was in onStart)
+         */
 
         // Add a service for a total of three services (Generic Attribute and Generic Access
         // are present by default).
@@ -405,8 +462,12 @@ public class PeripheralActivity extends ListActivity
         } else {
             mAdvStatus.setText(R.string.status_noLeAdv);
         }
-
     }
+
+
+
+
+
 
 
     //method called by on/off button listener
@@ -442,84 +503,6 @@ public class PeripheralActivity extends ListActivity
 //            registerReceiver(mBroadcastReceiver1, BTIntent);
         }
     }
-
-    // Create a BroadcastReceiver for ACTION_STATE_CHANGED when BT gets turned on/off
-    //TODO is a broadcastreceiver neccessary??
-//    private final BroadcastReceiver mBroadcastReceiver1 = new BroadcastReceiver()
-//    {
-//        public void onReceive(Context context, Intent intent)
-//        {
-//            String action = intent.getAction();
-//            if(action.equals(mBluetoothAdapter.ACTION_STATE_CHANGED))
-//            {
-//                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
-//                        mBluetoothAdapter.ERROR);
-//
-//                switch(state)
-//                {
-//                    case BluetoothAdapter.STATE_OFF:
-//                        Log.d(TAG, "onReceive: STATE OFF");
-//                        bluetooth_notification.setText(R.string.hint_bluetoothOFF);
-//                        break;
-//                    case BluetoothAdapter.STATE_TURNING_OFF:
-//                        Log.d(TAG, "mBroadcastReceiver1: STATE TURNING OFF");
-//                        break;
-//                    case BluetoothAdapter.STATE_ON:
-//                        Log.d(TAG, "mBroadcastReceiver1: STATE ON");
-//                        bluetooth_notification.setText(R.string.hint_bluetoothON);
-//                        break;
-//                    case BluetoothAdapter.STATE_TURNING_ON:
-//                        Log.d(TAG, "mBroadcastReceiver1: STATE TURNING ON");
-//                        break;
-//                }
-//            }
-//        }
-//    };
-
-
-    @Override
-    protected void onListItemClick(ListView listView, View view, int position, long id)
-    {
-        super.onListItemClick(listView, view, position, id);
-        mBluetoothAdapter.cancelDiscovery();
-
-        //TODO is a list of accounts that are shown, and user has to select one to send
-        //put the clicked item into the advertising data!!
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        accountArrayList = (ArrayList<Account>) dbHelper.getAvailableAccounts();
-
-        ArrayAdapter<Account> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1,
-                accountArrayList);
-
-        setListAdapter(adapter);
-
-
-        if(mBluetoothAdapter.isEnabled())
-            bluetooth_notification.setText(R.string.hint_bluetoothON);
-        else
-            bluetooth_notification.setText(R.string.hint_bluetoothOFF);
-
-
-//        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE))
-//        {
-//            finish();
-//        }
-    }
-
-
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-//        unregisterReceiver(mBroadcastReceiver1);
-    }
-
 
 
     //*******************************
