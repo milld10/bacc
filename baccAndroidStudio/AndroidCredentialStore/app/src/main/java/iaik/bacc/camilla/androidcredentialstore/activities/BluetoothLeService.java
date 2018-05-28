@@ -26,6 +26,9 @@ public class BluetoothLeService extends Fragment
     private static final UUID CUSTOM_SERVICE_UUID = UUID
             .fromString("0000a000-0000-1000-8000-00805f9b34fb");
 
+    private static final String SERVICE_DESCRIPTION = "Selected credential will be sent " +
+            "to the Website through Bluetooth LE.";
+
     //for new Characteristic
     private static final UUID USERNAME_UUID = UUID
             .fromString("0000a001-0000-1000-8000-00805f9b34fb");
@@ -42,22 +45,32 @@ public class BluetoothLeService extends Fragment
     //TODO hand over parameters of username and password to create the BLEService?
     public BluetoothLeService()
     {
-        mUsernameCharacteristic = new BluetoothGattCharacteristic(USERNAME_UUID,
-                BluetoothGattCharacteristic.PROPERTY_READ,
-                BluetoothGattCharacteristic.PERMISSION_READ);
 
-        mPasswordCharacteristic = new BluetoothGattCharacteristic(PASSWORD_UUID,
+        //--- Username
+        mUsernameCharacteristic = new BluetoothGattCharacteristic(USERNAME_UUID,
                 BluetoothGattCharacteristic.PROPERTY_READ,
                 BluetoothGattCharacteristic.PERMISSION_READ);
 
         mUsernameCharacteristic.addDescriptor(PeripheralActivity.
                 getClientCharacteristicConfigurationDescriptor());
+
+        //needed??
+        mUsernameCharacteristic.addDescriptor(PeripheralActivity.
+              getCharacteristicUserDescriptionDescriptor(SERVICE_DESCRIPTION));
+
+
+        //--- Password
+        mPasswordCharacteristic = new BluetoothGattCharacteristic(PASSWORD_UUID,
+                BluetoothGattCharacteristic.PROPERTY_READ,
+                BluetoothGattCharacteristic.PERMISSION_READ);
+
         mPasswordCharacteristic.addDescriptor(PeripheralActivity.
                 getClientCharacteristicConfigurationDescriptor());
 
-        //not needed, former description of battery level
-//        mUsernameCharacteristic.addDescriptor(PeripheralActivity.
-//              getCharacteristicUserDescriptionDescriptor(DESCRIPTION));
+        //needed??
+        mPasswordCharacteristic.addDescriptor(PeripheralActivity.
+                getCharacteristicUserDescriptionDescriptor(SERVICE_DESCRIPTION));
+
 
 
         mCustomService = new BluetoothGattService(CUSTOM_SERVICE_UUID,
