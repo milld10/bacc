@@ -22,7 +22,7 @@
 
     <script>
 
-    const customServiceUUID = '0000a000-0000-1000-8000-00805f9b34fb';
+    const customServiceUUID = "0000a000-0000-1000-8000-00805f9b34fb";
     const characteristicUsernameUUID = "0000a001-0000-1000-8000-00805f9b34fb";
     const characteristicPasswordUUID = "0000a002-0000-1000-8000-00805f9b34fb";
 
@@ -42,51 +42,64 @@
             .then(server => {
                 console.log("getting primary service");
                 return server.getPrimaryService(customServiceUUID);
-                
             })
             .then(service => {
-                console.log("getting characteristics");
-                service.getCharacteristic(characteristicUsernameUUID);
-                service.getCharacteristic(characteristicPasswordUUID);
-                return service;
+                console.log("getting username characteristic");
+                //service.getCharacteristic(characteristicUsernameUUID);
+                //service.getCharacteristic(characteristicPasswordUUID);
+                //return service;
+                
+                return service.getCharacteristics();
             })
-            .then(characteristic => {
-                console.log("reading value of characteristics");
-                return characteristic.readValue();
-
+            .then(characteristics => {
+                console.log("reading value of characteristic");
+                //console.log("Char: " + characteristics.value());
+                //return characteristics.at(0).value();
+                console.log('> Characteristics: ' + characteristics.map(c => c.uuid).join('\n' + ' '.repeat(19)));
+                
+                console.log('> Characteristics: ' + characteristics.map(c => c.value).join('\n' + ' '.repeat(19)));
+                
+                console.log('> Characteristics (function): ' + characteristics.map(readCharacValue));
             })
-            .then(value => {
-                //console.log('Battery percentage is ' + value.getUint8(0));
-//                document.getElementById("username").value = value.getUint8(0);
-//                document.getElementById("password").value = value.getUint8(1);
-                console.log("Username: " + value.getUint8(0));
-//                console.log("Password: " + value.getUint8(1));
-
-            })
+            /*.then(value => {
+                //document.getElementById("username").value = value.getUint8(0);
+                //console.log("Username: " + value.getUtf8(0));
+                
+                //document.getElementById("password").value = value.getUint8(0);
+                //console.log("Password: " + value.getUtf8(0));
+            })*/
             .catch(error => { console.log("Error Message: " + error); });
 
+            
+            
+            function readCharacValue(characteristic)
+            {
+              return characteristic.value;
+            }
     }
     
     //when device gets disconneted
-//    navigator.bluetooth.requestDevice({
-//                filters: [{
-//                  services: [customServiceUUID]
-//                }] })
-//    .then(device => {
-//      // Set up event listener for when device gets disconnected.
-//      device.addEventListener('gattserverdisconnected', onDisconnected);
-//
-//      // Attempts to connect to remote GATT Server.
-//      return device.gatt.connect();
-//    })
-//    .then(server => { /* ... */ })
-//    .catch(error => { console.log(error); });
-//
-//
-//    function onDisconnected(event) {
-//      let device = event.target;
-//      console.log('Device ' + device.name + ' is disconnected.');
-//    }
+    /*navigator.bluetooth.requestDevice({
+                filters: [{
+                  services: [customServiceUUID]
+                }] })
+    .then(device => {
+      // Set up event listener for when device gets disconnected.
+      device.addEventListener('gattserverdisconnected', onDisconnected);
+
+      // Attempts to connect to remote GATT Server.
+      return device.gatt.connect();
+    })
+    .then(server => { console.log("getting primary service");
+                return server.getPrimaryService(customServiceUUID);
+    })
+    .catch(error => { console.log(error); });
+
+
+    function onDisconnected(event) {
+      let device = event.target;
+      console.log('Device ' + device.name + ' is disconnected.');
+    }*/
     
     </script>
     

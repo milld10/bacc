@@ -90,13 +90,12 @@ public class BluetoothLeService extends Fragment
         return new ParcelUuid(CUSTOM_SERVICE_UUID);
     }
 
-    public void setCharacteristics(byte[] username, byte[] password)
+    public void putCredentialsAsCharacteristics(byte[] username, byte[] password)
             throws UnsupportedEncodingException
     {
-
         try
         {
-            //TODO converted to strings, maybe better for JS .readValue() method?
+            //TODO strings better for readValue()?
             mUsernameCharacteristic.setValue(Converter.byteToString(username));
             mPasswordCharacteristic.setValue(Converter.byteToString(password));
         }

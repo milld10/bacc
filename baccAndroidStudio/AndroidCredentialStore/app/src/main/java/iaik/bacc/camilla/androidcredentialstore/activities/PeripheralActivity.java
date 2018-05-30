@@ -191,14 +191,35 @@ public class PeripheralActivity extends ListActivity
     protected void onListItemClick(ListView listView, View view, int position, long id)
     {
         super.onListItemClick(listView, view, position, id);
-//        mBluetoothAdapter.cancelDiscovery();
 
-        //TODO is a list of accounts that are shown, and user has to select one to send
-        //put the clicked item into the advertising data!!
+        //stop gatt server from advertising the last clicked item (onStop)
+        if (mGattServer != null) {
+            mGattServer.close();
+            Log.d(TAG, "...gatt server closed!");
+        }
+        if (mBluetoothAdapter.isEnabled() && mAdvertiser != null) {
+            // If stopAdvertising() gets called before close() a null
+            // pointer exception is raised.
+            mAdvertiser.stopAdvertising(mAdvCallback);
+            Log.d(TAG, "stop advertising...");
+        }
 
+        //open gatt server again newly and enable BT if not already (onStart)
+        mGattServer = mBluetoothManager.openGattServer(this, mGattServerCallback);
+        Log.d(TAG, "...gatt server opened again!");
+        if (mGattServer == null)
+        {
+            //TODO decide either ensureBleFeaturesAvailable() or enableDisableBT()?
+            ensureBleFeaturesAvailable();
+//            enableDisableBT();
+        }
+
+
+        //now making a new ble service
         Account account = accountArrayList.get(position);
 
         mBleCustomServiceFragment = new BluetoothLeService();
+        Log.d(TAG, "Custom Service: " + mBleCustomServiceFragment);
 
         //** Encryption of data before advertising it.
         byte[] decrypted_username = new byte[0];
@@ -213,9 +234,15 @@ public class PeripheralActivity extends ListActivity
             decrypted_username = encryptionHelper.decrypt(account.getUsername());
             decrypted_password = encryptionHelper.decrypt(account.getPassword());
 
-            mBleCustomServiceFragment.setCharacteristics(decrypted_username, decrypted_password);
+//            Log.d(TAG, "Decrypted data (before setting values): username: " +
+//                    Converter.byteToString(decrypted_username) +
+//                    " | password: " +
+//                    Converter.byteToString(decrypted_password));
 
-            Log.d(TAG, "Decrypted data: username: " +
+            //************ IMPORTANT: setValue of Characteristics
+            mBleCustomServiceFragment.putCredentialsAsCharacteristics(decrypted_username, decrypted_password);
+
+            Log.d(TAG, "Decrypted data (after setting values): username: " +
                     Converter.byteToString(decrypted_username) +
                     " | password: " +
                     Converter.byteToString(decrypted_password));
@@ -269,6 +296,46 @@ public class PeripheralActivity extends ListActivity
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mGattServer != null) {
+            mGattServer.close();
+        }
+        if (mBluetoothAdapter.isEnabled() && mAdvertiser != null) {
+            // If stopAdvertising() gets called before close() a null
+            // pointer exception is raised.
+            mAdvertiser.stopAdvertising(mAdvCallback);
+        }
+
+        mAdvStatus.setText(R.string.status_notAdvertising);
+    }
+
+
+
+
+    //***********************************************
+
+    private void startToAdvertiseCredentials()
+    {
+        /**
+         * Method to start advertising only after the user clicked on a list item. otherwise
+         * there is no data to be advertised. (was in onStart)
+         */
+
+        mGattServer.addService(mBluetoothGattService);
+
+        if (mBluetoothAdapter.isMultipleAdvertisementSupported())
+        {
+            mAdvertiser = mBluetoothAdapter.getBluetoothLeAdvertiser();
+            mAdvertiser.startAdvertising(mAdvSettings, mAdvData, mAdvScanResponse, mAdvCallback);
+            Log.d(TAG, "start advertising...");
+        }
+        else
+        {
+            mAdvStatus.setText(R.string.status_noLeAdv);
+        }
+    }
 
     //***********************************************
     //Gatt from Peripheral.java from example
@@ -280,10 +347,12 @@ public class PeripheralActivity extends ListActivity
             int statusText;
             switch (errorCode) {
                 case ADVERTISE_FAILED_ALREADY_STARTED:
+                    //error code 3:
                     statusText = R.string.status_advertising;
                     Log.w(TAG, "App was already advertising");
                     break;
                 case ADVERTISE_FAILED_DATA_TOO_LARGE:
+                    //error code 1:
                     statusText = R.string.status_advDataTooLarge;
                     break;
                 case ADVERTISE_FAILED_FEATURE_UNSUPPORTED:
@@ -316,7 +385,7 @@ public class PeripheralActivity extends ListActivity
 
 
     //Gatt server and server callback function:
-    //TODO Handle and correct all function; are all functions needed?
+    //TODO Handle and correct all functions
     private BluetoothGattServer mGattServer;
     private final BluetoothGattServerCallback mGattServerCallback = new BluetoothGattServerCallback() {
         @Override
@@ -451,24 +520,7 @@ public class PeripheralActivity extends ListActivity
     };
 
 
-    private void startToAdvertiseCredentials()
-    {
-        /**
-         * Method to start advertising only after the user clicked on a list item. otherwise
-         * there is no data to be advertised. (was in onStart)
-         */
 
-        // Add a service for a total of three services (Generic Attribute and Generic Access
-        // are present by default).
-        mGattServer.addService(mBluetoothGattService);
-
-        if (mBluetoothAdapter.isMultipleAdvertisementSupported()) {
-            mAdvertiser = mBluetoothAdapter.getBluetoothLeAdvertiser();
-            mAdvertiser.startAdvertising(mAdvSettings, mAdvData, mAdvScanResponse, mAdvCallback);
-        } else {
-            mAdvStatus.setText(R.string.status_noLeAdv);
-        }
-    }
 
 
 
@@ -568,13 +620,6 @@ public class PeripheralActivity extends ListActivity
         }
     }
 
-    private void disconnectFromDevices() {
-        Log.d(TAG, "Disconnecting devices...");
-        for (BluetoothDevice device : mBluetoothManager.getConnectedDevices(
-                BluetoothGattServer.GATT)) {
-            Log.d(TAG, "Devices: " + device.getAddress() + " " + device.getName());
-            mGattServer.cancelConnection(device);
-        }
-    }
+
 
 }
