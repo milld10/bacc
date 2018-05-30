@@ -49,7 +49,7 @@ public class BluetoothLeService extends Fragment
         //--- Username
         mUsernameCharacteristic = new BluetoothGattCharacteristic(USERNAME_UUID,
                 BluetoothGattCharacteristic.PROPERTY_READ,
-                BluetoothGattCharacteristic.PERMISSION_READ);
+                BluetoothGattCharacteristic.PERMISSION_READ_ENCRYPTED);
 
         mUsernameCharacteristic.addDescriptor(PeripheralActivity.
                 getClientCharacteristicConfigurationDescriptor());
@@ -58,11 +58,10 @@ public class BluetoothLeService extends Fragment
         mUsernameCharacteristic.addDescriptor(PeripheralActivity.
               getCharacteristicUserDescriptionDescriptor(SERVICE_DESCRIPTION));
 
-
         //--- Password
         mPasswordCharacteristic = new BluetoothGattCharacteristic(PASSWORD_UUID,
                 BluetoothGattCharacteristic.PROPERTY_READ,
-                BluetoothGattCharacteristic.PERMISSION_READ);
+                BluetoothGattCharacteristic.PERMISSION_READ_ENCRYPTED);
 
         mPasswordCharacteristic.addDescriptor(PeripheralActivity.
                 getClientCharacteristicConfigurationDescriptor());
@@ -95,7 +94,6 @@ public class BluetoothLeService extends Fragment
     {
         try
         {
-            //TODO strings better for readValue()?
             mUsernameCharacteristic.setValue(Converter.byteToString(username));
             mPasswordCharacteristic.setValue(Converter.byteToString(password));
         }

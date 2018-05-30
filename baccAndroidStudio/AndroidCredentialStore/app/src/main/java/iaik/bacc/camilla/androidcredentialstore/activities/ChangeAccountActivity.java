@@ -105,16 +105,11 @@ public class ChangeAccountActivity extends AppCompatActivity
         {
             final EncryptionHelper encryptionHelper =
                     new EncryptionHelper(CredentialApplication.getInstance());
-            Log.d(TAG, "new encryptionHelper object has been generated (within try/catch");
+            Log.d(TAG, "new encryptionHelper object has been generated (within try/catch)");
 
             //Decryption of data retrieved from DB
-//            Log.d(TAG, "before decrypting the username");
             byte[] usernameHlp = encryptionHelper.decrypt(clickedAccount.getUsername());
-//            Log.d(TAG, "after decrypting the username. username in byte[]: " + usernameHlp);
-//            Log.d(TAG, "converted username to text: " + Converter.byteToChar(usernameHlp).toString());
             byte[] passwordHlp = encryptionHelper.decrypt(clickedAccount.getPassword());
-
-//            Log.d(TAG, "after decrypting password. Object has been decrypted successfully!");
 
             edittext_accountname.setText(clickedAccount.getAccount_name());
 
@@ -201,7 +196,7 @@ public class ChangeAccountActivity extends AppCompatActivity
 
                     dbHelper.insertNewAccount(account);
 
-                    Log.w(TAG, "account changed successfully and added to DB");
+                    Log.d(TAG, "account changed successfully and added to DB");
 
                     //close db:
                     daoSession.getDatabase().close();
@@ -227,15 +222,6 @@ public class ChangeAccountActivity extends AppCompatActivity
                 dialog.show();
             }
         });
-
-
-        //this intent for when no changes are made???
-
-        //Intent intentRetour = new Intent(ChangeAccountActivity.this, ShowAccountsActivity.class);
-        //send the changed object back to DB and other activity
-        //intent.putExtra("changedAccount", changedAccount);
-
-        //setResult(ShowAccountsActivity.RESULT_OK, intentRetour);
     }
 
 

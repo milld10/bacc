@@ -78,12 +78,10 @@ public class PeripheralActivity extends ListActivity
     private static final int REQUEST_ENABLE_BT = 1;
 
     Toolbar mToolbar;
-    TextView bluetooth_notification;
-    Button bluetooth_button;
+
     ArrayList<Account> accountArrayList = new ArrayList<>();
     DBHelper dbHelper = new DBHelper(CredentialApplication.getInstance());
 
-    //GATT ****************
     //Descriptors
     private static final UUID CHARACTERISTIC_USER_DESCRIPTION_UUID = UUID
             .fromString("00002901-0000-1000-8000-00805f9b34fb");
@@ -94,12 +92,6 @@ public class PeripheralActivity extends ListActivity
 
     private TextView mAdvStatus;
 
-    private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
-            new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
-
-    private BluetoothGattCharacteristic mNotifyCharacteristic;
-
-
     private BluetoothManager mBluetoothManager;
     private BluetoothAdapter mBluetoothAdapter;
     private AdvertiseData mAdvData;
@@ -108,13 +100,10 @@ public class PeripheralActivity extends ListActivity
     private BluetoothLeAdvertiser mAdvertiser;
     private BluetoothGattService mBluetoothGattService;
 
-
     private String mBluetoothDeviceAddress;
     private int mConnectionState = STATE_DISCONNECTED;
 
     private static final int STATE_DISCONNECTED = 0;
-    private static final int STATE_CONNECTING = 1;
-    private static final int STATE_CONNECTED = 2;
 
 
 
@@ -135,9 +124,6 @@ public class PeripheralActivity extends ListActivity
         mToolbar = (Toolbar) findViewById(R.id.toolbar_show_available_accounts);
         mToolbar.setTitle(R.string.available_accounts);
 
-        bluetooth_notification = (TextView) findViewById(R.id.notification_bluetooth);
-        bluetooth_button = (Button) findViewById(R.id.bluetooth_button_onoff);
-
         mAdvStatus = (TextView) findViewById(R.id.advertise_status);
         mAdvStatus.setText(R.string.status_click_to_advertise);
 
@@ -151,21 +137,6 @@ public class PeripheralActivity extends ListActivity
         adapter.notifyDataSetChanged();
 
 
-        //information textview if BT is on or off
-        if(mBluetoothAdapter.isEnabled())
-            bluetooth_notification.setText(R.string.hint_bluetoothON);
-        else
-            bluetooth_notification.setText(R.string.hint_bluetoothOFF);
-
-        bluetooth_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                Log.d(TAG, "onClick: enabling/disabling bt");
-//                enableDisableBT();
-                ensureBleFeaturesAvailable();
-            }
-        });
     }
 
 
@@ -207,11 +178,8 @@ public class PeripheralActivity extends ListActivity
         //open gatt server again newly and enable BT if not already (onStart)
         mGattServer = mBluetoothManager.openGattServer(this, mGattServerCallback);
         Log.d(TAG, "...gatt server opened again!");
-        if (mGattServer == null)
-        {
-            //TODO decide either ensureBleFeaturesAvailable() or enableDisableBT()?
+        if (mGattServer == null){
             ensureBleFeaturesAvailable();
-//            enableDisableBT();
         }
 
 
@@ -234,12 +202,7 @@ public class PeripheralActivity extends ListActivity
             decrypted_username = encryptionHelper.decrypt(account.getUsername());
             decrypted_password = encryptionHelper.decrypt(account.getPassword());
 
-//            Log.d(TAG, "Decrypted data (before setting values): username: " +
-//                    Converter.byteToString(decrypted_username) +
-//                    " | password: " +
-//                    Converter.byteToString(decrypted_password));
-
-            //************ IMPORTANT: setValue of Characteristics
+            //setValue of Characteristics:
             mBleCustomServiceFragment.putCredentialsAsCharacteristics(decrypted_username, decrypted_password);
 
             Log.d(TAG, "Decrypted data (after setting values): username: " +
@@ -270,9 +233,7 @@ public class PeripheralActivity extends ListActivity
                 .setIncludeDeviceName(true)
                 .build();
 
-
         startToAdvertiseCredentials();
-
     }
 
     @Override
@@ -288,11 +249,6 @@ public class PeripheralActivity extends ListActivity
 
         setListAdapter(adapter);
 
-
-        if(mBluetoothAdapter.isEnabled())
-            bluetooth_notification.setText(R.string.hint_bluetoothON);
-        else
-            bluetooth_notification.setText(R.string.hint_bluetoothOFF);
 
     }
 
@@ -338,7 +294,7 @@ public class PeripheralActivity extends ListActivity
     }
 
     //***********************************************
-    //Gatt from Peripheral.java from example
+    //GATT
     private final AdvertiseCallback mAdvCallback = new AdvertiseCallback() {
         @Override
         public void onStartFailure(int errorCode) {
@@ -523,52 +479,9 @@ public class PeripheralActivity extends ListActivity
 
 
 
+    //***********************************************
+    // Bluetooth
 
-
-
-
-
-    //method called by on/off button listener
-    public void enableDisableBT(){
-        //3 cases
-        // if adapter is null the device is not capable of BT
-        if(mBluetoothAdapter == null)
-        {
-            Log.d(TAG, "enableDisableBT: Does not have BT capabilities");
-        }
-
-        //if BT is not enabled, then start intent to enable it
-        if (!mBluetoothAdapter.isEnabled())
-        {
-            Log.d(TAG, "enableDisableBT: enabling BT");
-
-            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivity(enableIntent);
-
-            mBluetoothAdapter.startDiscovery();
-
-//            IntentFilter BTIntent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-//            registerReceiver(mBroadcastReceiver1, BTIntent);
-        }
-
-        //if BT is already enabled, then disable
-        if (mBluetoothAdapter.isEnabled())
-        {
-            Log.d(TAG, "enableDisableBT: disabling BT");
-            mBluetoothAdapter.disable();
-
-//            IntentFilter BTIntent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-//            registerReceiver(mBroadcastReceiver1, BTIntent);
-        }
-    }
-
-
-    //*******************************
-    // Functions for Custom Service (used by BluetoothLeService.java: not any more)
-
-    ///////////////////////
-    ////// Bluetooth //////
-    ///////////////////////
     public static BluetoothGattDescriptor getClientCharacteristicConfigurationDescriptor() {
         BluetoothGattDescriptor descriptor = new BluetoothGattDescriptor(
                 CLIENT_CHARACTERISTIC_CONFIGURATION_UUID,
@@ -589,12 +502,11 @@ public class PeripheralActivity extends ListActivity
     }
 
     private void ensureBleFeaturesAvailable() {
-        if (mBluetoothAdapter == null)
-        {
+        if (mBluetoothAdapter == null){
             Log.e(TAG, "Bluetooth not supported");
             finish();
-        } else if (!mBluetoothAdapter.isEnabled())
-        {
+        }
+        else if (!mBluetoothAdapter.isEnabled()) {
             // Make sure bluetooth is enabled.
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
@@ -612,7 +524,6 @@ public class PeripheralActivity extends ListActivity
                 }
                 onStart();
             } else {
-                //TODO(g-ortuno): UX for asking the user to activate bt
                 Toast.makeText(this, R.string.bluetoothNotEnabled, Toast.LENGTH_LONG).show();
                 Log.e(TAG, "Bluetooth not enabled");
                 finish();

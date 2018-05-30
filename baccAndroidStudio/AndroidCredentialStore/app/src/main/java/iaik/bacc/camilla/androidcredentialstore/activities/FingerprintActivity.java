@@ -80,11 +80,9 @@ public class FingerprintActivity extends Activity
             @Override
             public void onClick(View view)
             {
-                //TODO: grant access to show accounts activity
-                //TODO: ONLY need button for master edittext_password, if fingerprint, it does it automatic
-
-                Intent intent = new Intent(FingerprintActivity.this, ShowAccountsActivity.class);
-                startActivity(intent);
+                //TODO: implement access for master edittext_password, if fingerprint, it does it automatic
+//                Intent intent = new Intent(FingerprintActivity.this, ShowAccountsActivity.class);
+//                startActivity(intent);
             }
         });
 

@@ -64,9 +64,6 @@ public class AddAccountActivity extends AppCompatActivity
         Database db = helper.getWritableDb();
         daoSession = new DaoMaster(db).newSession();
 
-        //TODO Research: what does inflate do??
-//        View login_data = View.inflate(this, R.layout.activity_add_account, null);
-
         accountLayout = (TextInputLayout) findViewById(R.id.AccountLayout);
         edittext_accountname = (TextInputEditText) findViewById(R.id.account);
 
@@ -99,13 +96,9 @@ public class AddAccountActivity extends AppCompatActivity
 
                             try
                             {
-                                //TODO encrypt the data after it is checked but before it is stored
-                                // into the DB
                                 EncryptionHelper encryptionHelper =
                                         new EncryptionHelper(CredentialApplication.getInstance());
 
-                                //TODO maybe don't even encrypt edittext_accountname, for easier
-                                // display in arraylist adapter??
                                 Log.d(TAG, "plaintext account_name: " +
                                         edittext_accountname.getText().toString());
                                 account.setAccount_name(edittext_accountname.getText().toString());
