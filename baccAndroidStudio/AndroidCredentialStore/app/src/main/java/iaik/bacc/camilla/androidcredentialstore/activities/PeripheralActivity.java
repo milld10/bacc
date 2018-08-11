@@ -61,6 +61,7 @@ import iaik.bacc.camilla.androidcredentialstore.database.DBHelper;
 import iaik.bacc.camilla.androidcredentialstore.models.Account;
 import iaik.bacc.camilla.androidcredentialstore.tools.Converter;
 import iaik.bacc.camilla.androidcredentialstore.tools.EncryptionHelper;
+import iaik.bacc.camilla.androidcredentialstore.tools.FingerprintHandler;
 
 
 /**
@@ -74,6 +75,8 @@ import iaik.bacc.camilla.androidcredentialstore.tools.EncryptionHelper;
 public class PeripheralActivity extends ListActivity
 {
     private static final String TAG = "PeripheralActivity";
+
+    private static final int FINGERPRINT_SUCCESS_REQUEST_CODE = 35;
 
     private static final int REQUEST_ENABLE_BT = 1;
 
@@ -100,8 +103,8 @@ public class PeripheralActivity extends ListActivity
     private BluetoothLeAdvertiser mAdvertiser;
     private BluetoothGattService mBluetoothGattService;
 
-    private String mBluetoothDeviceAddress;
-    private int mConnectionState = STATE_DISCONNECTED;
+    private Account account;
+
 
     private static final int STATE_DISCONNECTED = 0;
 
@@ -136,6 +139,11 @@ public class PeripheralActivity extends ListActivity
         setListAdapter(adapter);
         adapter.notifyDataSetChanged();
 
+        mBleCustomServiceFragment = new BluetoothLeService();
+
+        //needed
+        ensureBleFeaturesAvailable();
+
 
     }
 
@@ -147,13 +155,29 @@ public class PeripheralActivity extends ListActivity
 
         // If the user disabled Bluetooth when the app was in the background,
         // openGattServer() will return null.
+//        mGattServer = mBluetoothManager.openGattServer(this, mGattServerCallback);
+//        if (mGattServer == null)
+//        {
+//            ensureBleFeaturesAvailable();
+//        }
+
+        //checks for before opened server and stops advertising.
+//        if (mGattServer != null) {
+//            mGattServer.close();
+//            Log.d(TAG, "...gatt server closed!");
+//        }
+//        if (mBluetoothAdapter.isEnabled() && mAdvertiser != null) {
+//            // If stopAdvertising() gets called before close() a null
+//            // pointer exception is raised.
+//            mAdvertiser.stopAdvertising(mAdvCallback);
+//            Log.d(TAG, "stop advertising...");
+//        }
+
+        //open gatt server again newly and enable BT if not already (onStart)
         mGattServer = mBluetoothManager.openGattServer(this, mGattServerCallback);
-        if (mGattServer == null)
-        {
+        Log.d(TAG, "...gatt server opened again!");
+        if (mGattServer == null){
             ensureBleFeaturesAvailable();
-            //TODO not know if needed?? does enableDisableBT do the same than ensureBleFeatureAvailable()?
-//            enableDisableBT();
-//            return;
         }
     }
 
@@ -163,84 +187,89 @@ public class PeripheralActivity extends ListActivity
     {
         super.onListItemClick(listView, view, position, id);
 
-        //stop gatt server from advertising the last clicked item (onStop)
-        if (mGattServer != null) {
-            mGattServer.close();
-            Log.d(TAG, "...gatt server closed!");
-        }
-        if (mBluetoothAdapter.isEnabled() && mAdvertiser != null) {
-            // If stopAdvertising() gets called before close() a null
-            // pointer exception is raised.
-            mAdvertiser.stopAdvertising(mAdvCallback);
-            Log.d(TAG, "stop advertising...");
-        }
-
-        //open gatt server again newly and enable BT if not already (onStart)
-        mGattServer = mBluetoothManager.openGattServer(this, mGattServerCallback);
-        Log.d(TAG, "...gatt server opened again!");
-        if (mGattServer == null){
-            ensureBleFeaturesAvailable();
-        }
+//        if (mGattServer != null) {
+//            mGattServer.close();
+//            Log.d(TAG, "...gatt server closed!");
+//        }
+//        if (mBluetoothAdapter.isEnabled() && mAdvertiser != null) {
+//            // If stopAdvertising() gets called before close() a null
+//            // pointer exception is raised.
+//            mAdvertiser.stopAdvertising(mAdvCallback);
+//            Log.d(TAG, "stop advertising...");
+//        }
+//
+//        //open gatt server again newly and enable BT if not already (onStart)
+//        mGattServer = mBluetoothManager.openGattServer(this, mGattServerCallback);
+//        Log.d(TAG, "...gatt server opened again!");
+//        if (mGattServer == null){
+//            ensureBleFeaturesAvailable();
+//        }
 
 
         //now making a new ble service
-        Account account = accountArrayList.get(position);
+        account = accountArrayList.get(position);
 
-        mBleCustomServiceFragment = new BluetoothLeService();
-        Log.d(TAG, "Custom Service: " + mBleCustomServiceFragment);
+        //now in onStart
+//        mBleCustomServiceFragment = new BluetoothLeService();
+//        Log.d(TAG, "Custom Service: " + mBleCustomServiceFragment);
 
-        //** Encryption of data before advertising it.
-        byte[] decrypted_username = new byte[0];
-        byte[] decrypted_password = new byte[0];
+//        //** Encryption of data before advertising it.
+//        byte[] decrypted_username;
+//        byte[] decrypted_password;
+//
+//        try {
+//            final EncryptionHelper encryptionHelper =
+//                    new EncryptionHelper(CredentialApplication.getInstance());
+//            Log.d(TAG, "new encryptionHelper object has been generated (within try/catch)");
+//
+//            //Decryption of data retrieved from DB
+//            decrypted_username = encryptionHelper.decrypt(account.getUsername());
+//            decrypted_password = encryptionHelper.decrypt(account.getPassword());
+//
+//            //setValue of Characteristics:
+//            mBleCustomServiceFragment.putCredentialsAsCharacteristics(decrypted_username, decrypted_password);
+//
+//            Log.d(TAG, "Decrypted data (after setting values): username: " +
+//                    Converter.byteToString(decrypted_username) +
+//                    " | password: " +
+//                    Converter.byteToString(decrypted_password));
+//
+//        } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException | IOException |
+//                NoSuchProviderException | InvalidAlgorithmParameterException | BadPaddingException |
+//                NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException |
+//                UnrecoverableEntryException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//        mBluetoothGattService = mBleCustomServiceFragment.getBluetoothGattService();
+//
+//        mAdvSettings = new AdvertiseSettings.Builder()
+//                .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED)
+//                .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
+//                .setConnectable(true)
+//                .build();
+//        mAdvData = new AdvertiseData.Builder()
+//                .setIncludeTxPowerLevel(true)
+//                .addServiceUuid(mBleCustomServiceFragment.getServiceUUID())
+//                .build();
+//        mAdvScanResponse = new AdvertiseData.Builder()
+//                .setIncludeDeviceName(true)
+//                .build();
 
-        try {
-            final EncryptionHelper encryptionHelper =
-                    new EncryptionHelper(CredentialApplication.getInstance());
-            Log.d(TAG, "new encryptionHelper object has been generated (within try/catch)");
-
-            //Decryption of data retrieved from DB
-            decrypted_username = encryptionHelper.decrypt(account.getUsername());
-            decrypted_password = encryptionHelper.decrypt(account.getPassword());
-
-            //setValue of Characteristics:
-            mBleCustomServiceFragment.putCredentialsAsCharacteristics(decrypted_username, decrypted_password);
-
-            Log.d(TAG, "Decrypted data (after setting values): username: " +
-                    Converter.byteToString(decrypted_username) +
-                    " | password: " +
-                    Converter.byteToString(decrypted_password));
-
-        } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException | IOException |
-                NoSuchProviderException | InvalidAlgorithmParameterException | BadPaddingException |
-                NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException |
-                UnrecoverableEntryException e) {
-            e.printStackTrace();
-        }
-
-
-        mBluetoothGattService = mBleCustomServiceFragment.getBluetoothGattService();
-
-        mAdvSettings = new AdvertiseSettings.Builder()
-                .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED)
-                .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
-                .setConnectable(true)
-                .build();
-        mAdvData = new AdvertiseData.Builder()
-                .setIncludeTxPowerLevel(true)
-                .addServiceUuid(mBleCustomServiceFragment.getServiceUUID())
-                .build();
-        mAdvScanResponse = new AdvertiseData.Builder()
-                .setIncludeDeviceName(true)
-                .build();
-
-        startToAdvertiseCredentials();
+        Intent intent = new Intent(this, FingerprintActivity.class);
+        intent.putExtra("from", "PeripheralActivity");
+        startActivityForResult(intent, FINGERPRINT_SUCCESS_REQUEST_CODE);
     }
+
+
 
     @Override
     public void onResume()
     {
         super.onResume();
-        //TODO change the getAvailableAccounts method, maybe with parameter of website user is on
+        Log.d(TAG, "onResume() was called");
+
         accountArrayList = (ArrayList<Account>) dbHelper.getAvailableAccounts();
 
         ArrayAdapter<Account> adapter = new ArrayAdapter<>(this,
@@ -248,13 +277,13 @@ public class PeripheralActivity extends ListActivity
                 accountArrayList);
 
         setListAdapter(adapter);
-
-
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy() was called");
+
         if (mGattServer != null) {
             mGattServer.close();
         }
@@ -264,7 +293,9 @@ public class PeripheralActivity extends ListActivity
             mAdvertiser.stopAdvertising(mAdvCallback);
         }
 
+
         mAdvStatus.setText(R.string.status_notAdvertising);
+
     }
 
 
@@ -352,17 +383,15 @@ public class PeripheralActivity extends ListActivity
                     //not needed because not showing how many devices are connected
 //                    mBluetoothDevices.add(device);
 //                    updateConnectedDevicesStatus();
-                    Log.v(TAG, "Connected to device: " + device.getAddress());
+                    Log.d(TAG, "Connected to device: " + device.getAddress());
                 } else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
 //                    mBluetoothDevices.remove(device);
 //                    updateConnectedDevicesStatus();
-                    Log.v(TAG, "Disconnected from device");
+                    Log.d(TAG, "Disconnected from device");
                 }
             } else {
 //                mBluetoothDevices.remove(device);
 //                updateConnectedDevicesStatus();
-                // There are too many gatt errors (some of them not even in the documentation) so we just
-                // show the error to the user.
                 final String errorMessage = getString(R.string.status_errorWhenConnecting) + ": " + status;
                 runOnUiThread(new Runnable() {
                     @Override
@@ -529,8 +558,60 @@ public class PeripheralActivity extends ListActivity
                 finish();
             }
         }
+        if(requestCode == FINGERPRINT_SUCCESS_REQUEST_CODE)
+        {
+
+            if(resultCode == 40)
+            {
+
+                //** Encryption of data before advertising it.
+                byte[] decrypted_username;
+                byte[] decrypted_password;
+
+                try {
+                    final EncryptionHelper encryptionHelper =
+                            new EncryptionHelper(CredentialApplication.getInstance());
+                    Log.d(TAG, "new encryptionHelper object has been generated (within try/catch)");
+
+                    //Decryption of data retrieved from DB
+                    decrypted_username = encryptionHelper.decrypt(account.getUsername());
+                    decrypted_password = encryptionHelper.decrypt(account.getPassword());
+
+                    //setValue of Characteristics:
+                    mBleCustomServiceFragment.putCredentialsAsCharacteristics(decrypted_username, decrypted_password);
+
+                    Log.d(TAG, "Decrypted data (after setting values): username: " +
+                            Converter.byteToString(decrypted_username) +
+                            " | password: " +
+                            Converter.byteToString(decrypted_password));
+
+                } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException | IOException |
+                        NoSuchProviderException | InvalidAlgorithmParameterException | BadPaddingException |
+                        NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException |
+                        UnrecoverableEntryException e) {
+                    e.printStackTrace();
+                }
+
+
+                mBluetoothGattService = mBleCustomServiceFragment.getBluetoothGattService();
+
+                mAdvSettings = new AdvertiseSettings.Builder()
+                        .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED)
+                        .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
+                        .setConnectable(true)
+                        .build();
+                mAdvData = new AdvertiseData.Builder()
+                        .setIncludeTxPowerLevel(true)
+                        .addServiceUuid(mBleCustomServiceFragment.getServiceUUID())
+                        .build();
+                mAdvScanResponse = new AdvertiseData.Builder()
+                        .setIncludeDeviceName(true)
+                        .build();
+
+                startToAdvertiseCredentials();
+            }
+        }
+
     }
-
-
 
 }

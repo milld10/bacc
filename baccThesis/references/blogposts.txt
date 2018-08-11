@@ -1,0 +1,56 @@
+Credential storage enhancements in Android 4.3:
+https://nelenkov.blogspot.com/2013/08/credential-storage-enhancements-android-43.html
+
+used Database ORM:
+http://greenrobot.org/greendao/
+
+Can we trust cloud providers to keep our data safe?
+https://www.bbc.com/news/business-36151754
+
+Stop using password manager browser extensions:
+https://www.networkworld.com/article/3183675/security/stop-using-password-manager-browser-extensions.html
+
+Cloud Storage Is Much More Secure Than You Think
+https://www.forbes.com/sites/quora/2017/09/18/cloud-storage-is-much-more-secure-than-you-think/#4178a70b7403
+
+Top 10 mobile security risks
+http://www.decompilingandroid.com/mobile-app-security/top-10-mobile-security-risks/
+
+Password analysis
+https://www.troyhunt.com/brief-sony-password-analysis/
+
+https://adambard.com/blog/3-wrong-ways-to-store-a-password/
+
+Android TEE
+https://developer.android.com/training/articles/keystore
+https://stackoverflow.com/questions/42994075/using-the-android-hardware-backed-keystore
+
+Android Keystore
+https://developer.android.com/training/articles/keystore
+https://source.android.com/security/keystore/
+
+Chrome Web Bluetooth API
+https://developers.google.com/web/updates/2015/07/interact-with-ble-devices-on-the-web
+Implementation Status Windows
+https://github.com/WebBluetoothCG/web-bluetooth/blob/master/implementation-status.md
+
+
+Android apps (related work)
+1. LastPass. Lastpass password manage. available online at. https: //lastpass.com, 2014.
+2. KodeKey
+3. 
+
+
+
+Helpful/definition/explanations:
+https://whatis.techtarget.com/definition/Common-Criteria-CC-for-Information-Technology-Security-Evaluation
+https://www.commoncriteriaportal.org/
+http://theconversation.com/how-secure-is-your-data-when-its-stored-in-the-cloud-90000
+
+
+
+--------------------------------------------------------------------------------
+
+Papers to look for:
+* better to create passwords randomly by password managers
+

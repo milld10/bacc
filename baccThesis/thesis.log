@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=pdflatex 2018.7.20)  20 JUL 2018 22:44
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=pdflatex 2018.7.20)  6 AUG 2018 16:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -9,8 +9,8 @@ LaTeX2e <2018-04-01> patch level 5
 Document Class: main 2014/04/30 CV class
 (c:/texlive/2018/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
-(c:/texlive/2018/texmf-dist/tex/latex/base/size10.clo
-File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+(c:/texlive/2018/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count80
 \c@section=\count81
@@ -308,6 +308,63 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 713.
 LaTeX Info: Redefining \[ on input line 2817.
 LaTeX Info: Redefining \] on input line 2818.
 )
+(c:/texlive/2018/texmf-dist/tex/latex/changepage/changepage.sty
+Package: changepage 2009/10/20 v1.0c check page and change page layout
+\c@cp@cntr=\count120
+\cp@tempcnt=\count121
+)
+(c:/texlive/2018/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
+
+(c:/texlive/2018/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
+Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
+)
+\c@section@level=\count122
+)
+(c:/texlive/2018/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count123
+\float@exts=\toks24
+\float@box=\box31
+\@float@everytoks=\toks25
+\@floatcapt=\box32
+)
+(c:/texlive/2018/texmf-dist/tex/latex/subfig/subfig.sty
+Package: subfig 2005/06/28 ver: 1.3 subfig package
+
+(c:/texlive/2018/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2018/05/01 v3.3-147 Customizing captions (AR)
+
+(c:/texlive/2018/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2018/05/27 v1.8a caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 64.
+\captionmargin=\dimen128
+\captionmargin@=\dimen129
+\captionwidth=\dimen130
+\caption@tempdima=\dimen131
+\caption@indent=\dimen132
+\caption@parindent=\dimen133
+\caption@hangindent=\dimen134
+)
+\c@ContinuedFloat=\count124
+Package caption Info: float package is loaded.
+Package caption Info: hyperref package is loaded.
+Package caption Info: listings package is loaded.
+)
+\c@KVtest=\count125
+\sf@farskip=\skip49
+\sf@captopadj=\dimen135
+\sf@capskip=\skip50
+\sf@nearskip=\skip51
+\c@subfigure=\count126
+\c@subfigure@save=\count127
+\c@lofdepth=\count128
+\c@subtable=\count129
+\c@subtable@save=\count130
+\c@lotdepth=\count131
+\sf@top=\skip52
+\sf@bottom=\skip53
+)
 (c:/texlive/2018/texmf-dist/tex/latex/textpos/textpos.sty
 Package: textpos 2016/06/07 v1.8
 
@@ -315,19 +372,19 @@ Package: textpos 2016/06/07 1.8, absolute positioning of text on the page
 (c:/texlive/2018/texmf-dist/tex/latex/ms/everyshi.sty
 Package: everyshi 2001/05/15 v3.00 EveryShipout Package (MS)
 )
-\TP@textbox=\box31
-\TP@holdbox=\box32
-\TPHorizModule=\dimen128
-\TPVertModule=\dimen129
-\TP@margin=\dimen130
-\TP@absmargin=\dimen131
+\TP@textbox=\box33
+\TP@holdbox=\box34
+\TPHorizModule=\dimen136
+\TPVertModule=\dimen137
+\TP@margin=\dimen138
+\TP@absmargin=\dimen139
 
 Grid set 16 x 16 = 37.34424pt x 52.81541pt
-\TPboxrulesize=\dimen132
-\TP@ox=\dimen133
-\TP@oy=\dimen134
-\TP@tbargs=\toks24
-\TP@prevdepth=\dimen135
+\TPboxrulesize=\dimen140
+\TP@ox=\dimen141
+\TP@oy=\dimen142
+\TP@tbargs=\toks26
+\TP@prevdepth=\dimen143
 TextBlockOrigin set to 0pt x 0pt
 ) (c:/texlive/2018/texmf-dist/tex/latex/isodate/isodate.sty
 Package: isodate 2010/01/03 v2.30 Print dates with different formats (HH)
@@ -337,7 +394,7 @@ Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
 )
 (c:/texlive/2018/texmf-dist/tex/latex/substr/substr.sty
 Package: substr 2009/10/20 v1.2 Handle substrings
-\c@su@anzahl=\count120
+\c@su@anzahl=\count132
 )
 (c:/texlive/2018/texmf-dist/tex/latex/isodate/english.idf
 File: english.idf 2010/01/03 v2.30 Language definitions for isodate package (HH
@@ -345,14 +402,14 @@ File: english.idf 2010/01/03 v2.30 Language definitions for isodate package (HH
 
 Define commands for English date format
 )
-\c@iso@tmpmonth=\count121
-\c@iso@yeartwo=\count122
-\c@iso@slash=\count123
-\c@iso@minus=\count124
-\c@iso@dot=\count125
-\c@iso@@slash=\count126
-\c@iso@@minus=\count127
-\c@iso@@dot=\count128
+\c@iso@tmpmonth=\count133
+\c@iso@yeartwo=\count134
+\c@iso@slash=\count135
+\c@iso@minus=\count136
+\c@iso@dot=\count137
+\c@iso@@slash=\count138
+\c@iso@@minus=\count139
+\c@iso@@dot=\count140
 ) (c:/texlive/2018/texmf-dist/tex/latex/adjustbox/adjustbox.sty
 Package: adjustbox 2018/04/08 v1.1 Adjusting TeX boxes (trim, clip, ...)
 
@@ -361,10 +418,10 @@ Package: xkeyval 2014/12/03 v2.7a package option processing (HA)
 
 (c:/texlive/2018/texmf-dist/tex/generic/xkeyval/xkeyval.tex
 (c:/texlive/2018/texmf-dist/tex/generic/xkeyval/xkvutils.tex
-\XKV@toks=\toks25
-\XKV@tempa@toks=\toks26
+\XKV@toks=\toks27
+\XKV@tempa@toks=\toks28
 )
-\XKV@depth=\count129
+\XKV@depth=\count141
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
 ))
 (c:/texlive/2018/texmf-dist/tex/latex/adjustbox/adjcalc.sty
@@ -376,36 +433,37 @@ Package: trimclip 2018/04/08 v1.1 Trim and clip general TeX material
 
 (c:/texlive/2018/texmf-dist/tex/latex/collectbox/collectbox.sty
 Package: collectbox 2012/05/17 v0.4b Collect macro arguments as boxes
-\collectedbox=\box33
+\collectedbox=\box35
 )
-\tc@llx=\dimen136
-\tc@lly=\dimen137
-\tc@urx=\dimen138
-\tc@ury=\dimen139
+\tc@llx=\dimen144
+\tc@lly=\dimen145
+\tc@urx=\dimen146
+\tc@ury=\dimen147
 Package trimclip Info: Using driver 'tc-pdftex.def'.
 
 (c:/texlive/2018/texmf-dist/tex/latex/adjustbox/tc-pdftex.def
 File: tc-pdftex.def 2018/04/08 v2.1 Clipping driver for pdftex
 ))
-\adjbox@Width=\dimen140
-\adjbox@Height=\dimen141
-\adjbox@Depth=\dimen142
-\adjbox@Totalheight=\dimen143
-\adjbox@pwidth=\dimen144
-\adjbox@pheight=\dimen145
-\adjbox@pdepth=\dimen146
-\adjbox@ptotalheight=\dimen147
+\adjbox@Width=\dimen148
+\adjbox@Height=\dimen149
+\adjbox@Depth=\dimen150
+\adjbox@Totalheight=\dimen151
+\adjbox@pwidth=\dimen152
+\adjbox@pheight=\dimen153
+\adjbox@pdepth=\dimen154
+\adjbox@ptotalheight=\dimen155
 
 (c:/texlive/2018/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty
 Package: ifoddpage 2016/04/23 v1.1 Conditionals for odd/even page detection
-\c@checkoddpage=\count130
+\c@checkoddpage=\count142
+LaTeX Info: Redefining \checkoddpage on input line 45.
 )
 (c:/texlive/2018/texmf-dist/tex/latex/varwidth/varwidth.sty
 Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
-\@vwid@box=\box34
-\sift@deathcycles=\count131
-\@vwid@loff=\dimen148
-\@vwid@roff=\dimen149
+\@vwid@box=\box36
+\sift@deathcycles=\count143
+\@vwid@loff=\dimen156
+\@vwid@roff=\dimen157
 ))
 (c:/texlive/2018/texmf-dist/tex/latex/psnfss/times.sty
 Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
@@ -439,17 +497,17 @@ File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
 )
 (c:/texlive/2018/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count132
-\scratchdimen=\dimen150
-\scratchbox=\box35
-\nofMPsegments=\count133
-\nofMParguments=\count134
-\everyMPshowfont=\toks27
-\MPscratchCnt=\count135
-\MPscratchDim=\dimen151
-\MPnumerator=\count136
-\makeMPintoPDFobject=\count137
-\everyMPtoPDFconversion=\toks28
+\scratchcounter=\count144
+\scratchdimen=\dimen158
+\scratchbox=\box37
+\nofMPsegments=\count145
+\nofMParguments=\count146
+\everyMPshowfont=\toks29
+\MPscratchCnt=\count147
+\MPscratchDim=\dimen159
+\MPnumerator=\count148
+\makeMPintoPDFobject=\count149
+\everyMPtoPDFconversion=\toks30
 ) (c:/texlive/2018/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
@@ -467,17 +525,8 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-\AtBeginShipoutBox=\box36
+\AtBeginShipoutBox=\box38
 Package hyperref Info: Link coloring OFF on input line 12.
-
-(c:/texlive/2018/texmf-dist/tex/latex/hyperref/nameref.sty
-Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
-
-(c:/texlive/2018/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
-Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
-)
-\c@section@level=\count138
-)
 LaTeX Info: Redefining \ref on input line 12.
 LaTeX Info: Redefining \pageref on input line 12.
 LaTeX Info: Redefining \nameref on input line 12.
@@ -486,18 +535,21 @@ LaTeX Info: Redefining \nameref on input line 12.
 \@outlinefile=\write3
 \openout3 = `thesis.out'.
 
-\c@lstlisting=\count139
+\c@lstlisting=\count150
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: subfig package v1.3 is loaded.
+Package caption Info: End \AtBeginDocument code.
  ABD: EveryShipout initializing macros
 isodate: babel.sty has been loaded
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <11> not available
 (Font)              Font shape `T1/phv/b/n' tried instead on input line 16.
-<TU_Graz_Logo.pdf, id=24, 113.42375pt x 42.1575pt>
+<TU_Graz_Logo.pdf, id=92, 113.42375pt x 42.1575pt>
 File: TU_Graz_Logo.pdf Graphic file (type pdf)
 <use TU_Graz_Logo.pdf>
 Package pdftex.def Info: TU_Graz_Logo.pdf  used on input line 16.
 (pdftex.def)             Requested size: 113.42346pt x 42.15738pt.
 
-Overfull \hbox (7.2769pt too wide) in paragraph at lines 16--16
+Overfull \hbox (2.76003pt too wide) in paragraph at lines 16--16
 [] 
  []
 
@@ -507,53 +559,270 @@ Overfull \hbox (7.2769pt too wide) in paragraph at lines 16--16
 pdf>])
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
 (Font)              Font shape `T1/phv/b/n' tried instead on input line 10.
-LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10> not available
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10.95> not available
 (Font)              Font shape `T1/phv/m/sl' tried instead on input line 13.
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.39 \newpage
+l.37 \newpage
               [1]
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <9> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 45.
- [2]
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 52.
- (./thesis.toc
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 43.
+LaTeX Font Info:    Font shape `T1/phv/bx/it' in size <10> not available
+(Font)              Font shape `T1/phv/b/it' tried instead on input line 52.
+LaTeX Font Info:    Font shape `T1/phv/b/it' in size <10> not available
+(Font)              Font shape `T1/phv/b/sl' tried instead on input line 52.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 52.
+
+Overfull \hbox (0.8436pt too wide) in paragraph at lines 47--53
+\T1/phv/m/n/10 it is en-crypted us-ing the symmetric-key al-go-rithm Ad-vanced
+ []
+
+[2]
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 63.
+ (./thesis.toc
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10.95> not available
 (Font)              Font shape `T1/phv/b/n' tried instead on input line 3.
 )
 \tf@toc=\write4
 \openout4 = `thesis.toc'.
 
  [3]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 67.
- [4]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 67.
+Underfull \hbox (badness 10000) in paragraph at lines 80--81
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 82--84
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 85--87
+
+ []
+
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 131--132
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 133--134
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 135--136
+
+ []
+
+LaTeX Font Info:    Try loading font information for OMS+phv on input line 139.
+
+(c:/texlive/2018/texmf-dist/tex/latex/psnfss/omsphv.fd
+File: omsphv.fd 
+)
+LaTeX Font Info:    Font shape `OMS/phv/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 139.
+ [5]
+Underfull \hbox (badness 10000) in paragraph at lines 155--156
+
+ []
+
+<images/MainActivity.jpg, id=155, 542.025pt x 963.6pt>
+File: images/MainActivity.jpg Graphic file (type jpg)
+<use images/MainActivity.jpg>
+Package pdftex.def Info: images/MainActivity.jpg  used on input line 159.
+(pdftex.def)             Requested size: 170.71652pt x 303.4915pt.
+LaTeX Font Info:    Font shape `T1/phv/bx/it' in size <12> not available
+(Font)              Font shape `T1/phv/b/it' tried instead on input line 164.
+LaTeX Font Info:    Font shape `T1/phv/b/it' in size <12> not available
+(Font)              Font shape `T1/phv/b/sl' tried instead on input line 164.
+
+Underfull \hbox (badness 10000) in paragraph at lines 165--166
+
+ []
+
+[6 <./images/MainActivity.jpg>]
+<images/ShowAccountsActivity.jpg, id=173, 542.025pt x 963.6pt>
+File: images/ShowAccountsActivity.jpg Graphic file (type jpg)
+<use images/ShowAccountsActivity.jpg>
+Package pdftex.def Info: images/ShowAccountsActivity.jpg  used on input line 17
+1.
+(pdftex.def)             Requested size: 113.81102pt x 202.31786pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 171--171
+[]\T1/phv/m/n/9 (a) |ShowAc-coun-tAc-tiv-
+ []
+
+
+Underfull \hbox (badness 4660) in paragraph at lines 171--171
+\T1/phv/m/n/9 ity, which is shown af-ter
+ []
+
+<images/AddAccountActivity.jpg, id=174, 542.025pt x 963.6pt>
+File: images/AddAccountActivity.jpg Graphic file (type jpg)
+<use images/AddAccountActivity.jpg>
+Package pdftex.def Info: images/AddAccountActivity.jpg  used on input line 173.
+
+(pdftex.def)             Requested size: 113.81102pt x 202.31786pt.
+
+Underfull \hbox (badness 1466) in paragraph at lines 173--173
+\T1/phv/m/n/9 is shown af-ter click-ing the
+ []
+
+<images/ChangeAccountActivity.jpg, id=175, 542.025pt x 963.6pt>
+File: images/ChangeAccountActivity.jpg Graphic file (type jpg)
+<use images/ChangeAccountActivity.jpg>
+Package pdftex.def Info: images/ChangeAccountActivity.jpg  used on input line 1
+75.
+(pdftex.def)             Requested size: 113.81102pt x 202.31786pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 175--175
+[]\T1/phv/m/n/9 (c) |ChangeAc-coun-tAc-tiv-ity,
+ []
+
+<images/DeleteAccount.jpg, id=176, 542.025pt x 963.6pt>
+File: images/DeleteAccount.jpg Graphic file (type jpg)
+<use images/DeleteAccount.jpg>
+Package pdftex.def Info: images/DeleteAccount.jpg  used on input line 177.
+(pdftex.def)             Requested size: 113.81102pt x 202.31786pt.
+
+Underfull \hbox (badness 1173) in paragraph at lines 177--177
+[]\T1/phv/m/n/9 (d) |Ask-ing the user be-fore
+ []
+
+[7]
+Underfull \hbox (badness 10000) in paragraph at lines 185--188
+
+ []
+
+[8 <./images/ShowAccountsActivity.jpg> <./images/AddAccountActivity.jpg> <./ima
+ges/ChangeAccountActivity.jpg> <./images/DeleteAccount.jpg>]
+<images/BT_english.jpg, id=201, 542.025pt x 963.6pt>
+File: images/BT_english.jpg Graphic file (type jpg)
+<use images/BT_english.jpg>
+Package pdftex.def Info: images/BT_english.jpg  used on input line 194.
+(pdftex.def)             Requested size: 113.81102pt x 202.31786pt.
+<images/AvailableAccounts.jpg, id=202, 542.025pt x 963.6pt>
+File: images/AvailableAccounts.jpg Graphic file (type jpg)
+<use images/AvailableAccounts.jpg>
+Package pdftex.def Info: images/AvailableAccounts.jpg  used on input line 196.
+(pdftex.def)             Requested size: 113.81102pt x 202.31786pt.
+File: images/AvailableAccounts.jpg Graphic file (type jpg)
+<use images/AvailableAccounts.jpg>
+Package pdftex.def Info: images/AvailableAccounts.jpg  used on input line 199.
+(pdftex.def)             Requested size: 113.81102pt x 202.31786pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 221--225
+
+ []
+
+[9 <./images/BT_english.jpg> <./images/AvailableAccounts.jpg>] [10]
+<images/AuthenticationScreen.jpg, id=219, 542.025pt x 963.6pt>
+File: images/AuthenticationScreen.jpg Graphic file (type jpg)
+<use images/AuthenticationScreen.jpg>
+Package pdftex.def Info: images/AuthenticationScreen.jpg  used on input line 25
+7.
+(pdftex.def)             Requested size: 113.81102pt x 202.31786pt.
+
+Underfull \hbox (badness 3128) in paragraph at lines 257--257
+[]\T1/phv/m/n/9 (a) |Ac-tiv-ity where user is
+ []
+
+File: images/AuthenticationScreen.jpg Graphic file (type jpg)
+<use images/AuthenticationScreen.jpg>
+Package pdftex.def Info: images/AuthenticationScreen.jpg  used on input line 26
+0.
+(pdftex.def)             Requested size: 113.81102pt x 202.31786pt.
+[11 <./images/AuthenticationScreen.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 294--295
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 297--298
+
+ []
+
+
+Overfull \hbox (21.12708pt too wide) in paragraph at lines 300--302
+\T1/phv/m/n/10.95 and if it is granted the ap-pli-ca-tion pro-gram-ming in-ter-
+face (API) re-turns \T1/phv/m/sl/10.95 PER-MIS-SION_GRANTED\T1/phv/m/n/10.95 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--302
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 308--309
+
+ []
+
+[12]
+Underfull \hbox (badness 10000) in paragraph at lines 316--317
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 319--320
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 322--323
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 326--327
+
+ []
+
+(./thesis.bbl
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 5.
+ (c:/texlive/2018/texmf-dist/tex/latex/psnfss/t1pcr.fd
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+)
+Underfull \hbox (badness 10000) in paragraph at lines 4--7
+[]\T1/phv/m/n/10.95 ``Android key-store sys-tem.'' []$\T1/pcr/m/n/10.95 https :
+ / / developer . android . com / training /
+ []
+
+[13])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 352.
+ [14]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 352.
  (./thesis.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 67.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 67.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 352.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 352.
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 301119995B21F64240AA1DD8B1B2AADB;244.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 67.
+(rerunfilecheck)             Checksum: FBB3DA15EB6AE1BDCD883734263354EC;1568.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 352.
  ) 
 Here is how much of TeX's memory you used:
- 9417 strings out of 492646
- 135369 string characters out of 6133325
- 239909 words of memory out of 5000000
- 13125 multiletter control sequences out of 15000+600000
- 49781 words of font info for 45 fonts, out of 8000000 for 9000
+ 10930 strings out of 492646
+ 162002 string characters out of 6133325
+ 273994 words of memory out of 5000000
+ 14544 multiletter control sequences out of 15000+600000
+ 64985 words of font info for 65 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 35i,8n,37p,372b,394s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 51i,9n,87p,1245b,470s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2018/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2018/texm
-f-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><c:/texlive/2018/texmf-dist/fonts/ty
-pe1/urw/helvetic/uhvr8a.pfb><c:/texlive/2018/texmf-dist/fonts/type1/urw/helveti
-c/uhvro8a.pfb>
-Output written on thesis.pdf (5 pages, 34884 bytes).
+f-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2018/texmf-dist/fo
+nts/type1/urw/courier/ucrr8a.pfb><c:/texlive/2018/texmf-dist/fonts/type1/urw/he
+lvetic/uhvb8a.pfb><c:/texlive/2018/texmf-dist/fonts/type1/urw/helvetic/uhvbo8a.
+pfb><c:/texlive/2018/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive
+/2018/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
+Output written on thesis.pdf (15 pages, 715716 bytes).
 PDF statistics:
- 73 PDF objects out of 1000 (max. 8388607)
- 61 compressed objects within 1 object stream
- 10 named destinations out of 1000 (max. 500000)
- 46 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 280 PDF objects out of 1000 (max. 8388607)
+ 244 compressed objects within 3 object streams
+ 53 named destinations out of 1000 (max. 500000)
+ 222 words of extra memory for PDF output out of 10000 (max. 10000000)
 

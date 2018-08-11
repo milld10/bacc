@@ -13,6 +13,8 @@ public class MainActivity extends Activity
 {
     private static final String TAG = "MainActivity";
 
+    private static final int FINGERPRINT_SUCCESS_RESULT_CODE = 15;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -24,7 +26,9 @@ public class MainActivity extends Activity
     public void fingerprintActivity(View view)
     {
         Intent intent = new Intent(this, FingerprintActivity.class);
+        intent.putExtra("from", "MainActivity");
         startActivity(intent);
+//        startActivityForResult(intent, FINGERPRINT_SUCCESS_RESULT_CODE);
     }
 
     public void showBluetoothActivity(View view)
@@ -32,12 +36,6 @@ public class MainActivity extends Activity
         Intent intent = new Intent(this, PeripheralActivity.class);
         startActivity(intent);
     }
-
-//    public void showAddLoginActivity(View view)
-//    {
-//        Intent intent = new Intent(this, AddAccountActivity.class);
-//        startActivity(intent);
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -77,5 +75,19 @@ public class MainActivity extends Activity
 //        FullScreenDialog dialog = new FullScreenDialog();
 //        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 //        dialog.show(fragmentTransaction, FullScreenDialog.TAG);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent)
+    {
+        switch(resultCode)
+        {
+            case FINGERPRINT_SUCCESS_RESULT_CODE:
+                if(resultCode == FingerprintActivity.RESULT_OK)
+                {
+                    Intent showAccountsIntent = new Intent(this, ShowAccountsActivity.class);
+                    startActivity(showAccountsIntent);
+                }
+
+        }
     }
 }

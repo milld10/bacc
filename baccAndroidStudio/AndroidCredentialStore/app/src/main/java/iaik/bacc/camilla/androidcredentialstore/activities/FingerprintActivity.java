@@ -2,7 +2,9 @@ package iaik.bacc.camilla.androidcredentialstore.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.KeyguardManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +23,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -52,7 +56,11 @@ public class FingerprintActivity extends Activity
     private KeyGenerator keyGenerator;
     private FingerprintManager.CryptoObject cryptoObject;
     private FingerprintManager fingerprintManager;
+    private FingerprintHandler handler;
     private KeyguardManager keyguardManager;
+
+    private Intent intent;
+    String prevActivity;
 
     private Context context;
 
@@ -67,13 +75,11 @@ public class FingerprintActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fingerprint);
+        masterPasswordLayout = findViewById(R.id.masterPasswordLayout);
+        masterPassword = findViewById(R.id.masterPassword);
+        accessButton = findViewById(R.id.button_access);
 
-
-        masterPasswordLayout = (TextInputLayout) findViewById(R.id.masterPasswordLayout);
-        masterPassword = (TextInputEditText) findViewById(R.id.masterPassword);
-
-        accessButton = (Button) findViewById(R.id.button_access);
-
+        prevActivity = getIntent().getStringExtra("from");
 
         accessButton.setOnClickListener(new View.OnClickListener()
         {
@@ -94,7 +100,6 @@ public class FingerprintActivity extends Activity
             fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
 
             TextView textView = findViewById(R.id.mytextview);
-
 
             //If device has a fingerprint sensor
             if (!fingerprintManager.isHardwareDetected())
@@ -132,14 +137,33 @@ public class FingerprintActivity extends Activity
 
                 if (initCipher()) {
                     cryptoObject = new FingerprintManager.CryptoObject(cipher);
-                    FingerprintHandler helper = new FingerprintHandler(this);
-                    helper.startAuth(fingerprintManager, cryptoObject);
+                    handler = new FingerprintHandler(this);
+
+                    handler.startAuth(fingerprintManager, cryptoObject, prevActivity);
+
+                    Log.d(TAG, "DOES THIS SHOW UP IN THE CONSOLE??????????????");
                 }
             }
         }
 
+        Log.d(TAG, "i hope this does not show up before i could scan my fingerprint, but it probably will");
+
+//        sendIntentBackBecauseSuccess();
+
+
     }
 
+
+
+    public void sendIntentBackBecauseSuccess()
+    {
+        if(handler.getAuthenticationSucceeded())
+        {
+            Intent intent = new Intent(FingerprintActivity.this, PeripheralActivity.class);
+            setResult(40, intent);
+            finish();
+        }
+    }
 
 
     //method to gain access to Android keystore and generate the encryption key

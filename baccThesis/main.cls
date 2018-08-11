@@ -6,13 +6,13 @@
 	\PassOptionsToClass{\CurrentOption}{article}
 }
 \ProcessOptions\relax
-\LoadClass[a4paper]{article}
+\LoadClass[a4paper, 11pt]{article}
 
 
 %----------------------------------------------------------------------------------------
 %	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
 %----------------------------------------------------------------------------------------
-%\documentclass[a4paper]{article}
+%\documentclass[a4paper, 11pt]{article}
 
 \usepackage[english]{babel}
 \usepackage[T1]{fontenc} % Output font encoding for international characters
@@ -21,7 +21,7 @@
 \renewcommand{\familydefault}{\sfdefault}
 
 \usepackage{graphicx}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage{cite}
 \usepackage{titlesec}
 \usepackage{a4wide}
@@ -29,8 +29,12 @@
 \usepackage{spverbatim}
 \usepackage{listings}
 \usepackage{amsmath}
+\usepackage{changepage}
+\usepackage{nameref}
+\usepackage{float}
+\usepackage{subfig}
 
-%\usepackage{float}
+
 % Packages needed?
 %\usepackage{algorithmic,algorithm}
 %\usepackage{amsmath,latexsym,amssymb,amsfonts}
