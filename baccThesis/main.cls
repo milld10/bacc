@@ -81,6 +81,9 @@
 	%\noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
 }
 
+%Setting listings settings
+\lstset{language=Java, basicstyle=\ttfamily} 
+
 % Change Font Command 
 % use either 
 % ptm -> Times

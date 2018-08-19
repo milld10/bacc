@@ -46,7 +46,7 @@
 %consise description what the thesis is about and what its contributions to the field are (what is new). Market the contributions to your readership --> mention all relevant keywords IN THE abstract!
 In this paper, we explore a more secure way to share credentials over multiple devices without relying on cloud services. Sensitive data is stored on a mobile phone while accessing them over a secure Bluetooth connection. \\
 It features an Android application for mobile phones and a Chrome web extension which uses the Web Bluetooth API for establishing a Bluetooth Low Energy (LE) connection between device and website. The application acts as a peripheral and advertises the data. The web extension serves as the central and reads the data after a successfully established connection. The extension then fills the read data into the login fields of the webpage. \\
-To securely store sensitive information on the mobile phone it is encrypted using the symmetric-key algorithm Advanced Encryption Standard (AES) with a 256bit-generated key. The encrypted credentials are then stored using the greenDAO ORM which manages all operations of the database. The generated key lies in the Trusted Execution Environment (TEE) which is handled by the Android KeyStore and represents the most secure option for this project. \\
+To securely store sensitive information on the mobile phone it is encrypted using the symmetric-key algorithm Advanced Encryption Standard (AES) with a 128bit-generated key. The encrypted credentials are then stored using the greenDAO ORM which manages all operations of the database. The generated key lies in the Trusted Execution Environment (TEE) which is handled by the Android KeyStore and represents the most secure option for this project. \\
 Assurance of authenticity of the user is reached by making use of biometric identification respectively the user's fingerprint to authenticate the sharing of the credentials.
 \vspace{0.5cm} \\
 \keywords{\textit{android, password manager, mobile application, aes symmetric encryption, bluetooth low energy, web extension, web bluetooth api}}
@@ -63,6 +63,11 @@ Assurance of authenticity of the user is reached by making use of biometric iden
 \tableofcontents
 \newpage
 
+\listoffigures
+\vspace{1cm}
+\lstlistoflistings
+
+\newpage
 
 
 %-----------------------------------------------------------------------------------------
@@ -77,12 +82,11 @@ Assurance of authenticity of the user is reached by making use of biometric iden
 \section*{Introduction} \label{introduction}
 %Introduction into the topic; what was made; what are the problems with state of the art technology, generally a description of what was made, more like a story
 
-Nowadays password managers are essential to our everyday lives. Studies show that the average person has up to 20 online accounts [paper] from social media, bank accounts, financial information]. As shown in [ref with passwords of people] the average user also does not create particularly safe or hard to remember the password. Also, same passwords are reused over multiple different accounts or some variation of that password. These passwords are not secure and very vulnerable to attacks. \\
+Nowadays password managers are essential to our everyday lives. Studies show that the average person has up to 20 online accounts [paper]. As shown in [ref:typicalpassword], the average user also does not create particularly safe or hard to remember passwords. Often the same password or some variation of it is reused over multiple different accounts. These passwords are not secure and very vulnerable to attacks. [ref] \\
 
-However, to maintain all accounts securely many users rely on password managers to handle it for them. It makes it easier to create and remember multiple passwords, which are different from each other but at the same time equally safe. There are different kinds of password managers. Some store the data locally, for example on a computer or mobile device. It is a safe way to manage credentials but making them accessible throughout different devices can be challenging. In order to make them available on multiple devices, some of those password managers offer the possibility of cloud synchronization. This may be very convenient when working on different devices but not very reliable when it comes to the security of data. The risks are data being corrupted, stolen or wiped. [https://www.bbc.com/news/business-36151754] [paper attack on cloud services]. Then there are password managers that are entirely cloud-based meaning that no data is saved locally on any device and credentials are accessed over a website. Also, some password managers support browser integration which makes passwords accessible through the browser in use. By uploading sensitive data in any form onto the internet, the risk of an attack may increase.
-The goal is to store credentials as safely as possible and to make them available on different devices while at the same time without relying on any cloud services. \\
+However, to maintain all account logins, many users rely on password managers to handle it for them. This makes it easier to create and remember multiple passwords, which are different from each other but at the same time equally safe. There are different kinds of password managers. Some store the data locally, for example on a computer or mobile device. This is a safe option to manage credentials but making them accessible throughout different devices can be challenging. In order to make them available on multiple devices, some of those password managers offer the possibility of cloud synchronization. This may be very convenient when working on different devices but not very reliable when it comes to the security of data. The risks are data being corrupted, stolen or wiped. [https://www.bbc.com/news/business-36151754] [paper attack on cloud services]. Then there are password managers that are entirely cloud-based meaning that no data is saved locally on any device and credentials are accessed over a website. Also, some password managers support browser integration which makes passwords accessible through the browser in use. By uploading sensitive data in any form onto the internet, the risk of an attack may increase. [ref] The goal is to store credentials as safely as possible and to make them available on different devices while at the same time without relying on any cloud services. \\
 
-In this project, an Android credential manager is designed that does not store data onto the internet but rather shares them through a secured Bluetooth Low Energy (LE) connection established with a Chrome extension using the Web Bluetooth API [ref web Bluetooth API google link]. The data is stored on the device and only on demand one selected credential pair consisting username and password is shared with the extension at a time. Accessing and sending credentials requires authentication from the user in the form of biometric information or a master password. It is guaranteed that only the owner of the mobile phone can access and share his credentials. The Web Bluetooth API [chome API link] on the other hand receives the data that is sent from the Android application and fills them in into the text fields on the website. Neither is it necessary to type in the credentials manually nor even make them visible. \\ 
+In this project, an Android credential manager is designed that does not store data onto the internet but rather shares them via a secured Bluetooth Low Energy (LE) connection established with a Chrome extension using the Web Bluetooth API [ref web Bluetooth API google link]. The data is stored on the device and only on demand one selected credential pair consisting username and password is shared with the extension at a time. Accessing and sending credentials requires authentication from the user in the form of biometric information or a master password. It is guaranteed that only the owner of the mobile phone can access and share his credentials. The Web Bluetooth API [chome API link] on the other hand receives the data that is sent from the Android application and fills them in into the text fields on the website. Neither is it necessary to type in the credentials manually nor even make them visible. \\ 
 %explain more the extension and web Bluetooth API ?? https://developers.google.com/web/updates/2015/07/interact-with-ble-devices-on-the-web)\\
 
 This paper consists of 8 chapters that are structured as follows: Section \ref{motivation} shows the motivation behind this project, while section \ref{relwork} explains related work that has already been done on this subject. Section \ref{architecture} handles the architecture of the project and presents the topics in detail. Section \ref{seceval} illustrates a brief security evaluation with common criteria, and section \ref{bluetooth} discusses Bluetooth, and it's underlying security. Furthermore, section \ref{limitations} describes the limitations that apply to this project and future work is explained in section \ref{futurework}. Finally, the conclusions are drawn in section \ref{conclusion}.
@@ -132,6 +136,8 @@ As mentioned above, we decided to implement an Android application for mobile ph
 
 The API initiates the connection upon a button click from the user and searches for BLE devices that are near and offer a specific service that is defined through a UUID, a universally unique identifier. Once paired with the mobile app, the secure Bluetooth connection has been established, and the transmission of data can take place. Upon successful pairing, the extension is allowed to read characteristics that are advertised on the app. The characteristics contain the values of username and password, which the extension inserts directly into the login fields of the website. \\
 
+explain more about web bluetooth api, technical details, and code needed to  work witht the BT api, 
+
 \noindent First, the requirements of the application as well of the extension were defined: \\
 
 \noindent Application requirements:
@@ -157,7 +163,7 @@ The API initiates the connection upon a button click from the user and searches 
 \begin{figure}[H]
 \centering
 \includegraphics[width=6cm]{images/MainActivity}
-\caption{MainActivity, which is shown at start up of the app}
+\caption[MainActivity]{MainActivity, which is shown at start up of the app}
 \label{fig:mainactivity}
 \end{figure}
 
@@ -168,14 +174,14 @@ When clicked on one of the existing credentials in the list, it takes the user t
 
 \begin{figure}[H]
 \centering
-\subfloat[ShowAccountActivity, which is shown after authentication]{{\includegraphics[width=4cm]{images/ShowAccountsActivity}\label{show_acc} }}
+\subfloat[]{{\includegraphics[width=4cm]{images/ShowAccountsActivity}\label{show_acc} }}
 \qquad
-\subfloat[AddAccountActivity, which is shown after clicking the floating action button on the bottom right corner]{{\includegraphics[width=4cm]{images/AddAccountActivity}\label{add_acc} }}
+\subfloat[]{{\includegraphics[width=4cm]{images/AddAccountActivity}\label{add_acc} }}
 \qquad
-\subfloat[ChangeAccountActivity, which is shown when clicked on a existing credential in the list]{{\includegraphics[width=4cm]{images/ChangeAccountActivity}\label{change_acc} }}
+\subfloat[]{{\includegraphics[width=4cm]{images/ChangeAccountActivity}\label{change_acc} }}
 \qquad
-\subfloat[Asking the user before deleting the credential out of the database]{{\includegraphics[width=4cm]{images/DeleteAccount}\label{prompt_delete} }}
-\caption{Activity \textit{Accounts}}
+\subfloat[]{{\includegraphics[width=4cm]{images/DeleteAccount}\label{prompt_delete} }}
+\caption[Activity \textit{Accounts}]{Activity \textit{Accounts}: In \protect\subref{show_acc} it shows the listed accounts after success user authentication. \protect\subref{add_acc} is the interface where the user can add accounts and in \protect\subref{change_acc} the user can change a selected account. \protect\subref{prompt_delete} asks the user before deleting credentials out of the database.}
 \label{fig:accountactivity}
 \end{figure}
 
@@ -183,23 +189,24 @@ When clicked on one of the existing credentials in the list, it takes the user t
 
 \subsection{Activity \textit{Connection}}
 After selecting the menu item \textit{Connection}, the app checks immediately if Bluetooth is enabled and if not it prompts the user to allow turning on Bluetooth on the mobile phone as shown in Figure \ref{fig:connectionactivity}\protect\subref{prompt_bt}.
-If the activation is denied, then the application will return to the main activity with an error message saying "\textit{Bluetooth is Not Enabled}" which is shown in Figure \ref{fig:connectionactivity}%\protect\subref{bt_notEnabled}. \\
-. \\
+If the activation is denied, then the application will return to the main activity with an error message saying "\textit{Bluetooth is Not Enabled}" which is shown in Figure \ref{fig:connectionactivity}\protect\subref{bt_notEnabled}. \\
 
 Once Bluetooth is enabled, the accounts, which are available to share over the BLE connection to the web browser, are listed.
 At first, the application does not advertise. The user is asked to select an account that he wants to send to the Web Bluetooth API for login as seen in Figure \ref{fig:connectionactivity}\protect\subref{not_advertising}. Before the credentials are shared, the user is asked to authenticate himself again using his fingerprint or his master password. Figure \ref{fig:connectionactivity}\protect\subref{advertising} shows that only after successful authentication the advertising starts and the Web Bluetooth API searches for BLE devices that are near.
 
 \begin{figure}[H]
 \centering
-\subfloat[Prompt to enable bluetooth]{{\includegraphics[width=4cm]{images/BT_english}\label{prompt_bt} }}
+\subfloat[]{{\includegraphics[width=4cm]{images/BT_english}\label{prompt_bt} }}
 \qquad
-\subfloat[screenshot not advertising, please select credential]{{\includegraphics[width=4cm]{images/AvailableAccounts}\label{not_advertising} }}
+\subfloat[]{{\includegraphics[width=4cm]{images/BTNotEnabled}\label{bt_notEnabled} }}
+\qquad
+\subfloat[]{{\includegraphics[width=4cm]{images/AvailableAccounts}\label{not_advertising} }}
 \qquad
 % !!!!!!!!!!!!! change jpg once programming done and working!
-\subfloat[screenshot of now advertising, please keep screen on]{{\includegraphics[width=4cm]{images/AvailableAccounts}\label{advertising} }}
+\subfloat[]{{\includegraphics[width=4cm]{images/AvailableAccounts}\label{advertising} }}
 %\qquad
 %\subfloat[Asking the user before deleting the credential out of the database]{{\includegraphics[width=5cm]{images/MainActivity} }}
-\caption{Activity \textit{Connection}}
+\caption[Activity \textit{Connection}]{Activity \textit{Connection}: In \protect\subref{prompt_bt} a prompt is shown to the user to enable Bluetooth. When the application is not advertising, \protect\subref{not_advertising} is shown and \protect\subref{advertising} is shown after user selected a credential to send.}
 \label{fig:connectionactivity}
 \end{figure}
 
@@ -207,25 +214,55 @@ At first, the application does not advertise. The user is asked to select an acc
 
 
 \subsection{Storage of Credentials using the greenDao ORM}
-Since the goal is to store user credentials on the phone,  we need a suitable database structure. One option is using a common SQLite database, which is mostly used for Android applications. SQLite databases use, as conventional SQL databases, SQL queries to store, retrieve and delete data. SQL queries are vulnerable to security attacks, for example, second-order SQL injections. A SQL injection is defined by a ... [Detection of SQL Injection Attacks]. This kind of attack increases the risk of storing data safely and may lead to a vulnerable application.\\
-Another argument against a traditional SQLite database is the writing of SQL can be time consuming.
+Since the goal is to store user credentials on the phone,  we need a suitable database structure. One option was using a common SQLite database, which is widely used for Android applications. SQLite databases use, as conventional SQL databases, SQL queries to store, retrieve and delete data. SQL queries are vulnerable to security attacks, for example, second-order SQL injections. As stated in [Detection of SQL Injection Attacks] a SQL injection is defined as a method where code is injected. This exploits a security vulnerability in the database layer of an application. It is done by modifying input data which then alters the SQL query. This increases the risk of storing data safely and may lead to a vulnerable application. In [Detection of SQL Injection Attacks] they state that the risk of a SQL injection attack is higher due to multiple reasons, for example, lack of development time and training, or experience and knowledge of potential security issues. \\
 
-For this project, we decided not to use SQLite but instead an object/relational mapping which handles SQL processes for us.\\
-To manage the tasks of storing, deleting, updating and querying a so-called \textit{object/relational mapping} is used to save time and resources. We decided on the greenDAO ORM [ref http://greenrobot.org/greendao/] as it has an overall good performance and saves time because it does not require as much programming effort compared to other frameworks as discussed in [ref greendao]. 
+For this project, we decided to use an object/relational mapping which handles SQL statements in the SQLite database.
+To manage the tasks of storing, deleting, updating and querying a so-called \textit{object/relational mapping} is used to save time and resources. We decided on the greenDAO ORM [ref http://greenrobot.org/greendao/] as it has an overall good performance and saves time because it does not require as much programming effort compared to other frameworks as discussed in [ref greenDAO paper]. \\
+
+Before we started with setting up the database we needed to included the greenDAO plugin into the project. We added a plugin and a dependency to the app module gradle file, and dependency to the top-level build file. [greendao link]\\
+
+Next step was the set up the database. This was done by initializing a DaoSession which is given by a DaoMaster. The DaoMaster was provided from the helper class \lstinline{DevOpenHelper}, which was instantiated in a singleton class of the application as shown in Listing \ref{lst:db_master}.
+
+\begin{lstlisting}[caption=CredentialApplication.java; Creation of database, label=lst:db_master]
+DaoMaster.DevOpenHelper helper = 
+        new DaoMaster.DevOpenHelper(this,"credentials-db");
+Database db = helper.getWritableDb();
+daoSession = new DaoMaster(db).newSession();
+\end{lstlisting}
+\vspace{0.5cm}
+
+The DaoMaster handles the database set up and creates DaoSessions. A DaoSession, on the other hand, manages the DAO object, which refers to the entity that we store into the database. DAO objects are created from a Java class with annotations. We used the class \texttt{Account.java}, which holds four members: a unique id, the website of the credentials, as well as a username and password. To define this class as a database-backed entity, we added the annotation \lstinline{@Entitiy} above the class-header. Furthermore, above each class member, we placed annotations as well to define the column names. Afterward, the greenDAO generator automatically generates the constructors, and instances of the class can now be stored into the greenDAO database. [link greendao]. \\
+
+\subsubsection*{Load, insert and delete a database entry}
+As mentioned before, the DaoSession manages DAO objects and they, in turn, handle all operations of the database. With the start of the application, the database is opened, and a new DaoSession is instantiated.
+Additionally, we defined a database helper class \texttt{DBHelper.java} where the interactions of DAO objects and the database take place, such as, retrieving all entries or updating a specific one. \\ 
+Listing \ref{lst:db_insert} shows an example of how one credential set is inserted into the database. The DaoSession calls the DAO object, and the object handles the insert method to store data into the database. The load and delete methods use the DaoSession as well and are similar to the insert method. \\
+
+
+\begin{lstlisting}[caption=DBHelper.java; Insert entry into database, label=lst:db_insert]
+public void insertNewAccount(Account account) {
+    AccountDao accountDao = this.daoSession.getAccountDao();
+    accountDao.insert(account);
+}
+\end{lstlisting}
+\vspace{0.5cm}
+
+%talk about encryption mode of greendao?
+
+The database created by the application lies on presistent memory of the mobile device and can only be accessed from our app. In case of an attack even if the database content is dumped, the attacker only receives encrypted data. In the section \ref{arch_encryption} we discuss how data is encrypted before inserting into the database and decrypted again when fetching from it.
 
 
 
-%IDEA: maybe split up the encryption and the hardware backed keystore, since it is so much information??
-%\subsection{Encryption of Data with hardware-backed Android KeyStore}
-\subsection{Encryption of Data}
-%just explaining the en and decryption of data, all about choosing a key: all about cipher and algorithm, code lines and android developer cites, modes paddings usw.
-For en- and decryption of the sensitive user credentials there are some different possibilities out there. One option of storing passwords is hashing the password and storing that hash instead of the password into the database. Some hash algorithms are SHA256 or SHA512 as mentioned in [Implementation and Performance Analysis of PBKDF2]. But as also stated in the paper, these passwords can be recovered by multiple different attacks such as Brute Force or Dictionary attack.
-Another way to store sensitive data is to hash it with a random string of bits, called a \textit{salt}, attached to the password which is then saved with the hash of the password. This can also become vulnerable to the Dictionary Attack as stated in [https 3 wrong ways to store a password].
+\subsection{Encryption of Data}\label{arch_encryption}
+%explaining the en and decryption of data, all about choosing a key: all about cipher and algorithm, code lines and android developer cites, modes paddings usw.
+For en- and decryption of sensitive data there are some different possibilities. One option of storing passwords is hashing the password and storing that hash instead of the password into the database. Some hash algorithms are SHA256 or SHA512 as mentioned in [Implementation and Performance Analysis of PBKDF2]. But as also stated in the paper, these passwords can be recovered by multiple different attacks such as Brute Force or Dictionary attack.
+Another way to store sensitive data is to hash it with a random string of bits, called a \textit{salt}, attached to the plaintext which is then saved with the hash of the password. This can also become vulnerable to the Dictionary Attack as stated in [https 3 wrong ways to store a password].
 Nowadays it is common to use a key derivation function to safely store password such as the \textit{password-based key derivation function 2 (PBKDF2)} [ref pbkdf2 secure for passwords]
-The problem which arises is that the strength of the encryption will depend on the password chosen by the user. As mentioned above more than 90\% of users chose a password that is between 6 and 9 characters long, and most of them do not include non-alphabetical characters, meaning it would take less time to retrieve the password through some attack. [ref 3 wrong ways]. Therefore, we need a way to guarantee safe en- and decryption without depending on the user's ability to create a secure password. \\
+%explain more about why this is a good encryption scheme and commonly used. do not store the actualy data but the hash of it and hashed are then compared.
+One big disadvantage is that the retrieval of data can be quite challenging since the actual data was never stored onto the device.
+Another problem which arises is that the strength of the encryption will depend on the password chosen by the user. As mentioned above more than 90\% of users chose a password that is between 6 and 9 characters long, and most of them do not include non-alphabetical characters, meaning it would take less time to retrieve the password through some attack. [ref 3 wrong ways]. Therefore, we need a way to guarantee safe en- and decryption without depending on the user's ability to create a secure password. \\
 
-As for this project we chose to rely on the hardware-backed Android KeyStore to generate a 256bit key. To create a key that is then used for en- and decrypting data, we implemented an instance of the Android Keystore. In \cite{androidkeystore} it is stated that the Android Keystore provider lets the individual app store and manage its own credentials while making sure no other application can access them. 
-
+So for this project we decided to encrypt the data using the AES algorithm with a secret key of 128bit length. 
 
 The algorithm used to generate the secret key is the AES algorithm. The key is used for encryption as well as decryption. explain aes algorithm. We decided to go with a symmetric algorithm for various reasons: the algorithm is much faster than an asymmetric algorithm which makes it less expensive but especially because there is no need for distribution of a public encryption component. All encryption happens in the background on the phone.
 As for the mode of the cipher we used a GCM block cipher. explain block cipher, explain gcm: deterministic algorithm, operation on fixed length groups of bits called blocks.
@@ -233,16 +270,23 @@ used aes/gcm/no padding, supported from 23 and above, and supports only 12 byte 
 change IV so a random string which is created with an own securerandom, explain secure random, link from android website
 set that keyspecbuilder takes my own created IV with setting (look up in code) this line to "false". this means that android allowed the usage of an own IV instead of relying on their own, since they think the developer is not secure enough (search link that IV cipher get IV is not secure enough --> book). explicitely set the key to use own secure random as the IV.
 
-after the key is built, can be stored away and is retrieved using an alias. an alias is an identifier that refers to the key that is stored in the TEE. the key never leaves the trusted environment and all encryption operations are done in the background.
+after the key is built, can be stored away and is retrieved using an alias. an alias is an identifier that refers to the key that is stored in the TEE. 
 
-
-as mentioned, the key is stored in the Trusted Execution Environment (TEE). The TEE is... paper The TEE is supported by the device manufacturer and represents the most secure option to store the encryption key. the tee is supported by the device. as for all android device that have an qualcomm CPU the tee is supported. paper 
+%maybe put pieces of console to show what is effectivly store into the data base and how it is retrieved and decrypted again?
 
 
 \cite{ahmad2013enhancing} \cite{cooijmans2014analysis}
 
 
 \subsection{Hardware-backed Keystore}
+%explaining what it done with the key afterwards, after creation, how can it be safely stored and not revealed, tee never leaves phone and if then it is destroyed, attacker is only left with encrypted dump of DB, without key cannot retrieve plaintext; what is the tee, where is it, how is it managed and is it on every phone? which phones?
+As for this project we chose to rely on the hardware-backed Android KeyStore to generate a 256bit key. To create a key that is then used for en- and decrypting data, we implemented an instance of the Android Keystore. In \cite{androidkeystore} it is stated that the Android Keystore provider lets the individual app store and manage its own credentials while making sure no other application can access them. 
+
+the key never leaves the trusted environment and all encryption operations are done in the background.
+
+
+as mentioned, the key is stored in the Trusted Execution Environment (TEE). The TEE is... paper The TEE is supported by the device manufacturer and represents the most secure option to store the encryption key. the tee is supported by the device. as for all android device that have an qualcomm CPU the tee is supported. paper 
+
 explain hardware-backed keystore, and android keystore, that android with qualcomm cpu implements the tee. securest way to store keys, never leaves the environment (paper)
 what does hardware backed mean.
 and tee
@@ -254,29 +298,33 @@ this is done with the class KeyguardManager. The KeyguardManager ...dev site and
 
 
 \subsection{Authentication through Biometrics}
-To securely protect the access and sending of user credential the app uses biometric authentication in the form of fingerprint scanning. The application does not store any biometric user information in a database. Rather it retrieves the already saved fingerprints on the Android mobile phone. This way it ensures that only the owner of the mobile phone has access to the credentials and the app does not have to handle the storage of the biometric information.
+To securely protect the access and sending of user credential the app uses biometric authentication in the form of fingerprint scanning. The application does not store any biometric user information into the database. Rather, it retrieves the already saved fingerprints on the Android mobile phone. This way it ensures that only the owner of the mobile phone has access to the credentials and the app does not have to handle the storage of any fingerprints. In addition the application also checks if a fingerprint sensor is available on the device and if the permission to use fingerprint scanning is granted from the Android permission system. (maybe ref to chap.6.2 more details about permission system). \\
+Before starting authetentication via fingerprint the application makes sure that the lock screen is secured by a PIN, password, pattern or if the SIM card is locked. This is done by the \texttt{KeyguardManager} because if provides access to the lock screen. Only in case of a secured mobile device the authentication process will proceed. \\
 
-The application checks if the saved fingerprints contain the one that the user scanned and returns a successful authentication. Otherwise, it throws an error saying that the authentication failed.  If the phone does support fingerprint scanning, but there are no fingerprints stored on the device, the application returns an error message saying that the user must save at one fingerprint onto the device. If the phone does not have a fingerprint sensor to support scanning mechanism the user has the option of entering a master password, which is set upon the first usage of the application. 
+The application checks if the saved fingerprints contain the one that the user scanned and returns a successful authentication. Otherwise, it throws an error saying that the authentication failed.  If the phone does support fingerprint scanning, but there are no fingerprints stored on the device, the application returns an error message saying that the user must save at least one fingerprint onto the device. If the phone does not have a fingerprint sensor to support scanning mechanism the user has the option of entering a master password, which is set upon the first usage of the application. 
 
-As mentioned above, upon every request to send an account login the user has to reauthenticate using his fingerprint or a master password before sharing credentials with the Web Bluetooth API. This security mechanism would prohibit unwanted distribution of sensitive data if the user left their phone unattended with the application still running.
+As mentioned above, upon every request to send an account login the user has to reauthenticate using his fingerprint or a master password before sharing credentials with the Web Bluetooth API. This security mechanism would prohibit unwanted distribution of sensitive data if the user left their phone unattended with the phone unlocked and the application still running.
 
+%insert code listing to see how cipher is created??
 
-%we ref to auth screen in Figure \ref{fig:authentication}\protect\subref{auth_screen}.
 
 \begin{figure}[H]
 \centering
-\subfloat[Activity where user is asked to auhenticate themselves using either his fingerprint or a master password]{{\includegraphics[width=4cm]{images/AuthenticationScreen}\label{auth_screen} }}
+\subfloat[]{{\includegraphics[width=4cm]{images/AuthenticationScreen}\label{auth_screen} }}
 \qquad
-%!!!!!!!!!!!!! change to on authentication failed
-\subfloat[On Authentication failes]{{\includegraphics[width=4cm]{images/AuthenticationScreen}\label{auth_fail} }}
-\caption{Authentication with fingerprint: In \protect\subref{auth_screen} you see a screen.}
+\subfloat[]{{\includegraphics[width=4cm]{images/AuthenticationFailed}\label{auth_fail} }}
+\caption[Activity for Authentication]{Activity for Authentication: In \protect\subref{auth_screen} the user is asked to auhenticate themselves using fingerprint or a master password. In \protect\subref{auth_fail} authentication failes if incorrect fingerprint is scanned.}
 \label{fig:authentication}
 \end{figure}
 
 \subsection{Peripheral and Central roles}
-Usually, the Android application has the central role in a Bluetooth LE connection, for example when communicating with Bluetooth LE devices, such as a heart rate monitor or beacon. Therefore, the app serves as the client while the Bluetooth LE device acts as the server, sending data that the application wants to receive.
+After discussing in depth the credential storage, encryption and the authentication of the user, we will briefly describe the roles of the extension and the Android application.
 
-In this scenario, however, the Android app serves as the server, where it advertises the data that the Bluetooth LE extension wants to read. Consequently, the application opens a GATT server to advertise the characteristics and the extension, on the other hand, acts as the client and retrieves those advertised characteristics from the app. The extension implements a GATT service and reads the values from the characteristics, which are the login credentials.
+In common use cases, the Android application has the central role in a Bluetooth LE connection, for example when communicating with Bluetooth LE devices, such as a heart rate monitor or beacon. Therefore, the app serves as the client while the Bluetooth LE device acts as the server, sending data that the application wants to receive.
+
+In this scenario, however, the roles are reversed. The Android app serves as the server, where it advertises the data that the Bluetooth LE extension wants to read. Consequently, the application opens a GATT server to advertise the characteristics and the extension, on the other hand, acts as the client and retrieves those advertised characteristics from the app. The extension implements a GATT service and reads the values from the characteristics, which are the login credentials.
+
+\subsection{Using the Web Bluetooth API with Chrome extension}
 
 
 %------------------------
@@ -291,11 +339,16 @@ see how to conduct a security evalutation of an android app, list all common cri
 % Chapter 5
 %------------------------
 \section{Bluetooth and it's Security} \label{bluetooth}
-generall structure of bluetooth low energy and why bluetooth low energy was chosen.
-section about security of bluetoothLE and security concerns that may arise when using the app
-writing first about how a resriction it was to not use classic bluetooth, also refer to next chapter.
+intro with bluetooth classic and for what it is normally used. large data, consistent connection communication channel. but secure.; paper security about bluetooth classes.
+ref section limitations that we cannot use BT classic because of API. we chose ble because of the chrome web bluetooth api.
 
-(papers about ble being unsafe)
+so we use BLE: what is BLE, how is it differenct from bt classic and for what it is used, list all advantages and how it conributes to this project. general structure of bluetooth low energy, common usage and applications nowadays.
+doesnot need much energy, no consistant communication channel less battery. we only advertised upon selection of credentials and once they are sent, the app does not keeps advertising and the user has to select an other credentials and authenticated themselves.
+for our purposes ideal but, explain about the protcol stack is built differently compared to bt classes. different protocols makes it more insecure [paper with low energy, come low security]
+
+
+
+
 
 
 %------------------------
@@ -307,8 +360,11 @@ In this section, some encountered limitations are discussed since they have not 
 \subsection{Bluetooth LE instead of Bluetooth Classic}
 For the connection, we chose Bluetooth LE since the Chrome Web Bluetooth API can only support Bluetooth LE at the moment. Although as mentioned earlier, Bluetooth LE  can limit the security, it can be a task for future work to encrypt the communication channel further by using asymmetric encryption. ??? \\
 
+more about: bluetooth classic on the other is hand is not supported by the Chrome Web Bluetooth API. therefore it was not possible to implement bluetooth classic. ble classic has a more secure protocol stack [paper] but uses a lot of resources. bluetooth classic mainly used for consistant transfer of data rather than a single transfer of small pakets. BT classis is normally used for audio streaming of sending videos, pictures and larger data which is devided into blocks. is it requried to have a persistant communication channel, whereas with our application it is not neccessary to keep the connection for longer time than needed. This make the app more vulnerable to attacks.
+
 \subsection{Security decreases with root privilege}
-When the device is rooted, the security of the user credentials cannot be guaranteed anymore. As stated in [oncerootalwaysthreat], the Android permission system is one of the most important security mechanism for protecting critical system resources on Android phones. Before an application can access resources, it needs certain permissions which are granted by the Android permission system. The application asks for permission with check functions and if it is granted the application programming interface (API) returns \textit{PERMISSION\_GRANTED}, or in case of denial, it returns \textit{PERMISSION\_DENIAL}. \\
+When the device is rooted, the security of the user credentials cannot be guaranteed anymore. As stated in [oncerootalwaysthreat], the Android permission system is one of the most important security mechanism for protecting critical system resources on Android phones. \\
+Before an application can access resources, it needs certain permissions which are granted by the Android permission system. The application asks for permission with check functions and in case of approval the API returns \texttt{PERMISSION\_GRANTED}, or in case of denial, it returns \texttt{PERMISSION\_DENIAL}. \\
 Root privilege on an android phone is the highest privilege in user mode and does not need any further permissions from the system to gain access to sensitive data or hardware interfaces, which leads to high risk in security when storing private data. Hence, Android's Shared Preferences and SQLite databases become accessible as mentioned in [Vulnerability Detection in Recent Android Apps]. Therefore, it is not possible for rooted devices to provide a safe possibility to store user credentials. \\
 
 
@@ -326,14 +382,14 @@ maybe more secure, no advertising. maybe better for sending back information? --
 \subsection{Encryption of BLE connection}
 Encrypt Bluetooth LE connection of phone and web API with own encryption keys for a safer communication channel. BLE unsafer [ref paper with low energy comes low security], paket sniffer can read out all data in plain text that is sent over a ble connection. \\
 
-\subsection{Encryption of tables}
+\subsection{Encryption of database tables}
 Encrypt the tables with bcrypt to provide higher security. although key cannot be retrieved from the TEE to decrypt the data in the database, but to create a safer environment it is possible to decrypt the entire table with scrypt/bcrypt.\\
 
 \subsection{Implementation of password generator}
 Implementation of a password generator in the application to increase the convenience for users to create safer passwords. generate passwords that use special characters, letters and numbers and that are more than 20 characters long. \\
 
 
-\subsection{Creating account from the broswer}
+\subsection{Creating accounts from the broswer}
 Create new login credentials and send them back to the application for storage. not only sending password to the website but also while creating a new account for a website user can select an option to send those newly created credentials back to the application to securely save them on the device. \\
 
 
@@ -345,10 +401,10 @@ Create new login credentials and send them back to the application for storage. 
 % Chapter 8
 %------------------------
 \section{Conclusions} \label{conclusion}
-Very short summery of project, maybe 300-400 words
+Short summery of project, 300-400 words
 
 
-
+\newpage
 
 %------------------------
 % Resouces

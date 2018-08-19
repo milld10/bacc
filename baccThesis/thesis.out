@@ -8,15 +8,16 @@
 \BOOKMARK [2][-]{subsection.3.5}{Hardware-backed Keystore}{section.3}% 8
 \BOOKMARK [2][-]{subsection.3.6}{Authentication through Biometrics}{section.3}% 9
 \BOOKMARK [2][-]{subsection.3.7}{Peripheral and Central roles}{section.3}% 10
-\BOOKMARK [1][-]{section.4}{Security Evaluation with Common Criteria}{}% 11
-\BOOKMARK [1][-]{section.5}{Bluetooth and it's Security}{}% 12
-\BOOKMARK [1][-]{section.6}{Limitations of Application}{}% 13
-\BOOKMARK [2][-]{subsection.6.1}{Bluetooth LE instead of Bluetooth Classic}{section.6}% 14
-\BOOKMARK [2][-]{subsection.6.2}{Security decreases with root privilege}{section.6}% 15
-\BOOKMARK [1][-]{section.7}{Future Work}{}% 16
-\BOOKMARK [2][-]{subsection.7.1}{Bluetooth Classic instead of Bluetooth Low Energy}{section.7}% 17
-\BOOKMARK [2][-]{subsection.7.2}{Encryption of BLE connection}{section.7}% 18
-\BOOKMARK [2][-]{subsection.7.3}{Encryption of tables}{section.7}% 19
-\BOOKMARK [2][-]{subsection.7.4}{Implementation of password generator}{section.7}% 20
-\BOOKMARK [2][-]{subsection.7.5}{Creating account from the broswer}{section.7}% 21
-\BOOKMARK [1][-]{section.8}{Conclusions}{}% 22
+\BOOKMARK [2][-]{subsection.3.8}{Using the Web Bluetooth API with Chrome extension}{section.3}% 11
+\BOOKMARK [1][-]{section.4}{Security Evaluation with Common Criteria}{}% 12
+\BOOKMARK [1][-]{section.5}{Bluetooth and it's Security}{}% 13
+\BOOKMARK [1][-]{section.6}{Limitations of Application}{}% 14
+\BOOKMARK [2][-]{subsection.6.1}{Bluetooth LE instead of Bluetooth Classic}{section.6}% 15
+\BOOKMARK [2][-]{subsection.6.2}{Security decreases with root privilege}{section.6}% 16
+\BOOKMARK [1][-]{section.7}{Future Work}{}% 17
+\BOOKMARK [2][-]{subsection.7.1}{Bluetooth Classic instead of Bluetooth Low Energy}{section.7}% 18
+\BOOKMARK [2][-]{subsection.7.2}{Encryption of BLE connection}{section.7}% 19
+\BOOKMARK [2][-]{subsection.7.3}{Encryption of database tables}{section.7}% 20
+\BOOKMARK [2][-]{subsection.7.4}{Implementation of password generator}{section.7}% 21
+\BOOKMARK [2][-]{subsection.7.5}{Creating accounts from the broswer}{section.7}% 22
+\BOOKMARK [1][-]{section.8}{Conclusions}{}% 23

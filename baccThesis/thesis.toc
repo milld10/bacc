@@ -1,24 +1,25 @@
 \babel@toc {english}{}
 \babel@toc {english}{}
-\contentsline {section}{\numberline {1}Motivation}{5}{section.1}
-\contentsline {section}{\numberline {2}Related Work}{5}{section.2}
-\contentsline {section}{\numberline {3}Architecture of Project}{5}{section.3}
-\contentsline {subsection}{\numberline {3.1}Activity \textit {Accounts}}{7}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}Activity \textit {Connection}}{8}{subsection.3.2}
-\contentsline {subsection}{\numberline {3.3}Storage of Credentials using the greenDao ORM}{9}{subsection.3.3}
-\contentsline {subsection}{\numberline {3.4}Encryption of Data}{10}{subsection.3.4}
-\contentsline {subsection}{\numberline {3.5}Hardware-backed Keystore}{10}{subsection.3.5}
-\contentsline {subsection}{\numberline {3.6}Authentication through Biometrics}{10}{subsection.3.6}
-\contentsline {subsection}{\numberline {3.7}Peripheral and Central roles}{11}{subsection.3.7}
-\contentsline {section}{\numberline {4}Security Evaluation with Common Criteria}{12}{section.4}
-\contentsline {section}{\numberline {5}Bluetooth and it's Security}{12}{section.5}
-\contentsline {section}{\numberline {6}Limitations of Application}{12}{section.6}
-\contentsline {subsection}{\numberline {6.1}Bluetooth LE instead of Bluetooth Classic}{12}{subsection.6.1}
-\contentsline {subsection}{\numberline {6.2}Security decreases with root privilege}{12}{subsection.6.2}
-\contentsline {section}{\numberline {7}Future Work}{13}{section.7}
-\contentsline {subsection}{\numberline {7.1}Bluetooth Classic instead of Bluetooth Low Energy}{13}{subsection.7.1}
-\contentsline {subsection}{\numberline {7.2}Encryption of BLE connection}{13}{subsection.7.2}
-\contentsline {subsection}{\numberline {7.3}Encryption of tables}{13}{subsection.7.3}
-\contentsline {subsection}{\numberline {7.4}Implementation of password generator}{13}{subsection.7.4}
-\contentsline {subsection}{\numberline {7.5}Creating account from the broswer}{13}{subsection.7.5}
-\contentsline {section}{\numberline {8}Conclusions}{13}{section.8}
+\contentsline {section}{\numberline {1}Motivation}{6}{section.1}
+\contentsline {section}{\numberline {2}Related Work}{6}{section.2}
+\contentsline {section}{\numberline {3}Architecture of Project}{6}{section.3}
+\contentsline {subsection}{\numberline {3.1}Activity \textit {Accounts}}{8}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Activity \textit {Connection}}{9}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Storage of Credentials using the greenDao ORM}{11}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Encryption of Data}{12}{subsection.3.4}
+\contentsline {subsection}{\numberline {3.5}Hardware-backed Keystore}{13}{subsection.3.5}
+\contentsline {subsection}{\numberline {3.6}Authentication through Biometrics}{13}{subsection.3.6}
+\contentsline {subsection}{\numberline {3.7}Peripheral and Central roles}{14}{subsection.3.7}
+\contentsline {subsection}{\numberline {3.8}Using the Web Bluetooth API with Chrome extension}{15}{subsection.3.8}
+\contentsline {section}{\numberline {4}Security Evaluation with Common Criteria}{15}{section.4}
+\contentsline {section}{\numberline {5}Bluetooth and it's Security}{15}{section.5}
+\contentsline {section}{\numberline {6}Limitations of Application}{15}{section.6}
+\contentsline {subsection}{\numberline {6.1}Bluetooth LE instead of Bluetooth Classic}{15}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}Security decreases with root privilege}{16}{subsection.6.2}
+\contentsline {section}{\numberline {7}Future Work}{16}{section.7}
+\contentsline {subsection}{\numberline {7.1}Bluetooth Classic instead of Bluetooth Low Energy}{16}{subsection.7.1}
+\contentsline {subsection}{\numberline {7.2}Encryption of BLE connection}{16}{subsection.7.2}
+\contentsline {subsection}{\numberline {7.3}Encryption of database tables}{17}{subsection.7.3}
+\contentsline {subsection}{\numberline {7.4}Implementation of password generator}{17}{subsection.7.4}
+\contentsline {subsection}{\numberline {7.5}Creating accounts from the broswer}{17}{subsection.7.5}
+\contentsline {section}{\numberline {8}Conclusions}{17}{section.8}
