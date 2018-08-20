@@ -249,23 +249,24 @@ public void insertNewAccount(Account account) {
 
 %talk about encryption mode of greendao?
 
-The database created by the application lies on presistent memory of the mobile device and can only be accessed from our app. In case of an attack even if the database content is dumped, the attacker only receives encrypted data. In the section \ref{arch_encryption} we discuss how data is encrypted before inserting into the database and decrypted again when fetching from it.
+The database created by the application lies on presistent memory of the mobile device and can only be accessed from our app. Even if the database content is dumped in case of an attack, the attacker only receives encrypted data. In section \ref{arch_encryption} we discuss how data is encrypted before inserting into the database and decrypted again when fetching from it.
 
 
 
 \subsection{Encryption of Data}\label{arch_encryption}
 %explaining the en and decryption of data, all about choosing a key: all about cipher and algorithm, code lines and android developer cites, modes paddings usw.
-For en- and decryption of sensitive data there are some different possibilities. One option of storing passwords is hashing the password and storing that hash instead of the password into the database. Some hash algorithms are SHA256 or SHA512 as mentioned in [Implementation and Performance Analysis of PBKDF2]. But as also stated in the paper, these passwords can be recovered by multiple different attacks such as Brute Force or Dictionary attack.
-Another way to store sensitive data is to hash it with a random string of bits, called a \textit{salt}, attached to the plaintext which is then saved with the hash of the password. This can also become vulnerable to the Dictionary Attack as stated in [https 3 wrong ways to store a password].
-Nowadays it is common to use a key derivation function to safely store password such as the \textit{password-based key derivation function 2 (PBKDF2)} [ref pbkdf2 secure for passwords]
-%explain more about why this is a good encryption scheme and commonly used. do not store the actualy data but the hash of it and hashed are then compared.
-One big disadvantage is that the retrieval of data can be quite challenging since the actual data was never stored onto the device.
-Another problem which arises is that the strength of the encryption will depend on the password chosen by the user. As mentioned above more than 90\% of users chose a password that is between 6 and 9 characters long, and most of them do not include non-alphabetical characters, meaning it would take less time to retrieve the password through some attack. [ref 3 wrong ways]. Therefore, we need a way to guarantee safe en- and decryption without depending on the user's ability to create a secure password. \\
+For en- and decryption of sensitive data there are some different possibilities. One option of storing passwords is hashing the password and storing that hash instead of the password into the database. SHA256 or SHA512 are some hash algorithms as mentioned in [Implementation and Performance Analysis of PBKDF2]. By hashing data for encryption, data can be recovered by multiple different attacks such as Brute Force or Dictionary attack.
+Another way to store sensitive data is to hash it with a random string of bits, called a \textit{salt}, which is then saved with the hash of the plaintext. This can also become vulnerable to the Dictionary Attack as stated in [https 3 wrong ways to store a password].
+Nowadays it is common to use a key derivation function to safely store passwords such as the \textit{password-based key derivation function 2 (PBKDF2)}, since it provides strong security. Also, \textit{Bcrypt} and \textit{Scrypt} are strong key derivation functions as well. [ref pbkdf2 secure for passwords]
+PBKDF2 uses the user's input to generate the key for encryption. However, the problem arises that the strength of the encryption will also depend on the password chosen by the user. For various reasons a good master password needs to be chosen but as mentioned above more than 90\% of users chose a password that is between 6 and 9 characters long, and most of them do not include non-alphabetical characters, meaning it would take less time to retrieve the password through some attack. [ref 3 wrong ways]. Therefore, we need a way to guarantee safe en- and decryption without depending on the user's ability to create a secure password. \\
 
 So for this project we decided to encrypt the data using the AES algorithm with a secret key of 128bit length. 
 
-The algorithm used to generate the secret key is the AES algorithm. The key is used for encryption as well as decryption. explain aes algorithm. We decided to go with a symmetric algorithm for various reasons: the algorithm is much faster than an asymmetric algorithm which makes it less expensive but especially because there is no need for distribution of a public encryption component. All encryption happens in the background on the phone.
-As for the mode of the cipher we used a GCM block cipher. explain block cipher, explain gcm: deterministic algorithm, operation on fixed length groups of bits called blocks.
+The algorithm used to generate the secret key is the AES algorithm. The key is used for encryption as well as decryption. The AES algorithm is a symmetric key algorithm which excrypts data in 128-bit blocks with the generated 128-bit key. [128vs256] We decided to use a symmetric algorithm for various reasons: the algorithm is much faster than an asymmetric algorithm which makes it less expensive but more importantly because there is no need for distribution of a public encryption component. All encryption happens in the background on the phone. So using a asymmetric algorithm such as RSA would be unnecessaryly expensive to compute.
+As for the mode of the cipher we used a GCM block cipher with no padding. 
+
+
+explain block cipher, explain gcm: deterministic algorithm, operation on fixed length groups of bits called blocks.
 used aes/gcm/no padding, supported from 23 and above, and supports only 12 byte long IVs
 change IV so a random string which is created with an own securerandom, explain secure random, link from android website
 set that keyspecbuilder takes my own created IV with setting (look up in code) this line to "false". this means that android allowed the usage of an own IV instead of relying on their own, since they think the developer is not secure enough (search link that IV cipher get IV is not secure enough --> book). explicitely set the key to use own secure random as the IV.

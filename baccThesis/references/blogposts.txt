@@ -21,6 +21,12 @@ https://www.troyhunt.com/brief-sony-password-analysis/
 
 https://adambard.com/blog/3-wrong-ways-to-store-a-password/
 
+a good master password is needed for pbkdf2
+https://support.1password.com/pbkdf2/
+
+Security: Explaination
+https://www.brighthub.com/computing/enterprise-security/articles/65254.aspx
+
 Android TEE
 https://developer.android.com/training/articles/keystore
 https://stackoverflow.com/questions/42994075/using-the-android-hardware-backed-keystore
