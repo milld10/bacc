@@ -1,0 +1,25 @@
+\section{Future Work}
+\label{futurework}
+
+
+This section presents ideas that could be actualized in the near future once the necessary technology has progressed. These features are not part of the scope of this project and therefore have not been implemented further since they may be quite time-consuming to realize or not possible with start-of-the-art technology. \\
+
+
+\subsection{Bluetooth Classic instead of Bluetooth Low Energy}
+If in the future the API also supports the implementation of Bluetooth classic, maybe switch to BT classic? \\
+maybe more secure, no advertising. maybe better for sending back information? --> research
+
+\subsection{Encryption of BLE connection}
+Encrypt Bluetooth LE connection of phone and web API with own encryption keys for a safer communication channel. BLE unsafer [ref paper with low energy comes low security], paket sniffer can read out all data in plain text that is sent over a ble connection. \\
+
+\subsection{Encryption of database tables}
+Encrypt the tables with bcrypt to provide higher security. although key cannot be retrieved from the TEE to decrypt the data in the database, but to create a safer environment it is possible to decrypt the entire table with scrypt/bcrypt.\\
+
+\subsection{Implementation of password generator}
+Implementation of a password generator in the application to increase the convenience for users to create safer passwords. generate passwords that use special characters, letters and numbers and that are more than 20 characters long. \\
+
+
+\subsection{Creating accounts from the broswer}
+Create new login credentials and send them back to the application for storage. not only sending password to the website but also while creating a new account for a website user can select an option to send those newly created credentials back to the application to securely save them on the device. \\
+
+

@@ -59,4 +59,5 @@ http://theconversation.com/how-secure-is-your-data-when-its-stored-in-the-cloud-
 
 Papers to look for:
 * better to create passwords randomly by password managers
+* paper where symm. algorith encry is faster and better than asymm.
 
