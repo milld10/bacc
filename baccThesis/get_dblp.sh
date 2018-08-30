@@ -32,8 +32,7 @@ if [ -f tmp_urls.txt ]; then
   done
 fi
 
-python dblp.py
-
+python3 dblp.py
 #./copy_bib.sh
 
 #cat dblp.bib > bibliography.bib
