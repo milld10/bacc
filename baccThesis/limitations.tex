@@ -4,12 +4,12 @@
 
 In this section, some encountered limitations are discussed since they have not been established yet due to necessary technological progress of components or infeasibility. \\
 
-\subsection{Bluetooth LE instead of Bluetooth Classic}
+\subsection{Bluetooth LE instead of Bluetooth Classic} \label{limitation_ble}
 For the connection, we chose Bluetooth LE since the Chrome Web Bluetooth API can only support Bluetooth LE at the moment. Although as mentioned earlier, Bluetooth LE  can limit the security, it can be a task for future work to encrypt the communication channel further by using asymmetric encryption. ??? \\
 
 more about: bluetooth classic on the other is hand is not supported by the Chrome Web Bluetooth API. therefore it was not possible to implement bluetooth classic. ble classic has a more secure protocol stack [paper] but uses a lot of resources. bluetooth classic mainly used for consistant transfer of data rather than a single transfer of small pakets. BT classis is normally used for audio streaming of sending videos, pictures and larger data which is devided into blocks. is it requried to have a persistant communication channel, whereas with our application it is not neccessary to keep the connection for longer time than needed. This make the app more vulnerable to attacks.
 
-\subsection{Security decreases with root privilege}
+\subsection{Security decreases with root privilege} \label{limitations_root}
 When the device is rooted, the security of the user credentials cannot be guaranteed anymore. As stated in [oncerootalwaysthreat], the Android permission system is one of the most important security mechanism for protecting critical system resources on Android phones. \\
 Before an application can access resources, it needs certain permissions which are granted by the Android permission system. The application asks for permission with check functions and in case of approval the API returns \texttt{PERMISSION\_GRANTED}, or in case of denial, it returns \texttt{PERMISSION\_DENIAL}. \\
 Root privilege on an android phone is the highest privilege in user mode and does not need any further permissions from the system to gain access to sensitive data or hardware interfaces, which leads to high risk in security when storing private data. Hence, Android's Shared Preferences and SQLite databases become accessible as mentioned in [Vulnerability Detection in Recent Android Apps]. Therefore, it is not possible for rooted devices to provide a safe possibility to store user credentials. \\

@@ -1,8 +1,7 @@
 Credential storage enhancements in Android 4.3:
 https://nelenkov.blogspot.com/2013/08/credential-storage-enhancements-android-43.html
 
-used Database ORM:
-http://greenrobot.org/greendao/
+
 
 Can we trust cloud providers to keep our data safe?
 https://www.bbc.com/news/business-36151754
@@ -19,7 +18,7 @@ http://www.decompilingandroid.com/mobile-app-security/top-10-mobile-security-ris
 Password analysis
 https://www.troyhunt.com/brief-sony-password-analysis/
 
-https://adambard.com/blog/3-wrong-ways-to-store-a-password/
+
 
 a good master password is needed for pbkdf2
 https://support.1password.com/pbkdf2/
@@ -31,22 +30,20 @@ Android TEE
 https://developer.android.com/training/articles/keystore
 https://stackoverflow.com/questions/42994075/using-the-android-hardware-backed-keystore
 
-Android Keystore
-https://developer.android.com/training/articles/keystore
-https://source.android.com/security/keystore/
 
-Chrome Web Bluetooth API
-https://developers.google.com/web/updates/2015/07/interact-with-ble-devices-on-the-web
+
+
 Implementation Status Windows
 https://github.com/WebBluetoothCG/web-bluetooth/blob/master/implementation-status.md
 
-
-Android apps (related work)
+-------------------------------
+Related Work:
+Android apps
 1. LastPass. Lastpass password manage. available online at. https: //lastpass.com, 2014.
 2. KodeKey
 3. 
 
-
+--------------------------
 
 Helpful/definition/explanations:
 https://whatis.techtarget.com/definition/Common-Criteria-CC-for-Information-Technology-Security-Evaluation
