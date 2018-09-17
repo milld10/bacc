@@ -30,8 +30,17 @@ Android TEE
 https://developer.android.com/training/articles/keystore
 https://stackoverflow.com/questions/42994075/using-the-android-hardware-backed-keystore
 
+Lauschen von BLE Conncections:
+https://www.heise.de/security/meldung/Btlejack-Neues-Gratis-Tool-zum-Belauschen-von-Bluetooth-Verbindungen-4134142.html
 
+--------------------------------
+Background:
 
+web bluetooth api
+https://www.chromestatus.com/feature/5264933985976320
+
+Documentation of google web bluetooth api
+https://webbluetoothcg.github.io/web-bluetooth/
 
 Implementation Status Windows
 https://github.com/WebBluetoothCG/web-bluetooth/blob/master/implementation-status.md
