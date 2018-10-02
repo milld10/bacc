@@ -189,6 +189,26 @@
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
 
+\usepackage[toc,xindy]{glossaries}
+\setglossarystyle{listdotted}
+
+\usepackage{calc}
+\newglossarystyle{listdottedskip}{%
+ \glossarystyle{list}%
+  \renewcommand*{\glossaryentryfield}[5]{%
+    \item[]\makebox[\glslistdottedwidth][l]{\textbf{\glstarget{##1}{##2}}%
+    \unskip\leaders\hbox to 2.9mm{\hss.}\hfill\strut}\parbox[t]{\textwidth-\glslistdottedwidth-\labelsep}{##3}}%
+  \renewcommand*{\glossarysubentryfield}[6]{%
+    \item[]\makebox[\glslistdottedwidth][l]{\glstarget{##2}{##3}%
+    \unskip\leaders\hbox to 2.9mm{\hss.}\hfill\strut}##4}%
+}
+
+\setglossarystyle{listdottedskip}
+\setlength{\glslistdottedwidth}{.4\linewidth}
+
+\makeglossaries
+
+\include{glossary}
 
 %% ========================================================================
 %%%% MISC self-defined commands and settings
@@ -201,7 +221,9 @@
 	language=Java,
 	basicstyle=\ttfamily\small,
 	breaklines=true,
-	columns=flexible
+	columns=flexible,
+	breakatwhitespace=false,
+	captionpos=b
 } 
 
 
@@ -276,16 +298,16 @@
 \pagenumbering{arabic}
 
 %% include tex file chapters:
-\input{introduction}        %% this is a suggestion: you have to create this file on demand
-\input{motivation}
-\input{related_work}
-\input{background}
-\input{architecture}
-\input{security_evaluation}
-\input{bluetooth}
-\input{limitations}
-\input{future_work}
-\input{conclusion}
+\input{chapters/introduction}        %% this is a suggestion: you have to create this file on demand
+\input{chapters/motivation}
+\input{chapters/related_work}
+\input{chapters/background}
+\input{chapters/architecture}
+\input{chapters/security_evaluation}
+\input{chapters/bluetooth}
+\input{chapters/limitations}
+\input{chapters/future_work}
+\input{chapters/conclusion}
 
 
 %\appendix                       %% closes main document, appendix follows until end; only available in book-classes
@@ -294,7 +316,11 @@
 %\printbibliography              %% remove, if using BibTeX instead of biblatex
 % \include{further_ressources}  %% this is a suggestion: you have to create this file on demand
 
-\sloppy
+\newpage
+
+\printglossaries
+\newpage
+
 
 \bibliographystyle{plain}
 \bibliography{bibliography}

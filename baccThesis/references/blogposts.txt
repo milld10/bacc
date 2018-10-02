@@ -23,15 +23,6 @@ https://www.troyhunt.com/brief-sony-password-analysis/
 a good master password is needed for pbkdf2
 https://support.1password.com/pbkdf2/
 
-Security: Explaination
-https://www.brighthub.com/computing/enterprise-security/articles/65254.aspx
-
-Android TEE
-https://developer.android.com/training/articles/keystore
-https://stackoverflow.com/questions/42994075/using-the-android-hardware-backed-keystore
-
-Lauschen von BLE Conncections:
-https://www.heise.de/security/meldung/Btlejack-Neues-Gratis-Tool-zum-Belauschen-von-Bluetooth-Verbindungen-4134142.html
 
 --------------------------------
 Background:
@@ -53,6 +44,16 @@ Android apps
 3. 
 
 --------------------------
+Bluetooth Security
+
+
+https://www.digikey.com/eewiki/display/Wireless/A+Basic+Introduction+to+BLE+Security
+
+Lauschen von BLE Conncections:
+https://www.heise.de/security/meldung/Btlejack-Neues-Gratis-Tool-zum-Belauschen-von-Bluetooth-Verbindungen-4134142.html
+
+
+--------------------------
 
 Helpful/definition/explanations:
 https://whatis.techtarget.com/definition/Common-Criteria-CC-for-Information-Technology-Security-Evaluation
@@ -64,6 +65,5 @@ http://theconversation.com/how-secure-is-your-data-when-its-stored-in-the-cloud-
 --------------------------------------------------------------------------------
 
 Papers to look for:
-* better to create passwords randomly by password managers
 * paper where symm. algorith encry is faster and better than asymm.
 
