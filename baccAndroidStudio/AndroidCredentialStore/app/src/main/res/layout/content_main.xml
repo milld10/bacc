@@ -71,33 +71,6 @@
         android:layout_toEndOf="@+id/BluetoothSymbol"
         android:padding="10dp"/>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:tint="@color/blue2"
-        android:src="@drawable/ic_settings_black_48px"
-        android:id="@+id/SettingsSymbol"
-        android:onClick="showSettingsActivity"
-        android:clickable="true"
-        android:layout_below="@+id/BluetoothSymbol"
-        android:layout_marginTop="40dp"
-        android:layout_alignStart="@id/BluetoothSymbol"
-        android:layout_toStartOf="@id/BluetoothTextView"/>
-
-    <TextView
-        android:text="@string/settings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/SettingsTextView"
-        android:onClick="showSettingsActivity"
-        android:clickable="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textSize="24sp"
-        android:layout_alignBottom="@+id/SettingsSymbol"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:padding="10dp"
-        android:layout_toEndOf="@id/SettingsSymbol"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -107,10 +80,10 @@
         android:id="@+id/AboutSymbol"
         android:onClick="showAboutActivity"
         android:clickable="true"
-        android:layout_below="@+id/SettingsSymbol"
+        android:layout_below="@+id/BluetoothSymbol"
         android:layout_marginTop="40dp"
-        android:layout_alignStart="@id/SettingsSymbol"
-        android:layout_toStartOf="@id/SettingsTextView"/>
+        android:layout_alignStart="@id/BluetoothSymbol"
+        android:layout_toStartOf="@id/BluetoothTextView"/>
 
     <TextView
         android:text="@string/about"
@@ -126,6 +99,4 @@
         android:ems="10"
         android:padding="10dp"
         android:layout_toEndOf="@id/AboutSymbol"/>
-
-
 </RelativeLayout>

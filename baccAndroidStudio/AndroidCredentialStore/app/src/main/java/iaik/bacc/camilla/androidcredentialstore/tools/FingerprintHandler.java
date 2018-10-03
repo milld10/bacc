@@ -10,12 +10,8 @@ import android.Manifest;
 import android.os.Build;
 import android.os.CancellationSignal;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
-import android.util.Log;
 import android.widget.Toast;
 
-import iaik.bacc.camilla.androidcredentialstore.activities.FingerprintActivity;
-import iaik.bacc.camilla.androidcredentialstore.activities.PeripheralActivity;
 import iaik.bacc.camilla.androidcredentialstore.activities.ShowAccountsActivity;
 
 /**
@@ -28,12 +24,8 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
 {
     private static final String TAG = "FingerprintHandler";
 
-    private boolean authenticationSucceeded = false;
-
     private CancellationSignal cancellationSignal;
     private Context appContext;
-
-    String mPrevActivity;
 
     public FingerprintHandler(Context context)
     {
@@ -41,21 +33,15 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     }
 
     //method responsible for starting the fingerprint authentication
-    public void startAuth(FingerprintManager manager, FingerprintManager.CryptoObject cryptoObject,
-                          String prevActivity)
+    public void startAuth(FingerprintManager manager, FingerprintManager.CryptoObject cryptoObject)
     {
-        mPrevActivity = prevActivity;
         cancellationSignal = new CancellationSignal();
         if (ActivityCompat.checkSelfPermission(appContext, Manifest.permission.USE_FINGERPRINT)
                 != PackageManager.PERMISSION_GRANTED)
         {
-            //false: permission not granted
             return;
         }
         manager.authenticate(cryptoObject, cancellationSignal, 0, this, null);
-
-        Log.d(TAG, "in Handler: does this show up too?");
-
     }
 
 
@@ -64,7 +50,6 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     //is called when a fatal error has occurred, provides error code and error message
     public void onAuthenticationError(int errMsgId, CharSequence errString)
     {
-        authenticationSucceeded = false;
         Toast.makeText(appContext, "Authentication error\n" + errString, Toast.LENGTH_SHORT).show();
     }
 
@@ -72,7 +57,6 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     //is called when the fingerprint doesn’t match with any of the fingerprints registered on the device
     public void onAuthenticationFailed()
     {
-        authenticationSucceeded = false;
         Toast.makeText(appContext, "Authentication failed", Toast.LENGTH_SHORT).show();
     }
 
@@ -80,7 +64,6 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     //is called when a non-fatal error has occurred, provides additional information about the error
     public void onAuthenticationHelp(int helpMsgId, CharSequence helpString)
     {
-        authenticationSucceeded = false;
         Toast.makeText(appContext, "Authentication help\n" + helpString, Toast.LENGTH_SHORT).show();
     }
 
@@ -88,32 +71,8 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     //for successful match of registered prints on device
     public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)
     {
-        //old version; don't start the activity right away, because it depends on which activity
-        //started the fingerprint activity, either peripheral or show accounts has to start
-
-        authenticationSucceeded = true;
-
-        switch(mPrevActivity)
-        {
-            case "MainActivity":
-                ((Activity) appContext).finish();
-                Log.d(TAG, "onAuthenticationSucceeded!");
-                Intent intent = new Intent(appContext, ShowAccountsActivity.class);
-                appContext.startActivity(intent);
-                break;
-            case "PeripheralActivity":
-                //send the credential;
-                ((Activity) appContext).finish();
-
-                Intent intentPeripheral = new Intent(appContext, PeripheralActivity.class);
-                Log.d(TAG, "HERE IS THE RESULT: " + result.toString());
-                break;
-        }
-    }
-
-
-    public boolean getAuthenticationSucceeded()
-    {
-        return authenticationSucceeded;
+        ((Activity) appContext).finish();
+        Intent intent = new Intent(appContext, ShowAccountsActivity.class);
+        appContext.startActivity(intent);
     }
 }

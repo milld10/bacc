@@ -60,14 +60,7 @@ public class FingerprintActivity extends Activity
     private KeyguardManager keyguardManager;
 
     private Intent intent;
-    String prevActivity;
-
     private Context context;
-
-    TextInputLayout masterPasswordLayout;
-    TextInputEditText masterPassword;
-    Button accessButton;
-
 
     @SuppressLint("ResourceType")
     @Override
@@ -75,23 +68,6 @@ public class FingerprintActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fingerprint);
-        masterPasswordLayout = findViewById(R.id.masterPasswordLayout);
-        masterPassword = findViewById(R.id.masterPassword);
-        accessButton = findViewById(R.id.button_access);
-
-        prevActivity = getIntent().getStringExtra("from");
-
-        accessButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                //TODO: implement access for master edittext_password, if fingerprint, it does it automatic
-//                Intent intent = new Intent(FingerprintActivity.this, ShowAccountsActivity.class);
-//                startActivity(intent);
-            }
-        });
-
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
@@ -138,33 +114,11 @@ public class FingerprintActivity extends Activity
                 if (initCipher()) {
                     cryptoObject = new FingerprintManager.CryptoObject(cipher);
                     handler = new FingerprintHandler(this);
-
-                    handler.startAuth(fingerprintManager, cryptoObject, prevActivity);
-
-                    Log.d(TAG, "DOES THIS SHOW UP IN THE CONSOLE??????????????");
+                    handler.startAuth(fingerprintManager, cryptoObject);
                 }
             }
         }
-
-        Log.d(TAG, "i hope this does not show up before i could scan my fingerprint, but it probably will");
-
-//        sendIntentBackBecauseSuccess();
-
-
     }
-
-
-
-    public void sendIntentBackBecauseSuccess()
-    {
-        if(handler.getAuthenticationSucceeded())
-        {
-            Intent intent = new Intent(FingerprintActivity.this, PeripheralActivity.class);
-            setResult(40, intent);
-            finish();
-        }
-    }
-
 
     //method to gain access to Android keystore and generate the encryption key
     private void generateKeyForFingerprint() throws FingerprintException {

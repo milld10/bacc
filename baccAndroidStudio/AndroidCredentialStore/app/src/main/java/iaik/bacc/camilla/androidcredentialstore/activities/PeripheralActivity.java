@@ -1,10 +1,8 @@
 package iaik.bacc.camilla.androidcredentialstore.activities;
 
-import android.app.Fragment;
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 
-import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -17,29 +15,18 @@ import android.bluetooth.le.AdvertiseCallback;
 import android.bluetooth.le.AdvertiseData;
 import android.bluetooth.le.AdvertiseSettings;
 import android.bluetooth.le.BluetoothLeAdvertiser;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.KeyStoreException;
@@ -61,7 +48,6 @@ import iaik.bacc.camilla.androidcredentialstore.database.DBHelper;
 import iaik.bacc.camilla.androidcredentialstore.models.Account;
 import iaik.bacc.camilla.androidcredentialstore.tools.Converter;
 import iaik.bacc.camilla.androidcredentialstore.tools.EncryptionHelper;
-import iaik.bacc.camilla.androidcredentialstore.tools.FingerprintHandler;
 
 
 /**
@@ -76,7 +62,7 @@ public class PeripheralActivity extends ListActivity
 {
     private static final String TAG = "PeripheralActivity";
 
-    private static final int FINGERPRINT_SUCCESS_REQUEST_CODE = 35;
+    public static final int AUTHENTICATION_SUCCESS_REQUEST_CODE = 35;
 
     private static final int REQUEST_ENABLE_BT = 1;
 
@@ -153,26 +139,6 @@ public class PeripheralActivity extends ListActivity
     {
         super.onStart();
 
-        // If the user disabled Bluetooth when the app was in the background,
-        // openGattServer() will return null.
-//        mGattServer = mBluetoothManager.openGattServer(this, mGattServerCallback);
-//        if (mGattServer == null)
-//        {
-//            ensureBleFeaturesAvailable();
-//        }
-
-        //checks for before opened server and stops advertising.
-//        if (mGattServer != null) {
-//            mGattServer.close();
-//            Log.d(TAG, "...gatt server closed!");
-//        }
-//        if (mBluetoothAdapter.isEnabled() && mAdvertiser != null) {
-//            // If stopAdvertising() gets called before close() a null
-//            // pointer exception is raised.
-//            mAdvertiser.stopAdvertising(mAdvCallback);
-//            Log.d(TAG, "stop advertising...");
-//        }
-
         //open gatt server again newly and enable BT if not already (onStart)
         mGattServer = mBluetoothManager.openGattServer(this, mGattServerCallback);
         Log.d(TAG, "...gatt server opened again!");
@@ -187,33 +153,30 @@ public class PeripheralActivity extends ListActivity
     {
         super.onListItemClick(listView, view, position, id);
 
-//        if (mGattServer != null) {
-//            mGattServer.close();
-//            Log.d(TAG, "...gatt server closed!");
-//        }
-//        if (mBluetoothAdapter.isEnabled() && mAdvertiser != null) {
-//            // If stopAdvertising() gets called before close() a null
-//            // pointer exception is raised.
-//            mAdvertiser.stopAdvertising(mAdvCallback);
-//            Log.d(TAG, "stop advertising...");
-//        }
-//
-//        //open gatt server again newly and enable BT if not already (onStart)
-//        mGattServer = mBluetoothManager.openGattServer(this, mGattServerCallback);
-//        Log.d(TAG, "...gatt server opened again!");
-//        if (mGattServer == null){
-//            ensureBleFeaturesAvailable();
-//        }
+        if (mGattServer != null) {
+            mGattServer.close();
+            Log.d(TAG, "...gatt server closed!");
+        }
+        if (mBluetoothAdapter.isEnabled() && mAdvertiser != null) {
+            // If stopAdvertising() gets called before close() a null
+            // pointer exception is raised.
+            mAdvertiser.stopAdvertising(mAdvCallback);
+            Log.d(TAG, "stop advertising...");
+        }
+
+        //open gatt server again newly and enable BT if not already (onStart)
+        mGattServer = mBluetoothManager.openGattServer(this, mGattServerCallback);
+        Log.d(TAG, "...gatt server opened again!");
+        if (mGattServer == null){
+            ensureBleFeaturesAvailable();
+        }
 
 
         //now making a new ble service
         account = accountArrayList.get(position);
 
-        //now in onStart
-//        mBleCustomServiceFragment = new BluetoothLeService();
-//        Log.d(TAG, "Custom Service: " + mBleCustomServiceFragment);
-
-//        //** Encryption of data before advertising it.
+        // *******************************************************************WHAT TO DO WITH THIS??
+        //** Encryption of data before advertising it.
 //        byte[] decrypted_username;
 //        byte[] decrypted_password;
 //
@@ -256,10 +219,17 @@ public class PeripheralActivity extends ListActivity
 //        mAdvScanResponse = new AdvertiseData.Builder()
 //                .setIncludeDeviceName(true)
 //                .build();
+//
+//
+//
+//        startToAdvertiseCredentials();
 
-        Intent intent = new Intent(this, FingerprintActivity.class);
-        intent.putExtra("from", "PeripheralActivity");
-        startActivityForResult(intent, FINGERPRINT_SUCCESS_REQUEST_CODE);
+        //Code above is now in method onActivityResult; after FPhandler comes back with code,
+        //credentials are decrypted and advertised
+        //***************************
+
+        Intent intent = new Intent(this, AdvertisingAuthenticationActivity.class);
+        startActivityForResult(intent, AUTHENTICATION_SUCCESS_REQUEST_CODE);
     }
 
 
@@ -279,6 +249,9 @@ public class PeripheralActivity extends ListActivity
         setListAdapter(adapter);
     }
 
+
+
+    //onDestroy or better onStop??
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -323,6 +296,83 @@ public class PeripheralActivity extends ListActivity
             mAdvStatus.setText(R.string.status_noLeAdv);
         }
     }
+
+
+    //************************** Getting back from authentication handler:
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode){
+            case REQUEST_ENABLE_BT:
+                if (resultCode == RESULT_OK) {
+                    if (!mBluetoothAdapter.isMultipleAdvertisementSupported()) {
+                        Toast.makeText(this, R.string.bluetoothAdvertisingNotSupported, Toast.LENGTH_LONG).show();
+                        Log.e(TAG, "Advertising not supported");
+                    }
+                    onStart();
+                } else {
+                    Toast.makeText(this, R.string.bluetoothNotEnabled, Toast.LENGTH_LONG).show();
+                    Log.e(TAG, "Bluetooth not enabled");
+                    finish();
+                }
+                break;
+            case AUTHENTICATION_SUCCESS_REQUEST_CODE:
+                if(resultCode == RESULT_OK)
+                {
+                    //** Encryption of data before advertising it.
+                    byte[] decrypted_username;
+                    byte[] decrypted_password;
+
+                    try {
+                        final EncryptionHelper encryptionHelper =
+                                new EncryptionHelper(CredentialApplication.getInstance());
+                        Log.d(TAG, "new encryptionHelper object has been generated (within try/catch)");
+
+                        //Decryption of data retrieved from DB
+                        decrypted_username = encryptionHelper.decrypt(account.getUsername());
+                        decrypted_password = encryptionHelper.decrypt(account.getPassword());
+
+                        //setValue of Characteristics:
+                        mBleCustomServiceFragment.putCredentialsAsCharacteristics(decrypted_username, decrypted_password);
+
+                        Log.d(TAG, "Decrypted data (after setting values): username: " +
+                                Converter.byteToString(decrypted_username) +
+                                " | password: " +
+                                Converter.byteToString(decrypted_password));
+
+                    } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException | IOException |
+                            NoSuchProviderException | InvalidAlgorithmParameterException | BadPaddingException |
+                            NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException |
+                            UnrecoverableEntryException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    mBluetoothGattService = mBleCustomServiceFragment.getBluetoothGattService();
+
+                    mAdvSettings = new AdvertiseSettings.Builder()
+                            .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED)
+                            .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
+                            .setConnectable(true)
+                            .build();
+                    mAdvData = new AdvertiseData.Builder()
+                            .setIncludeTxPowerLevel(true)
+                            .addServiceUuid(mBleCustomServiceFragment.getServiceUUID())
+                            .build();
+                    mAdvScanResponse = new AdvertiseData.Builder()
+                            .setIncludeDeviceName(true)
+                            .build();
+
+                    startToAdvertiseCredentials();
+                }
+                break;
+        }
+    }
+
+
+
+
 
     //***********************************************
     //GATT
@@ -540,78 +590,6 @@ public class PeripheralActivity extends ListActivity
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_ENABLE_BT) {
-            if (resultCode == RESULT_OK) {
-                if (!mBluetoothAdapter.isMultipleAdvertisementSupported()) {
-                    Toast.makeText(this, R.string.bluetoothAdvertisingNotSupported, Toast.LENGTH_LONG).show();
-                    Log.e(TAG, "Advertising not supported");
-                }
-                onStart();
-            } else {
-                Toast.makeText(this, R.string.bluetoothNotEnabled, Toast.LENGTH_LONG).show();
-                Log.e(TAG, "Bluetooth not enabled");
-                finish();
-            }
-        }
-        if(requestCode == FINGERPRINT_SUCCESS_REQUEST_CODE)
-        {
-
-            if(resultCode == 40)
-            {
-
-                //** Encryption of data before advertising it.
-                byte[] decrypted_username;
-                byte[] decrypted_password;
-
-                try {
-                    final EncryptionHelper encryptionHelper =
-                            new EncryptionHelper(CredentialApplication.getInstance());
-                    Log.d(TAG, "new encryptionHelper object has been generated (within try/catch)");
-
-                    //Decryption of data retrieved from DB
-                    decrypted_username = encryptionHelper.decrypt(account.getUsername());
-                    decrypted_password = encryptionHelper.decrypt(account.getPassword());
-
-                    //setValue of Characteristics:
-                    mBleCustomServiceFragment.putCredentialsAsCharacteristics(decrypted_username, decrypted_password);
-
-                    Log.d(TAG, "Decrypted data (after setting values): username: " +
-                            Converter.byteToString(decrypted_username) +
-                            " | password: " +
-                            Converter.byteToString(decrypted_password));
-
-                } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException | IOException |
-                        NoSuchProviderException | InvalidAlgorithmParameterException | BadPaddingException |
-                        NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException |
-                        UnrecoverableEntryException e) {
-                    e.printStackTrace();
-                }
-
-
-                mBluetoothGattService = mBleCustomServiceFragment.getBluetoothGattService();
-
-                mAdvSettings = new AdvertiseSettings.Builder()
-                        .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED)
-                        .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
-                        .setConnectable(true)
-                        .build();
-                mAdvData = new AdvertiseData.Builder()
-                        .setIncludeTxPowerLevel(true)
-                        .addServiceUuid(mBleCustomServiceFragment.getServiceUUID())
-                        .build();
-                mAdvScanResponse = new AdvertiseData.Builder()
-                        .setIncludeDeviceName(true)
-                        .build();
-
-                startToAdvertiseCredentials();
-            }
-        }
-
     }
 
 }
