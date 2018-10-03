@@ -1,0 +1,8 @@
+\section{Motivation} \label{motivation}
+There exist many applications that offer the service to store user credentials safely. Most users work on more than one device, which makes accessibility of credentials important.
+A common way to supply this is by synchronizing with cloud services. By making use of cloud services, data confidentiality can be compromised. If cloud services are renounced, accessibility on different devices can be challenging.
+
+Mobile phones support our everyday lives and can help to make data available wherever the user is. Additionally, they offer a secure way to store data. Most Android phones rely on the hardware-backed key storage. Therefore, secure data storage for user credentials can be provided. 
+
+The motivation for this project is to provide safe storage and accessibility while reducing external dependencies. By storing them on a mobile device, authenticity can be provided. In Section \ref{arch_keystore} we discuss how the smartphone hardware can provide a secure environment for data storage. To simplify the distribution of credentials we use a Bluetooth connection between mobile device and computer in use. This allows credentials to be accessible throughout multiple devices. Through the Bluetooth communication channel, data is sent to the computer and filled into the login fields. Hence, third parties are excluded, and confidentiality can be provided. Since data is not saved on the computer, the risk of threatened security is reduced. Simultaneously it is possible to access credentials from a different computer. 
+

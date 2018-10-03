@@ -1,0 +1,210 @@
+\ifglsentryexists{saas}{}%
+{%
+\gls@defglossaryentry{saas}%
+{%
+name={SaaS},%
+sort={SaaS},%
+type={main},%
+first={Software as a Service\glsspace (SaaS)},%
+firstplural={Software as a Services\glsspace (SaaSs)},%
+text={SaaS},%
+plural={SaaSs},%
+description={Software as a Service},%
+descriptionplural={Software as a Service\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Software as a Service},%
+longplural={Software as a Services},%
+short={SaaS},%
+shortplural={SaaSs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{ble}{}%
+{%
+\gls@defglossaryentry{ble}%
+{%
+name={BLE},%
+sort={BLE},%
+type={main},%
+first={Bluetooth Low Energy\glsspace (BLE)},%
+firstplural={Bluetooth Low Energys\glsspace (BLEs)},%
+text={BLE},%
+plural={BLEs},%
+description={Bluetooth Low Energy},%
+descriptionplural={Bluetooth Low Energy\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Bluetooth Low Energy},%
+longplural={Bluetooth Low Energys},%
+short={BLE},%
+shortplural={BLEs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{api}{}%
+{%
+\gls@defglossaryentry{api}%
+{%
+name={API},%
+sort={API},%
+type={main},%
+first={application programming interface\glsspace (API)},%
+firstplural={application programming interfaces\glsspace (APIs)},%
+text={API},%
+plural={APIs},%
+description={application programming interface},%
+descriptionplural={application programming interface\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={application programming interface},%
+longplural={application programming interfaces},%
+short={API},%
+shortplural={APIs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{tk}{}%
+{%
+\gls@defglossaryentry{tk}%
+{%
+name={TK},%
+sort={TK},%
+type={main},%
+first={Temporary Key\glsspace (TK)},%
+firstplural={Temporary Keys\glsspace (TKs)},%
+text={TK},%
+plural={TKs},%
+description={Temporary Key},%
+descriptionplural={Temporary Key\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Temporary Key},%
+longplural={Temporary Keys},%
+short={TK},%
+shortplural={TKs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{stk}{}%
+{%
+\gls@defglossaryentry{stk}%
+{%
+name={STK},%
+sort={STK},%
+type={main},%
+first={Short-Term Key\glsspace (STK)},%
+firstplural={Short-Term Keys\glsspace (STKs)},%
+text={STK},%
+plural={STKs},%
+description={Short-Term Key},%
+descriptionplural={Short-Term Key\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Short-Term Key},%
+longplural={Short-Term Keys},%
+short={STK},%
+shortplural={STKs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{ltk}{}%
+{%
+\gls@defglossaryentry{ltk}%
+{%
+name={LTK},%
+sort={LTK},%
+type={main},%
+first={Long-Term Key\glsspace (LTK)},%
+firstplural={Long-Term Keys\glsspace (LTKs)},%
+text={LTK},%
+plural={LTKs},%
+description={Long-Term Key},%
+descriptionplural={Long-Term Key\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Long-Term Key},%
+longplural={Long-Term Keys},%
+short={LTK},%
+shortplural={LTKs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{ttp}{}%
+{%
+\gls@defglossaryentry{ttp}%
+{%
+name={TTP},%
+sort={TTP},%
+type={main},%
+first={Trusted Third Party\glsspace (TTP)},%
+firstplural={Trusted Third Parties\glsspace (TTPs)},%
+text={TTP},%
+plural={TTPs},%
+description={Trusted Third Party},%
+descriptionplural={Trusted Third Parties},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Trusted Third Party},%
+longplural={Trusted Third Parties},%
+short={TTP},%
+shortplural={TTPs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
