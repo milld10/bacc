@@ -61,9 +61,7 @@ import iaik.bacc.camilla.androidcredentialstore.tools.EncryptionHelper;
 public class PeripheralActivity extends ListActivity
 {
     private static final String TAG = "PeripheralActivity";
-
     public static final int AUTHENTICATION_SUCCESS_REQUEST_CODE = 35;
-
     private static final int REQUEST_ENABLE_BT = 1;
 
     Toolbar mToolbar;
@@ -88,14 +86,7 @@ public class PeripheralActivity extends ListActivity
     private AdvertiseSettings mAdvSettings;
     private BluetoothLeAdvertiser mAdvertiser;
     private BluetoothGattService mBluetoothGattService;
-
     private Account account;
-
-
-    private static final int STATE_DISCONNECTED = 0;
-
-
-
 
     //***********************************************
     //Lifecycle
@@ -108,7 +99,7 @@ public class PeripheralActivity extends ListActivity
 
         Log.d(TAG, "onCreate: is called.");
 
-        accountArrayList = (ArrayList<Account>) dbHelper.getAvailableAccounts();
+        accountArrayList = (ArrayList<Account>) dbHelper.getAllAccounts();
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar_show_available_accounts);
         mToolbar.setTitle(R.string.available_accounts);
@@ -127,12 +118,8 @@ public class PeripheralActivity extends ListActivity
 
         mBleCustomServiceFragment = new BluetoothLeService();
 
-        //needed
         ensureBleFeaturesAvailable();
-
-
     }
-
 
     @Override
     protected void onStart()
@@ -171,67 +158,11 @@ public class PeripheralActivity extends ListActivity
             ensureBleFeaturesAvailable();
         }
 
-
-        //now making a new ble service
         account = accountArrayList.get(position);
-
-        // *******************************************************************WHAT TO DO WITH THIS??
-        //** Encryption of data before advertising it.
-//        byte[] decrypted_username;
-//        byte[] decrypted_password;
-//
-//        try {
-//            final EncryptionHelper encryptionHelper =
-//                    new EncryptionHelper(CredentialApplication.getInstance());
-//            Log.d(TAG, "new encryptionHelper object has been generated (within try/catch)");
-//
-//            //Decryption of data retrieved from DB
-//            decrypted_username = encryptionHelper.decrypt(account.getUsername());
-//            decrypted_password = encryptionHelper.decrypt(account.getPassword());
-//
-//            //setValue of Characteristics:
-//            mBleCustomServiceFragment.putCredentialsAsCharacteristics(decrypted_username, decrypted_password);
-//
-//            Log.d(TAG, "Decrypted data (after setting values): username: " +
-//                    Converter.byteToString(decrypted_username) +
-//                    " | password: " +
-//                    Converter.byteToString(decrypted_password));
-//
-//        } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException | IOException |
-//                NoSuchProviderException | InvalidAlgorithmParameterException | BadPaddingException |
-//                NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException |
-//                UnrecoverableEntryException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//        mBluetoothGattService = mBleCustomServiceFragment.getBluetoothGattService();
-//
-//        mAdvSettings = new AdvertiseSettings.Builder()
-//                .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED)
-//                .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
-//                .setConnectable(true)
-//                .build();
-//        mAdvData = new AdvertiseData.Builder()
-//                .setIncludeTxPowerLevel(true)
-//                .addServiceUuid(mBleCustomServiceFragment.getServiceUUID())
-//                .build();
-//        mAdvScanResponse = new AdvertiseData.Builder()
-//                .setIncludeDeviceName(true)
-//                .build();
-//
-//
-//
-//        startToAdvertiseCredentials();
-
-        //Code above is now in method onActivityResult; after FPhandler comes back with code,
-        //credentials are decrypted and advertised
-        //***************************
 
         Intent intent = new Intent(this, AdvertisingAuthenticationActivity.class);
         startActivityForResult(intent, AUTHENTICATION_SUCCESS_REQUEST_CODE);
     }
-
 
 
     @Override
@@ -240,7 +171,7 @@ public class PeripheralActivity extends ListActivity
         super.onResume();
         Log.d(TAG, "onResume() was called");
 
-        accountArrayList = (ArrayList<Account>) dbHelper.getAvailableAccounts();
+        accountArrayList = (ArrayList<Account>) dbHelper.getAllAccounts();
 
         ArrayAdapter<Account> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
@@ -250,8 +181,6 @@ public class PeripheralActivity extends ListActivity
     }
 
 
-
-    //onDestroy or better onStop??
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -265,13 +194,8 @@ public class PeripheralActivity extends ListActivity
             // pointer exception is raised.
             mAdvertiser.stopAdvertising(mAdvCallback);
         }
-
-
         mAdvStatus.setText(R.string.status_notAdvertising);
-
     }
-
-
 
 
     //***********************************************
@@ -371,9 +295,6 @@ public class PeripheralActivity extends ListActivity
     }
 
 
-
-
-
     //***********************************************
     //GATT
     private final AdvertiseCallback mAdvCallback = new AdvertiseCallback() {
@@ -418,11 +339,7 @@ public class PeripheralActivity extends ListActivity
 
 
 
-
-
-
     //Gatt server and server callback function:
-    //TODO Handle and correct all functions
     private BluetoothGattServer mGattServer;
     private final BluetoothGattServerCallback mGattServerCallback = new BluetoothGattServerCallback() {
         @Override
@@ -474,7 +391,6 @@ public class PeripheralActivity extends ListActivity
             Log.v(TAG, "Notification sent. Status: " + status);
         }
 
-        //TODO check if onCharacteristicWriteRequest is needed? neccessary to write to charac.?
         @Override
         public void onCharacteristicWriteRequest(BluetoothDevice device, int requestId,
                                                  BluetoothGattCharacteristic characteristic, boolean preparedWrite, boolean responseNeeded,
@@ -555,9 +471,6 @@ public class PeripheralActivity extends ListActivity
     };
 
 
-
-
-
     //***********************************************
     // Bluetooth
 
@@ -591,5 +504,4 @@ public class PeripheralActivity extends ListActivity
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
     }
-
 }

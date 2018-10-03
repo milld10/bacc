@@ -46,9 +46,7 @@ public class EncryptionHelper
 
     private CredentialApplication application;
 
-
     KeyStore keyStore;
-
 
     public EncryptionHelper(CredentialApplication application)
             throws CertificateException, NoSuchAlgorithmException, KeyStoreException,
@@ -57,8 +55,6 @@ public class EncryptionHelper
     {
         this.application = application;
 
-//        loadKeyStore(); //is done in generateKeyAfterCheck.
-//        generateSecretKey();
         generateKeyAfterCheck(ALIAS);
     }
 
@@ -83,8 +79,6 @@ public class EncryptionHelper
 
         if(keyStore.containsAlias(alias)) {
             Log.d(TAG, "secret key has already been generated: " + keyStore.getEntry(alias, null));
-            //no need to get a key right now, key is used when en-/decrypting a text
-//            getKeyForEncrypt(alias);
         }
         else {
             Log.d(TAG, "keystore did not contain key with alias, a new one will be created!");
@@ -97,9 +91,6 @@ public class EncryptionHelper
             NoSuchProviderException, InvalidAlgorithmParameterException, CertificateException,
             KeyStoreException, IOException
     {
-        //keystore is already loaded in generateKeyAfterCheck
-//        loadKeyStore();
-
         //getting instance of KeyGenerator and save the key in AndroidKeyStore
         final KeyGenerator keyGenerator = KeyGenerator
                 .getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEY_STORE);
@@ -128,11 +119,7 @@ public class EncryptionHelper
 
     //----------------------------------------------------------------------------------------------
     //Encryption
-
-    //TODO: maybe create a encrypt method for strings instead of byte[]; for account_name?
-    /**
-     * Method is used to encrypt the handed over byte array of plainText
-     */
+    /** Method is used to encrypt the handed over byte array of plainText */
     public byte[] encrypt(final byte[] plainText) throws
             UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException,
             NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, IOException,
@@ -157,7 +144,6 @@ public class EncryptionHelper
 
         byte[] cipherText = cipher.doFinal(plainText);
 
-
         //Concat all information into a single message
         ByteBuffer byteBuffer = ByteBuffer.allocate(4 + iv.length + cipherText.length);
         byteBuffer.putInt(iv.length);
@@ -173,9 +159,8 @@ public class EncryptionHelper
 
     //----------------------------------------------------------------------------------------------
     //Decryption
-    /**
-     * Method is used to decrypt the handed over cipherMessage, containing the IV and the cipherText
-     */
+    /** Method is used to decrypt the handed over cipherMessage,
+     * containing the IV and the cipherText */
     public byte[] decrypt(final byte[] cipherMessage) throws NoSuchPaddingException,
             NoSuchAlgorithmException, UnrecoverableEntryException, KeyStoreException,
             InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException,
@@ -209,7 +194,6 @@ public class EncryptionHelper
 
         return plaintext;
     }
-
 
     private SecretKey getKey(String alias) throws UnrecoverableEntryException,
             NoSuchAlgorithmException, KeyStoreException

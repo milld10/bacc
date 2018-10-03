@@ -42,10 +42,8 @@ public class BluetoothLeService extends Fragment
     private BluetoothGattCharacteristic mPasswordCharacteristic;
 
     //Constructor of BLEService
-    //TODO hand over parameters of username and password to create the BLEService?
     public BluetoothLeService()
     {
-
         //--- Username
         mUsernameCharacteristic = new BluetoothGattCharacteristic(USERNAME_UUID,
                 BluetoothGattCharacteristic.PROPERTY_READ,

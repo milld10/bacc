@@ -51,7 +51,6 @@ public class DBHelper
         accountDao.delete(account);
     }
 
-
     /** Returns all listed accounts (for the Adapter); objects of Account */
     public List<Account> getAllAccounts()
     {
@@ -62,45 +61,4 @@ public class DBHelper
 
         return listOfAccounts;
     }
-
-    public List<Account> getAvailableAccounts()
-    {
-        //TODO: now this is the same method than getAllAccount!
-        //need to be changes, so that only account from the given website are shown.
-        //or show all the usernames from account == tugonline.com for example
-        //maybe hand over parameter from which website the credentials are needed???
-
-        AccountDao accountDao = this.daoSession.getAccountDao();
-
-        List<Account> listOfAccounts = accountDao.queryBuilder().
-                orderAsc(AccountDao.Properties.Account_name).list();
-
-        return listOfAccounts;
-
-    }
-
-
-    //Methods for masterPassword: ------------------------------------------------------------------
-
-    public long insertNewMasterPassword(MasterPassword masterPassword)
-    {
-        MasterPasswordDao masterPasswordDao = this.daoSession.getMasterPasswordDao();
-
-        return masterPasswordDao.insert(masterPassword);
-    }
-
-    //TODO call delete methods in future settings activity, so that user can change the master password
-    public void deleteMasterPasswordById(Long id)
-    {
-        MasterPasswordDao masterPasswordDao = this.daoSession.getMasterPasswordDao();
-        MasterPassword masterPassword = masterPasswordDao.load(id);
-        masterPasswordDao.delete(masterPassword);
-    }
-
-    public void deleteMasterPassword(MasterPassword masterPassword)
-    {
-        MasterPasswordDao masterPasswordDao = this.daoSession.getMasterPasswordDao();
-        masterPasswordDao.delete(masterPassword);
-    }
-
 }
