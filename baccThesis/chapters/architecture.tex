@@ -28,7 +28,7 @@ With the extension, we inject a button on the website. The button is used to est
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=5cm]{images/MainActivity}
+\includegraphics[width=5cm]{images/MainActivityNew}
 \caption[Main activity]{Main activity, which is shown at start up of the app}
 \label{fig:mainactivity}
 \end{figure}
@@ -64,12 +64,11 @@ Once Bluetooth is enabled, the accounts available for sharing are listed. At fir
 \centering
 \subfloat[]{{\includegraphics[width=3.5cm]{images/BT_english}\label{prompt_bt} }}
 \qquad
-\subfloat[]{{\includegraphics[width=3.5cm]{images/BTNotEnabled}\label{bt_notEnabled} }}
+\subfloat[]{{\includegraphics[width=3.5cm]{images/BTNotEnabledNew}\label{bt_notEnabled} }}
 \qquad
 \subfloat[]{{\includegraphics[width=3.5cm]{images/AvailableAccounts}\label{not_advertising} }}
 \qquad
-% !!!!!!!!!!!!! change jpg once programming done and working!
-\subfloat[]{{\includegraphics[width=3.5cm]{images/AvailableAccounts}\label{advertising} }}
+\subfloat[]{{\includegraphics[width=3.5cm]{images/NowAdvertising}\label{advertising} }}
 %\qquad
 %\subfloat[Asking the user before deleting the credential out of the database]{{\includegraphics[width=5cm]{images/MainActivity} }}
 \caption[Activity for Bluetooth Connection]{Activity for Bluetooth Connection; \protect\subref{prompt_bt}: a prompt is shown to the user to enable Bluetooth. \protect\subref{not_advertising}: is shown when the application is not advertising. \protect\subref{advertising}: is shown after user selected a credential to send.}
@@ -177,11 +176,11 @@ As mentioned above, upon every request to send an account login the user has to 
 
 \begin{figure}[!htb]
 \centering
-\subfloat[]{{\includegraphics[width=3.5cm]{images/AuthenticationScreen}\label{auth_screen} }}
+\subfloat[]{{\includegraphics[width=3.5cm]{images/AuthenticationScreenNew}\label{auth_screen} }}
 \qquad
-\subfloat[]{{\includegraphics[width=3.5cm]{images/AuthenticationFailed}\label{auth_fail} }}
+\subfloat[]{{\includegraphics[width=3.5cm]{images/AuthenticationFailedNew}\label{auth_fail} }}
 \qquad
-\subfloat[]{{\includegraphics[width=3.5cm]{images/fingerprint_noneRegistered}\label{auth_none} }}
+\subfloat[]{{\includegraphics[width=3.5cm]{images/NoFingerprintRegistered}\label{auth_none} }}
 \caption[Activity for Authentication]{Activity for Authentication; \protect\subref{auth_screen}: the user is asked to auhenticate themselves. \protect\subref{auth_fail}: authentication failes if incorrect fingerprint is scanned. \protect\subref{auth_none}: is shown if no fingerprints are registered on the device.}
 \label{fig:authentication}
 \end{figure}
