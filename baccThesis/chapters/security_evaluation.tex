@@ -1,7 +1,26 @@
-\section{Security Evaluation leaned on Common Criteria} \label{seceval}
-%eher kurz gehalten
-see how to conduct a security evalutation of an android app, list all common criteria, maybe make a table??
+\section{Security Evaluation based on Common Criteria} \label{seceval}
+In this chapter, we will evaluate the security. This process will be based on a Security Evaluation with Common Criteria \cite{CC}. We will list the assets and weaknesses of this project and identify the threats and countermeasures.
 
-list assets, threats, weaknesses and countermeasures
+Our \gls{toe} is the Android application and the Chrome extension. According to \cite{CC}, an asset is an entity of the \gls{toe} that is valuable to the owner. A weakness is a vulnerability in the \gls{toe}. We will roughly distinguish a weakness into exploitable and potential vulnerability.
+A threat is induced by a threat agent, which in turn wishes to damage an asset. On the other hand, a countermeasure protects an asset from a threat \cite{CC}.
 
-tabelle mit countermeasure und attacks
+Stored credentials are valuable to the owner of the \gls{toe}. This makes the credentials as our most valuable asset. 
+As our greatest weakness, we define the \gls{ble} connection. As we will discuss in Section \ref{bluetooth}, \gls{ble} has the downside of a possibly insecure communication channel. This can make the transfer of sensitive data an exploitable vulnerability. In case of an attack, the attacker can retrieve the sent credentials in plaintext. Other weaknesses are given in case of a rooted device. This is discussed throughly in Section \ref{limitations}.
+
+To the threats we count, phishing data from the \gls{ble} connection with packet sniffer tools.  
+
+
+%Threats:
+%* packet sniffer of ble connection
+%* rooting device, access to permission system and sensitive data
+%* malicious extension
+
+%Countermeasures that are implemented:
+%* encrypt independently from the users input. provide not only encryption but also authentication by using GCM as our cipher mode.
+%* Securing access and distribution of credentials with fingerprint authentication.
+%* no storage of credentials othen than a secure environment given by the mobile device
+%* no encryption with pbkdf2 (reduces risk of brute force attacks)
+
+
+
+
