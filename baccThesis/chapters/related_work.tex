@@ -1,35 +1,33 @@
-\section{Related Work}
-\label{relwork}
+\section{Related Work} \label{relwork}
 
-Ideas: \\
-* related work to cipher, algorithm encryption \\
-* PWM app for Android (with BT?) \\
-* PWM integrated into web service? \\
-* PWM with cloud service (Android) \\
+There exists various approaches to store and manage credentials. Passwords are most commonly used to authenticate a user, dispite the fact they have introduced many security problems \cite{}, \cite{}, \cite{}. In this section we will discuss some existing solutions and their limitations in security and convenience. \\
 
-* security issues e.g. last pass had leaks in their release.
+First, we will look into web-based password managers. Web-based password managers work in web browsers and manages credentials for each web application. It also automates the process of inserting credentials into the login fields. This frees the user from remembering a different password for each website and the process of typing the credentials into the fields \cite{DBLP:conf/uss/LiHAS14}. \\ %emperor's
+One popular and widely used web-based password manager is LastPass. The user can access their passwords through the LastPass extension or also through the LastPass website. The attack surface can be broken into different areas including classic web vulnerabilities and authorization vulnerabilities. A classic web vulnerability results from insufficient understanding of the web security model. This can lead to cross-site request forgery (CSRF) \cite{DBLP:conf/uss/LiHAS14}. Authorization vulnerabilities describe confused authentication and when sharing and updating credentials are not fully authorized. \\
+LastPass had problems with CSRF!! --> paper and 
+https://www.heise.de/security/meldung/Android-Phishing-Apps-koennen-Passwort-Manager-ausspionieren-4180073.html
 
-* Authentication with BLE/BT?
-
-* Paper: Push Notifications based Login using BLE Devices
+A different approach to store and access sensitive data is using a multi-factor authentication. 
 
 
-Structure:
-brief introduction of the basic research area, selecting papers to show advances of this area
-mention other paper that try to solve the same problem than my research
-organize them by idea into paragraphs
-
-summarize approaches with performances, advantanges, disadvantages etc.
-
-ending paragraph: point out the limitations in the existing approaches and state you are going to try approach X that is different from what has been tried before.
-
-for brief sections, extend the introduction mentioning work that is closest to your approach.
+--> fido's u2f (implementation of u2f is yubikey) 
 
 
+%Structure:
+%brief introduction of the basic research area, selecting papers to show advances of this area
+%mention other paper that try to solve the same problem than my research
+%organize them by idea into paragraphs
+%
+%summarize approaches with performances, advantanges, disadvantages etc.
+%
+%ending paragraph: point out the limitations in the existing approaches and state you are going to try approach X that is different from what has been tried before.
+%
+%for brief sections, extend the introduction mentioning work that is closest to your approach.
+%----
+%anderer ansatz ohne password, authentication stick 
+%fido u2f security key, yubikey hardware authentication
 
----------------
-attacks on android, ble,
 
-anderer ansatz ohne password, authentication stick 
-fido u2f security key
+However, web-based approaches serve as a third-party between user and login process and multi-factor authentication requires additional hardware compromising convenience.
 
+For this project we strive to reduce external dependencies. We will handle an unexplored approach of sending credentials from the mobile device through a Bluetooth connection to sign in.

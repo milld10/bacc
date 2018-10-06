@@ -4,23 +4,43 @@ In this chapter, we will evaluate the security. This process will be based on a 
 Our \gls{toe} is the Android application and the Chrome extension. According to \cite{CC}, an asset is an entity of the \gls{toe} that is valuable to the owner. A weakness is a vulnerability in the \gls{toe}. We will roughly distinguish a weakness into exploitable and potential vulnerability.
 A threat is induced by a threat agent, which in turn wishes to damage an asset. On the other hand, a countermeasure protects an asset from a threat \cite{CC}.
 
-Stored credentials are valuable to the owner of the \gls{toe}. This makes the credentials as our most valuable asset. 
-As our greatest weakness, we define the \gls{ble} connection. As we will discuss in Section \ref{bluetooth}, \gls{ble} has the downside of a possibly insecure communication channel. This can make the transfer of sensitive data an exploitable vulnerability. In case of an attack, the attacker can retrieve the sent credentials in plaintext. Other weaknesses are given in case of a rooted device. This is discussed throughly in Section \ref{limitations}.
+Stored credentials are valuable to the owner of the \gls{toe}. This makes the credentials as our most valuable asset. Another asset is the generall access to the mobile device and it's resources. \\
+%
+As our greatest weakness, we define the \gls{ble} connection. To use the Web Bluetooth API we needed to implement a \gls{ble} connection. However, as researches \cite{DBLP:conf/woot/Ryan13}, \cite{DBLP:journals/sensors/GomezOP12}, \cite{IntroductionBLE} (cf. Section \ref{bluetooth}) have shown, \gls{ble} has the downside of a possibly insecure communication channel. This can make the transfer of sensitive data an exploitable vulnerability. In case of an attack, the attacker can retrieve the sent credentials in plaintext. Another weakness is given when a device has root privileges. This is a threat that is challenging to minimize and is discussed thoroughly in Section \ref{limitations}.
 
-To the threats we count, phishing data from the \gls{ble} connection with packet sniffer tools.  
+As a threat, we consider retrieving credentials with the secret key or brute forcing stored data. There also exists the threat of tampering with stored data. Also, phishing data from the \gls{ble} connection with packet sniffer tools we see as a threat. \\
+The first countermeasure is the AES-GCM encryption which is independent from user's input. Through GCM mode we provide additional authenticity. In case of tampering with stored data, the decryption will not be executed since the authentication tag will be different. An additional countermeasure is the storage of the secret key in the hardware provided \gls{tee}. The secret key cannot be extracted from this environment. Lastly we use the fingerprint for user authentication. A PIN is considered to be more secure than a pattern according to \cite{PinSaferThanPattern}. In \cite{SecureWayToLockPhone} they claim that using a PIN is the best way to protect a mobile device, but only when the PIN is randomly generated and hard to remember. Users tend to choose simple passwords leading to a insecure PIN, since convenience is prefered over security. Therefore, choosing biometrics to secure a mobile device is the best option regarding security.
+
+\noindent We have identified following countermeasures:
+\begin{itemize}
+\item $c_1$ - Encryption independent form user's input.
+\item $c_2$ - GCM cipher mode provides additional authentication.
+\item $c_3$ - Storage of the key in the \gls{tee}.
+\item $c_4$ - Using biometrics for authentication instead of pattern or PIN.
+\end{itemize}
+\vspace{0.5cm}
+
+\noindent Following assets must be protected:
+\begin{itemize}
+\item $a_1$ - User credentials
+\item $a_2$ - Resources of smartphone
+\end{itemize}
+\vspace{0.5cm}
+
+In Table \ref{table:seceval} the implemented countermeasures are listed and towards which asset they increase the security. \\
 
 
-%Threats:
-%* packet sniffer of ble connection
-%* rooting device, access to permission system and sensitive data
-%* malicious extension
-
-%Countermeasures that are implemented:
-%* encrypt independently from the users input. provide not only encryption but also authentication by using GCM as our cipher mode.
-%* Securing access and distribution of credentials with fingerprint authentication.
-%* no storage of credentials othen than a secure environment given by the mobile device
-%* no encryption with pbkdf2 (reduces risk of brute force attacks)
-
-
-
-
+\begin{table}[!htb]
+\centering
+\begin{tabular}{cc|c|c|}
+\cline{3-4}
+                                        &  & \multicolumn{2}{c|}{Assets} \\ \cline{3-4} 
+                                        &  &   $a_1$        &  $a_2$         \\ \hline
+\multicolumn{1}{|c|}{\multirow{4}{*}{Countermeasures}} & $c_1$ & \ding{51} &           \\ \cline{2-4} 
+\multicolumn{1}{|c|}{}                  & $c_2$ & \ding{51} &           \\ \cline{2-4}
+\multicolumn{1}{|c|}{}                  & $c_3$ & \ding{51} &           \\ \cline{2-4}  
+\multicolumn{1}{|c|}{}                  & $c_4$ & \ding{51} & \ding{51}  \\ \hline
+\end{tabular}
+\caption{Table of which asset is protected by which countermeasure.}
+\label{table:seceval}
+\end{table}
