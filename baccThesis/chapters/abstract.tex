@@ -1,10 +1,8 @@
 %%%% Time-stamp: <2013-02-25 10:31:01 vk>
 
-
-\section*{Abstract}
-\label{cha:abstract}
-
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem 
+\section*{Abstract} \label{cha:abstract}
+In this thesis, we present a novel approach to manage credentials and making them accessible throughout multiple devices. We use the smartphone as a secure environment and deliberately resign from cloud services for storage. However, to make the passwords accessible, we rely on a Bluetooth connection between the mobile device and the web browser. To make this possible, we implemented an Android application and a Chrome web extension. The extension retrieves data sent from the application and fills it directly into the login fields of the website. \\
+The encryption of credentials is done on the mobile phone. Cryptographic keys are securely stored in a \gls{tee}. This makes extraction from the phone very difficult. To access and distribute passwords, the user must authenticate using biometric identification.
 
 %\glsresetall %% all glossary entries should be used in long form (again)
 %% vim:foldmethod=expr

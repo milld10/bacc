@@ -29,7 +29,7 @@ With the extension, we inject a button on the website. The button is used to est
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=5cm]{images/MainActivityNew}
-\caption[Main activity]{Main activity, which is shown at start up of the app}
+\caption[Main Activity]{Main activity, which is shown at start up of the app}
 \label{fig:mainactivity}
 \end{figure}
 
@@ -69,8 +69,6 @@ Once Bluetooth is enabled, the accounts available for sharing are listed. At fir
 \subfloat[]{{\includegraphics[width=3.5cm]{images/AvailableAccounts}\label{not_advertising} }}
 \qquad
 \subfloat[]{{\includegraphics[width=3.5cm]{images/NowAdvertising}\label{advertising} }}
-%\qquad
-%\subfloat[Asking the user before deleting the credential out of the database]{{\includegraphics[width=5cm]{images/MainActivity} }}
 \caption[Activity for Bluetooth Connection]{Activity for Bluetooth Connection; \protect\subref{prompt_bt}: a prompt is shown to the user to enable Bluetooth. \protect\subref{not_advertising}: is shown when the application is not advertising. \protect\subref{advertising}: is shown after user selected a credential to send.}
 \label{fig:connectionactivity}
 \end{figure}
@@ -84,7 +82,7 @@ Since one goal is to store user credentials on the phone, we need a suitable dat
 For this project, we use an object/relational mapping. It manages the tasks of storing, deleting, updating and querying. We decided on the greenDAO ORM as it has an overall good performance \cite{Greendao}. Additionally, it does not require as much programming effort compared to other frameworks as discussed in \cite{pu2016understanding}. \\
 Before setting up the database, we included the greenDAO plugin. To set up the database, a DaoMaster had to be initialized. The DaoMaster is provided from the helper class \texttt{DevOpenHelper}, and handles the database set up and creates DaoSessions. Listing \ref{lst:db_master} shows this process.
 
-\begin{lstlisting}[float,floatplacement=h, caption=Creation of database, label=lst:db_master]
+\begin{lstlisting}[float,floatplacement=h, caption=Creation of Database, label=lst:db_master]
 DaoMaster.DevOpenHelper helper = 
         new DaoMaster.DevOpenHelper(this,"credentials-db");
 Database db = helper.getWritableDb();
@@ -98,7 +96,7 @@ A DaoSession, on the other hand, manages the DAO object. It is an entity that we
 As mentioned before, the DaoSession manages DAO objects and they, in turn, handle all operations of the database. With the start of the application, the database is opened, and a new DaoSession is instantiated. To manage all interactions of DAO objects, we defined a database helper class. \\
 Listing \ref{lst:db_insert} shows an example of how one credential is inserted into the database. The DaoSession calls the DAO object, and the object handles the insert method to store data into the database. The load and delete methods use the DaoSession as well. 
 
-\begin{lstlisting}[float,floatplacement=h, caption= Insert entry into database, label=lst:db_insert]
+\begin{lstlisting}[float,floatplacement=h, caption= Insert Entry into Database, label=lst:db_insert]
 public void insertNewAccount(Account account) {
     AccountDao accountDao = this.daoSession.getAccountDao();
     accountDao.insert(account);
@@ -119,22 +117,22 @@ However, \gls{pbkdf2} requires the user's input to generate the key for encrypti
 
 Therefore, our goal is to provide secure en- and decryption without depending on the user's input. Also, all encryption takes place on the mobile phone, and there is no need for any public encryption component. Therefore, encryption and decryption can be done with the same key \cite{DBLP:journals/ijnsec/ElminaamKH10}.
 
-We decided to encrypt data using the AES algorithm and \gls{gcm} as our cipher mode. The reason for this is that \gls{gcm} provides confidentiality, integrity, and authenticity \cite{AESJavaAndroid}. \cite{GCMSecure} states that CBC mode can be vulnerable to padding attacks. \\
-\gls{gcm} uses the Counter Mode (CTR) internally \cite{AESJavaAndroid}. A counter value for each block is encrypted and only uses as many bits as required from the last block. Hence, it turns the block cipher into a stream cipher, and no padding is required \cite{IVtransmission}. Therefore, \gls{gcm} is less vulnerable than CBC. \gls{gcm} is considered to be more secure than CBC \cite{GCMSecure}. Hence, making it ideal to generate a secret key for encryption of sensitive data. For encryption, \gls{gcm} takes as input the \gls{iv}, a plaintext, and additional authenticated data (AAD). The AAD is not required and does not affect the security of the \gls{gcm} mode \cite{AADsecure}. \\
+We decided to encrypt data using the AES algorithm and \gls{gcm} as our cipher mode. The reason for this is that \gls{gcm} provides confidentiality, integrity, and authenticity \cite{AESJavaAndroid}. \cite{GCMSecure} states that CBC mode can be vulnerable to padding attacks and \gls{gcm} is considered to be more secure than CBC. \\
+\gls{gcm} uses the Counter Mode (CTR) internally. A counter value for each block is encrypted and only uses as many bits as required from the last block. Hence, it turns the block cipher into a stream cipher, and no padding is required \cite{IVtransmission}. Therefore, \gls{gcm} is less vulnerable than CBC. Hence, making it ideal to generate a secret key for encryption of sensitive data. For encryption, \gls{gcm} takes as input the \gls{iv}, a plaintext, and additional authenticated data (AAD). The AAD is not required and does not affect the security of the \gls{gcm} mode \cite{AADsecure}. \\
 We instantiated the cipher, as seen in Listing \ref{lst:cipher}.
 
-\begin{lstlisting} [float,floatplacement=h, caption=Instantiation of cipher, label=lst:cipher]
+\begin{lstlisting} [float,floatplacement=h, caption=Instantiation of Cipher, label=lst:cipher]
 final Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
 \end{lstlisting}
 
-In this project, we passed the plaintext and the \gls{iv}. The output of encryption is the ciphertext and an authentication tag \cite{dworkin2007sp}. The authentication tag contains information, that is associated with the encrypted data. It is useful in case of an unauthorized change to the encrypted data \cite{AESJavaAndroid}. When decrypting data, \gls{gcm} expects the \gls{iv}, a ciphertext, the authentication tag, and the AAD, if it has been passed during encryption. Only if the authentication tag calculated during encryption and then passed one are identical, the plaintext is returned \cite{dworkin2007sp}.
+In this project, we passed the plaintext and the \gls{iv}. The output of encryption is the ciphertext and an authentication tag \cite{dworkin2007sp}. The authentication tag contains information, that is associated with the encrypted data. It is useful in case of an unauthorized change \cite{AESJavaAndroid}. When decrypting data, \gls{gcm} expects the \gls{iv}, a ciphertext, the authentication tag, and the AAD, if it has been passed during encryption. Only if the authentication tag calculated during encryption and then passed one are identical, the plaintext is returned \cite{dworkin2007sp}.
 
 Important for the Android implementation of \gls{gcm} is the length of the \gls{iv}. National Institute of Standards and Technology recommends 96 bits for the \gls{iv} to be fast and secure \cite{dworkin2007sp}. To ensure that a unique \gls{iv} is used with every encryption, a new one is generated upon each call of the encrypt method. Afterward, we concatenate the \gls{iv} with the ciphertext. Before decryption, the \gls{iv} is separated from the ciphertext again. We created the \gls{iv} using the strong random number generator \textit{SecureRandom} from the Android Library \cite{SecureRandom}.
 
 Android insists on using their default method \texttt{cipher.getIV();} for generating the \gls{iv}. However, research has shown that using the default \gls{iv} may not be secure because the risk of reusage is given \cite{DefaultIV}. Reusing an \gls{iv} results in a vulnerable implementation and compromises the security of data. The \gls{iv} being unique is almost as important as the key being secret \cite{dworkin2007sp}. \\
 Therefore, we decided to provide the \gls{iv} by a SecureRandom. The Android OS throws an exception, because we are not using the provided method \texttt{cipher.getIV()}. To solve this problem, we set the \textit{setRandomizedEncryptionRequired()} property to \textit{false} when we generated the key, which is shown in Listing \ref{lst:key}. This way Android allows using our generated \gls{iv} \cite{SecretsInAndroid}.
 
-\begin{lstlisting} [float,floatplacement=h, caption=Setting properties of secret key, label=lst:key]
+\begin{lstlisting} [float,floatplacement=h, caption=Setting Properties of Secret Key, label=lst:key]
 SpecBuilder.setKeySize(128)
     .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
     .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
