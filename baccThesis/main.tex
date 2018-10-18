@@ -193,7 +193,15 @@
 \usepackage{tabularx}
 \usepackage{multirow}
 
+\usepackage{hyperref}
+\def\UrlBreaks{\do\/\do-}
+
+
+
 \usepackage[toc,xindy]{glossaries}
+\usepackage{silence}
+\WarningFilter{glossaries}{Deprecated command}% Removes warning starting with "Deprecated command"
+
 \setglossarystyle{listdotted}
 
 \usepackage{calc}
@@ -210,9 +218,12 @@
 \setglossarystyle{listdottedskip}
 \setlength{\glslistdottedwidth}{.4\linewidth}
 
+
+
 \makeglossaries
 
-\include{glossary}
+\input{glossary}
+
 
 %% ========================================================================
 %%%% MISC self-defined commands and settings
@@ -322,11 +333,11 @@
 
 \newpage
 
-\printglossaries
+\printglossary
+
 \newpage
 
-
-\bibliographystyle{plain}
+\bibliographystyle{IEEEtran}
 \bibliography{bibliography}
 
 

@@ -2,8 +2,8 @@
 Here the structure and background of technologies used in this thesis are discussed. This Section helps to understand unknown principles of Android applications, web extensions and Bluetooth technology.
 
 \subsection{Structure of Android Applications}
-As stated in \cite{6104696}, the Android operating system is open source and based on the Linux kernel. Android was launched by Google. For every application, an own Linux process is running, and the app's code is isolated from the others \cite{AndroidFundamentals}. \\
-An Android application consists of essential components. The four different app components are activities, services, broadcast receivers, and content providers \cite{6104696}.
+As stated in \cite{liu2011research}, the Android operating system is open source and based on the Linux kernel. Android was launched by Google. For every application, an own Linux process is running, and the app's code is isolated from the others \cite{AndroidFundamentals}. \\
+An Android application consists of essential components. The four different app components are activities, services, broadcast receivers, and content providers \cite{liu2011research}.
 
 Activities are single screen providing an interface to interact with the user. It shows what is on the screen for the user to see. Activities are linked together to form one application, but they still are independent of each other. If a new activity is started, the previous one stops and is preserved in a stack. When launching the app, an activity called \textit{main activity} is typically presented to the user. \\
 A service does not provide an interface. Rather it runs in the background performing long-running operations. An activity can either start a service or bind to it for interaction \cite{AndroidFundamentals}. The \gls{ble} service implemented in this project represents such a service component. \\
@@ -14,18 +14,18 @@ For the system to be able to start app components, a file named \textit{AndroidM
 
 
 \subsection{Bluetooth Low Energy}
-\gls{ble}, like classic Bluetooth, allows a wireless short-range communication between devices. \gls{ble} was introduced to provide communication with a much lower power consumption than classic Bluetooth \cite{DBLP:journals/sensors/GomezOP12}. Since \gls{ble} has been derived from the classic Bluetooth, the protocol stack of both technologies consist of a Controller and a Host. As stated in \cite{DBLP:journals/sensors/GomezOP12}, the Controller consists of the Physical and Link Layer, while the Host manages the upper layers. The upper layers include the \gls{att}, the , and the \gls{gap}. \\
-However, the protocol stack of \gls{ble} is not compatible with the one of classic Bluetooth. This means if a device only implements \gls{ble}, it cannot communicate with another device that implements classic Bluetooth \cite{DBLP:journals/sensors/GomezOP12}.
+\gls{ble}, like classic Bluetooth, allows a wireless short-range communication between devices. \gls{ble} was introduced to provide communication with a much lower power consumption than classic Bluetooth \cite{GomezOP12}. Since \gls{ble} has been derived from the classic Bluetooth, the protocol stack of both technologies consist of a Controller and a Host. As stated in \cite{GomezOP12}, the Controller consists of the Physical and Link Layer, while the Host manages the upper layers. The upper layers include the \gls{att}, the , and the \gls{gap}. \\
+However, the protocol stack of \gls{ble} is not compatible with the one of classic Bluetooth. This means if a device only implements \gls{ble}, it cannot communicate with another device that implements classic Bluetooth \cite{GomezOP12}.
 
-\gls{ble} can only transmit and receive a single packet \cite{DBLP:conf/woot/Ryan13}. The size of \gls{ble} message can be 47 bytes at most, while the maximum message size of classic Bluetooth is 358 bytes \cite{DBLP:journals/sensors/GomezOP12}. Therefore, \gls{ble} is designed to send small packets containing less information than with classic Bluetooth.
+\gls{ble} can only transmit and receive a single packet \cite{Ryan13}. The size of \gls{ble} message can be 47 bytes at most, while the maximum message size of classic Bluetooth is 358 bytes \cite{GomezOP12}. Therefore, \gls{ble} is designed to send small packets containing less information than with classic Bluetooth.
 
 The \gls{att} describes the communcation of two connected devices. The application uses the \gls{gatt} layer for communcation of characteristics. Characteristics contain a value and properties and permissions, and they can be stored and passed \cite{BTGatt}. A \gls{uuid} defines the type of the characteristic. \\
 A connected device can either have the role of the \gls{gatt} server or the \gls{gatt} client \cite{TIGatt}. The \gls{gatt} server has the characteristics and the \gls{gatt} client can read or write to characteristics. \\
-The \gls{gap} is at the highest level of the \gls{ble} stack. Without \gls{gap}, discovery of devices and services, establishing the connection, and security would not be possible. It defines device roles, modes and procedures for these tasks \cite{DBLP:journals/sensors/GomezOP12}.
+The \gls{gap} is at the highest level of the \gls{ble} stack. Without \gls{gap}, discovery of devices and services, establishing the connection, and security would not be possible. It defines device roles, modes and procedures for these tasks \cite{GomezOP12}.
 
 
 \subsection{Structure of Chrome Extensions}
-Extensions provide a customized browsing experience for the Google Chrome browser. Similar to the Android applications, they consist of different components as well. Components of an extension are background scripts, content scripts, options page, and UI elements written in HTML, CSS, and JavaScript \cite{Extensions}. Content scripts are used to access the \gls{dom} and are injected into the loaded web page \cite{DBLP:conf/ndss/LiuZYC12}. \\
+Extensions provide a customized browsing experience for the Google Chrome browser. Similar to the Android applications, they consist of different components as well. Components of an extension are background scripts, content scripts, options page, and UI elements written in HTML, CSS, and JavaScript \cite{Extensions}. Content scripts are used to access the \gls{dom} and are injected into the loaded web page \cite{LiuZYC12}. \\
 Extensions need a manifest file. The manifest consists of the extension name, the version, a description, and a manifest version. To utilize the extension in the Chrome browser, one folder containing all files is loaded on the page \texttt{chrome://extensions} \cite{Extensions}.
 
 
