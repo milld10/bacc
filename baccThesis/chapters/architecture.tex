@@ -1,7 +1,7 @@
 \section{Architecture} \label{architecture}
-As mentioned in Section \ref{introduction}, we decided to implement an Android application for mobile phones. Since the Chrome browser offers an interface for using \gls{ble} on the web, we decided to develop a Chrome extension to utilize their Web Bluetooth API \cite{WebBTAPI}.
+As mentioned in Section \ref{introduction}, we decided to implement an Android application for mobile phones. Since the Chrome browser offers an interface for using \gls{ble} on the web, we decided to develop a Chrome, using the dedicated Web Bluetooth API \cite{WebBTAPI}.
 
-With the extension, we inject a button on the website. The button is used to establish a \gls{ble} connection between application and extension. Upon successful pairing, the extension is allowed to read characteristics that are advertised from the app. The characteristics contain username and password, which the extension inserts directly into the login fields of the website.
+Through the extension, we inject a button on the website. The button is used to establish a \gls{ble} connection between application and extension. Upon successful pairing, the extension is allowed to read characteristics that are advertised from the app. The characteristics contain username and password, which the extension inserts directly into the login forms of the website. The workflow between both parties is shown in Figure \ref{fig:comm}.
 
 \noindent Before starting with the implementation we defined minimal requirements of the Android application and the Chrome extension: \\
 
@@ -19,12 +19,21 @@ With the extension, we inject a button on the website. The button is used to est
 \item Injection of a button onto the website
 \item Establishment of \gls{ble} Connection
 \item Reading the advertised characteristics
-\item Filling credentials into the proper login fields
+\item Filling credentials into the proper forms
 \end{itemize}
 
+\vspace{0.5cm}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=10cm]{images/Communication.png}
+	\caption[Communication between devices]{This Figure shows the workflow between the mobile device and the web browser.}
+	\label{fig:comm}
+\end{figure}
+\vspace{0.5cm}
 
-%technical details:
-\noindent We implemented the application for API level 23 minimum and up using Android Studio as the IDE. The reason for this is from that level Android introduced native fingerprint reader support \cite{AndroidM}. To go more into detail about the app, it consists of a main activity (Figure \ref{fig:mainactivity}), which contains three different menu items: \textit{Accounts}, which provides the user with an interface to manage their login accounts, \textit{Connection}, where users can establish the Bluetooth connection to send login data to the web browser, and \textit{About}. We will go more into detail about the functionality of the activities \textit{Accounts} and \textit{Connection}. Subsequently, we will examine how the application handles data storage, encryption, and authentication in greater detail.
+
+
+\noindent We implemented the application for \gls{api} level 23 and up using Android Studio as the IDE. One of the reasons for this decision is that Android supports native fingerprint reader support from that \gls{api} level as stated in \cite{AndroidM}. The app consists of a main activity, which is seen in Figure \ref{fig:mainactivity}. It contains three different menu items: \textit{Accounts}, which provides the user with an interface to manage their login accounts, \textit{Connection}, where users can establish the Bluetooth connection to send login data to the web browser, and \textit{About}. We will go more into detail about the functionality of the activities \textit{Accounts} and \textit{Connection} in the following Sections. Subsequently, we will examine how the application handles data storage, encryption, and authentication in greater detail.
 
 \begin{figure}[!htb]
 \centering
@@ -36,9 +45,9 @@ With the extension, we inject a button on the website. The button is used to est
 %-------------------------------------------------------------------------------------
 
 \subsection{Activity for managing Accounts}
-By clicking on the menu item \textit{Accounts}, the user is asked to authenticate (Figure \ref{fig:authentication}\protect\subref{auth_screen}). Upon successful verification, the interface in Figure \ref{fig:accountactivity}\protect\subref{show_acc} is shown. The user has an overview of his saved credentials. By clicking the button on the bottom right corner, the activity is switched to Figure \ref{fig:accountactivity}\protect\subref{add_acc}. Here the user can add a new accounts. Clicking the \texttt{save}-button encrypts and adds the credential to the database.
+By clicking on the menu item \textit{Accounts}, the user is asked to authenticate (c.f. Section \ref{arch_authenticate}). Upon successful verification, the interface in Figure \ref{fig:accountactivity}\protect\subref{show_acc} is shown. It gives an overview of saved credentials. By clicking the button on the bottom right corner, the activity is switched to the activity shown in Figure \ref{fig:accountactivity}\protect\subref{add_acc}. Here the user can add a new accounts. Clicking the \texttt{save}-button encrypts and adds the credential to the database (c.f. Section \ref{arch_encryption}).
 
-When clicked on one of the existing credentials in the list, it takes the user to the interface shown in Figure \ref{fig:accountactivity}\protect\subref{change_acc}.  Here data can be changed and saved again. Also, the account can be deleted from the database. When deleting a credential, the user is asked via prompt as seen in Figure \ref{fig:accountactivity}\protect\subref{prompt_delete}.
+When clicked on one of the existing credentials in the list, it takes the user to the interface shown in Figure \ref{fig:accountactivity}\protect\subref{change_acc}.  Here data can be changed and saved again. Also, the account can be deleted from the database. When deleting a credential, the user is asked to confirm their action via a prompt, as seen in Figure \ref{fig:accountactivity}\protect\subref{prompt_delete}.
 
 \begin{figure}[!htb]
 \centering
@@ -49,16 +58,16 @@ When clicked on one of the existing credentials in the list, it takes the user t
 \subfloat[]{{\includegraphics[width=3.5cm]{images/ChangeAccountActivity}\label{change_acc} }}
 \qquad
 \subfloat[]{{\includegraphics[width=3.5cm]{images/DeleteAccount}\label{prompt_delete} }}
-\caption[Activity for managing Accounts]{Activity for managing Accounts; \protect\subref{show_acc}: listed accounts are shown. \protect\subref{add_acc}: interface where the user can add accounts. \protect\subref{change_acc}: the user can change selected account. \protect\subref{prompt_delete}: user is asked before deleting credentials.}
+\caption[Activity for managing Accounts]{Activity for managing Accounts; \protect\subref{show_acc}: listed accounts are shown. \protect\subref{add_acc}: interface where the user can add accounts. \protect\subref{change_acc}: the user can change a selected account. \protect\subref{prompt_delete}: user is asked to confirm before deleting the credential.}
 \label{fig:accountactivity}
 \end{figure}
 
 %-------------------------------------------------------------------------------------
 
 \subsection{Activity for Bluetooth Connection}
-After selecting the menu item \textit{Connection}, the app checks immediately if Bluetooth is enabled. If it is not turned on, the user is asked via a prompt to enable Bluetooth (Figure \ref{fig:connectionactivity}\protect\subref{prompt_bt}.
+After selecting the menu item \textit{Connection}, the app checks immediately if Bluetooth is enabled. If it is not turned on, the user is asked via a prompt to enable Bluetooth as shown in Figure \ref{fig:connectionactivity}\protect\subref{prompt_bt}.
 If the activation is denied, the application will return to the main activity with an error message, displayed in Figure \ref{fig:connectionactivity}\protect\subref{bt_notEnabled}. \\
-Once Bluetooth is enabled, the accounts available for sharing are listed. At first, the application does not advertise any data. The user is asked to select an account to send to the Web Bluetooth API. (Figure \ref{fig:connectionactivity}\protect\subref{not_advertising}) Before any credentials are shared, the user is asked to authenticate himself. This is done by scanning his fingerprint. Figure \ref{fig:connectionactivity}\protect\subref{advertising} shows that only after successful authentication the advertising starts.
+Once Bluetooth is enabled, the accounts available for sharing are listed. At first, the application does not advertise any data. The user is asked to select an account to send to the Web Bluetooth API as seen in Figure \ref{fig:connectionactivity}\protect\subref{not_advertising}. Before any credentials are shared, the user is asked to authenticate themselves. This is done by scanning the fingerprint. Figure \ref{fig:connectionactivity}\protect\subref{advertising} shows that only after successful authentication the advertising starts.
 
 \begin{figure}[!htb]
 \centering
@@ -77,9 +86,9 @@ Once Bluetooth is enabled, the accounts available for sharing are listed. At fir
 
 
 \subsection{Storage using greenDao ORM}
-Since one goal is to store user credentials on the phone, we need a suitable database structure. One option was a common SQLite database. SQLite databases use SQL queries to store, retrieve and delete data. However, SQL queries can be vulnerable to security attacks, for example, second-order SQL injections. As stated in \cite{katole2018detection} a SQL injection is defined as a method where code is injected. This exploits a security vulnerability in the database layer of an application. It is done by modifying input data which then alters the SQL query. This procedure increases the risk of storing data insecurely and may lead to a vulnerable application. \cite{katole2018detection} also states that the risk of a SQL injection attack can increase due to not investing sufficient development time or lack of experience. We decided not to implement traditional SQL queries.
+Since one goal is to store user credentials on the phone, we need a suitable database structure. One option was a common SQLite database. SQLite databases use SQL queries to store, retrieve and delete data. However, SQL queries can be vulnerable to security attacks, for example, second-order SQL injections. As stated in \cite{Halfond2005} a SQL injection is a type of attack where code is injected. The user's input is treated as part of the SQL code. A SQL injection exploits a security vulnerability in the database layer of an application. It is done by modifying input data which then alters the SQL query. This procedure increases the risk of storing data insecurely and may lead to a vulnerable application. \cite{katole2018detection} states that the risk of a SQL injection attack can increase due to not investing sufficient development time or lack of experience. We decided not to implement traditional SQL queries.
 
-For this project, we use an object/relational mapping. It manages the tasks of storing, deleting, updating and querying. We decided on the greenDAO ORM as it has an overall good performance \cite{Greendao}. Additionally, it does not require as much programming effort compared to other frameworks as discussed in \cite{pu2016understanding}. \\
+For this project, we use the object/relational mapping framework called greenDAO. It manages the tasks of storing, deleting, updating and querying. Since \cite{Greendao} states it has an overall good performance, we decided on the greenDAO ORM. Additionally, it does not require as much programming effort compared to other frameworks as discussed in \cite{pu2016understanding}. \\
 Before setting up the database, we included the greenDAO plugin. To set up the database, a DaoMaster had to be initialized. The DaoMaster is provided from the helper class \texttt{DevOpenHelper}, and handles the database set up and creates DaoSessions. Listing \ref{lst:db_master} shows this process.
 
 \begin{lstlisting}[float,floatplacement=h, caption=Creation of Database, label=lst:db_master]
@@ -104,42 +113,50 @@ public void insertNewAccount(Account account) {
 \end{lstlisting}
 \vspace{0.5cm}
 
-The database created by the application lies in persistent memory of the mobile device, and can only be accessed from our app (\textit{cf.} Section \ref{limitations}). In case of an attack even if the database content is dumped, the attacker is left with encrypted data. In section \ref{arch_encryption} we discuss how data is encrypted before inserting into the database and decrypted again when fetching from it. \\
+The database created by the application lies in persistent memory of the mobile device, and can only be accessed from our app (c.f. Section \ref{limitations}). In case of an attack even if the database content is dumped, the attacker is left with encrypted data. In section \ref{arch_encryption} we discuss how data is encrypted before inserting into the database and decrypted again when fetching from it. \\
 
 %-------------------------------------------------------------------------------------
 
 \subsection{Encryption of Data}\label{arch_encryption}
-%explaining the en and decryption of data, all about choosing a key: all about cipher and algorithm, code lines and android developer cites, modes paddings usw.
-For en- and decryption of sensitive data there exist different possibilities. One option of storing passwords is hashing and storing the hash in the database. SHA256 or SHA512 are some hash algorithms. By hashing data for encryption, data can be recovered by multiple different attacks such as Brute Force or Dictionary attack as mentioned in \cite{ertaul2016implementation}. \\
-Another way to store sensitive data is to hash it with a random string of bits, called \textit{salt}. It is stored with the hash of the plaintext. This can also become vulnerable to the Dictionary Attack as stated in \cite{3wrongways}. \\
-Nowadays it is common to use a key derivation function to securely store passwords. They must generate a strong key that is secure against attacks. Latest key derivation functions are \gls{pbkdf2}, \textit{Bcrypt}, and \textit{Scrypt}. As mentioned in \cite{ertaul2016implementation}, their security is strong.
-However, \gls{pbkdf2} requires the user's input to generate the key for encryption. The generated key will depend on the password chosen by the user \cite{Agilebits}. As a result of the study conducted in \cite{YanBAG04}, users create passwords that may not be secure. In case of a easy to guess password, \gls{pbkdf2} can become target of brute force attacks with GPUs \cite{DurmuthGKPYZ12}.
+For en- and decryption of sensitive data there exist different possibilities. One option of storing passwords is hashing and storing the hash in the database. SHA256 or SHA512 are some hash algorithms. However, by hashing data for encryption, data can be recovered by multiple different attacks such as Brute Force or Dictionary attack as mentioned in \cite{ertaul2016implementation}. Hence, storing passwords with fast hash algorithms is not advisable. \\
+Another way to store sensitive data is to hash it with a random string of bits, called \textit{salt}. The salt is stored with the hash of the plaintext. Still, this approach can also become vulnerable to Dictionary Attacks as stated in \cite{3wrongways}. \\
+Nowadays it is common to use a key derivation function to securely store passwords. They must generate a strong key that is secure against various attacks. Latest key derivation functions are \gls{pbkdf2}, \textit{Bcrypt}, and \textit{Scrypt}. As mentioned in \cite{ertaul2016implementation}, their security is strong.
+However, \gls{pbkdf2} requires the user's input to generate the encryption key. Hence, it depends on the password chosen by the user as stated in \cite{Agilebits}. Furthermore, \cite{YanBAG04} shows that users create passwords that may not be secure. In case of an easy to guess password, \gls{pbkdf2} can become target of brute force attacks with GPUs \cite{DurmuthGKPYZ12}.
 
-Therefore, our goal is to provide secure en- and decryption without depending on the user's input. Also, all encryption takes place on the mobile phone, and there is no need for any public encryption component. Therefore, encryption and decryption can be done with the same key \cite{ElminaamKH10}.
+Therefore, our goal is to provide secure en- and decryption without depending on the user's input. Also, all encryption tasks take place on the mobile phone, and there is no need for any public encryption component. Therefore, encryption and decryption can be done with the same key \cite{ElminaamKH10}.
+%NÄHER EINGEHEN AUF REFERENZ!!
 
-We decided to encrypt data using the AES algorithm and \gls{gcm} as our cipher mode. The reason for this is that \gls{gcm} provides confidentiality, integrity, and authenticity \cite{AESJavaAndroid}. \cite{GCMSecure} states that CBC mode can be vulnerable to padding attacks and \gls{gcm} is considered to be more secure than CBC. \\
-\gls{gcm} uses the Counter Mode (CTR) internally. A counter value for each block is encrypted and only uses as many bits as required from the last block. Hence, it turns the block cipher into a stream cipher, and no padding is required \cite{IVtransmission}. Therefore, \gls{gcm} is less vulnerable than CBC. Hence, making it ideal to generate a secret key for encryption of sensitive data. For encryption, \gls{gcm} takes as input the \gls{iv}, a plaintext, and additional authenticated data (AAD). The AAD is not required and does not affect the security of the \gls{gcm} mode \cite{AADsecure}. \\
+
+We decided to encrypt data using the AES algorithm and \gls{gcm} as our cipher mode. \cite{AESJavaAndroid} describes, the reason for this is that \gls{gcm} provides confidentiality, integrity, and authenticity. \cite{GCMSecure} states that CBC mode can be vulnerable to padding attacks and \gls{gcm} is considered to be more secure than CBC. \\ 
+%BESSERE REFERENZ VERWENDEN!!
+
+\gls{gcm} uses the Counter Mode (CTR) internally. A counter value for each block is encrypted and only uses as many bits as required from the last block. \cite{IVtransmission} states that this process turns the block cipher into a stream cipher, and no padding is required. 
+
+Therefore, \gls{gcm} is less vulnerable than CBC. Hence, making it ideal to generate a secret key for encryption of sensitive data. For encryption, \gls{gcm} takes as input an \gls{iv}, a plaintext, and additional authenticated data (AAD). The AAD is not required and does not affect the security of the \gls{gcm} mode \cite{AADsecure}. \\ %BESSERE REFERENZ --> NIST
 We instantiated the cipher, as seen in Listing \ref{lst:cipher}.
 
-\begin{lstlisting} [float,floatplacement=h, caption=Instantiation of Cipher, label=lst:cipher]
+\begin{lstlisting} [float,floatplacement=!htb, caption=Instantiation of Cipher, label=lst:cipher]
 final Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
 \end{lstlisting}
 
-In this project, we passed the plaintext and the \gls{iv}. The output of encryption is the ciphertext and an authentication tag \cite{dworkin2007sp}. The authentication tag contains information, that is associated with the encrypted data. It is useful in case of an unauthorized change \cite{AESJavaAndroid}. When decrypting data, \gls{gcm} expects the \gls{iv}, a ciphertext, the authentication tag, and the AAD, if it has been passed during encryption. Only if the authentication tag calculated during encryption and then passed one are identical, the plaintext is returned \cite{dworkin2007sp}.
+In this project, we passed the plaintext and the \gls{iv}. According to \cite{dworkin2007sp}, the output of encryption is the ciphertext and an authentication tag. The authentication tag contains information, that is associated with the encrypted data. cite{AESJavaAndroid} states, the authentication tag helps to identify an unauthorized change. As discussed in \cite{dworkin2007sp}, when decrypting data, \gls{gcm} expects the \gls{iv}, a ciphertext, the authentication tag, and the AAD, if it has been passed during encryption. Only if the authentication tag calculated during encryption and the one passed are identical, the plaintext is returned.
 
 Important for the Android implementation of \gls{gcm} is the length of the \gls{iv}. National Institute of Standards and Technology recommends 96 bits for the \gls{iv} to be fast and secure \cite{dworkin2007sp}. To ensure that a unique \gls{iv} is used with every encryption, a new one is generated upon each call of the encrypt method. Afterward, we concatenate the \gls{iv} with the ciphertext. Before decryption, the \gls{iv} is separated from the ciphertext again. We created the \gls{iv} using the strong random number generator \textit{SecureRandom} from the Android Library \cite{SecureRandom}.
 
-Android insists on using their default method \texttt{cipher.getIV();} for generating the \gls{iv}. However, research has shown that using the default \gls{iv} may not be secure because the risk of reusage is given \cite{DefaultIV}. Reusing an \gls{iv} results in a vulnerable implementation and compromises the security of data. The \gls{iv} being unique is almost as important as the key being secret \cite{dworkin2007sp}. \\
-Therefore, we decided to provide the \gls{iv} by a SecureRandom. The Android OS throws an exception, because we are not using the provided method \texttt{cipher.getIV()}. To solve this problem, we set the \textit{setRandomizedEncryptionRequired()} property to \textit{false} when we generated the key, which is shown in Listing \ref{lst:key}. This way Android allows using our generated \gls{iv} \cite{SecretsInAndroid}.
+Android insists on using their default method \texttt{cipher.getIV();} for generating the \gls{iv}. However, as mentioned in \cite{DefaultIV}, using the default \gls{iv} may not be secure due to old versions of Android returning an all 0 \gls{iv}, which leads to the same key. Reusing an \gls{iv} results in a vulnerable implementation and compromises the security of data. \cite{dworkin2007sp} states that the \gls{iv} being unique is almost as important as the key being secret. \\
+To ensure random \gls{iv}s, we decided to provide the \gls{iv} by SecureRandom. 
 
-\begin{lstlisting} [float,floatplacement=h, caption=Setting Properties of Secret Key, label=lst:key]
+The Android OS throws an exception because we are not using the provided method \texttt{cipher.getIV()}. To solve this problem, we set the \textit{setRandomizedEncryptionRequired()} property to \textit{false} when we generated the key, which is shown in Listing \ref{lst:key}. This way Android allows using our generated \gls{iv} \cite{SecretsInAndroid}. \\
+After generation of the key and successful encryption, it is crucial to store the key securely. We rely on the Android Keystore for this task. Chapter \ref{arch_keystore} discusses storage of the key. \\
+
+
+\begin{lstlisting} [float,floatplacement=!htb, caption=Setting Properties of Secret Key, label=lst:key]
 SpecBuilder.setKeySize(128)
     .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
     .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
     .setRandomizedEncryptionRequired(false);
 \end{lstlisting}
 
-After generation of the key and successful encryption, it is crucial to store the key securely. We rely on the Android Keystore for this task. Chapter \ref{arch_keystore} discusses storage of the key. \\
 
 
 %-------------------------------------------------------------------------------------
@@ -147,9 +164,12 @@ After generation of the key and successful encryption, it is crucial to store th
 \subsection{Secure Storage of Secret Key} \label{arch_keystore}
 As stated in \cite{dworkin2007sp} and \cite{CooijmansRP14},  in practice the secrecy of the key and secure storage are crucial. If the key can be retrieved from the device, the data's security is exceedingly compromised. With the key, all ciphertexts can be decrypted easily. Therefore, we need a system to ensure secure storage of the key.
 
-The \textit{AndroidKeystore} system allows secure storage of cryptographic keys. Applications use this Android Framework API  to access Keystore functionality \cite{HWBKeyStore}. The AndroidKeystore lets an app store manage its credentials while making sure no other application can access them \cite{AndroidKeyStoreSystem}.
+The \textit{AndroidKeystore} system allows secure storage of cryptographic keys. Applications use this Android Framework API  to access Keystore functionality \cite{HWBKeyStore}. According to \cite{AndroidKeyStoreSystem}, the AndroidKeystore lets an application store and manage its credentials while making sure no other application can access them.
 
-To increase the security of the key, we made use of the hardware-based security feature provided by a specific realization of the AndroidKeystore. Modern mobile phones' processors are equipped with ARM TrustZone Technology \cite{CooijmansRP14}. This technology separates the hardware into two operating systems (OS): a secure world OS and normal OS. The secure world OS is also known as a \gls{tee}. The \gls{tee} ensures that data cannot be extracted form this trusted environment. Hence, keys stored in the TEE cannot be retrieved. Availability of a \gls{tee} depends on the device manufacturer. On devices equipped with a Qualcomm processor with TrustZone Technology, the AndroidKeystore is automatically stored in the \gls{tee} \cite{CooijmansRP14}. This represents the most secure option to store keys \cite{SecureDataEncryption}. If a \gls{tee} is not supported, the keys are stored in a system provided emulated software environment. However, keys will be removed when deleting the application that created them.
+To store the cryptographic key in a secure manner, we used the hardware-based security feature provided by a specific realization of the AndroidKeystore. 
+%überleitung fehlt von android keystore auf arm trustzone
+
+As stated in \cite{CooijmansRP14}, modern mobile phones' processors are equipped with ARM TrustZone Technology. This technology separates the hardware into two operating systems (OS): a secure world OS and normal OS. The secure world OS is also known as a \gls{tee}. The \gls{tee} ensures that data cannot be extracted from this trusted environment. Hence, keys stored in the TEE can hardly be retrieved. Availability of a \gls{tee} depends on the device manufacturer. On devices equipped with a Qualcomm processor with TrustZone Technology, the AndroidKeystore is automatically stored in the \gls{tee} as described in \cite{CooijmansRP14}. As of this writing \cite{SecureDataEncryption}, it represents the most secure option to store keys. If a \gls{tee} is not supported, the keys are stored in a system provided emulated software environment. However, keys will be removed when deleting the application that created them.
 
 Before we can generate a key or use it for encryption, we must instantiate and load the Keystore. A key is stored into the Keystore under a given identifier, also known as \textit{alias} \cite{CooijmansRP14}. The alias is a string that defines a reference to the key. All cryptographic operations are done in the background, and key material is never exposed. Hence, the alias is needed everytime data is en- and decrypted. \\
 Also, the lock screen must be set in order to reference the key. The KeyguardManager is used for this process. The method \texttt{isDeviceSecure()} returns if the device is secured with a PIN, pattern or password. If the device is not locked, the AndroidKeystore is not instantiated, and cryptographic calculations cannot take place. \\
@@ -158,16 +178,16 @@ Also, the lock screen must be set in order to reference the key. The KeyguardMan
 
 %-------------------------------------------------------------------------------------
 
-\subsection{Authentication through Biometrics}
+\subsection{Authentication through Biometrics} \label{arch_authenticate}
 To securely protect user credentials, the app uses biometric authentication. As biometric authentication, we use the user's fingerprint. Whenever the user wants to access or send credentials, the application requires fingerprint authentication from the user.
 
-For this process, an instance of the Android class \textit{FingerprintManager} is required. The class handles accesses to the fingerprint hardware \cite{FingerprintManager}. Before the actual authentication can take place, the application checks the following requirements. \\
+For this process, an instance of the Android class \textit{FingerprintManager} is required. As described in \cite{FingerprintManager}, the class handles accesses to the fingerprint hardware. Before the actual authentication can take place, the application checks the following requirements. \\
 Firstly, the application checks if a fingerprint sensor is available. The method \texttt{isHardwareDetected()} is called on the FingerprintManager to ensure the device supports fingerprint scanning. \\
 The next requirement is the permission to use fingerprint scanning. This must be granted by the Android permission system, which is discussed in Section \ref{limitations}. \\
-Also, the user must have at least one fingerprint registered on the device \cite{FingerprintTutorial}. The FingerprintManager uses the method \texttt{hasEnrolledFingerprints()} to ensure that fingerprints are registered. If no fingerprints are saved, a message is displayed as shown in Figure \ref{fig:authentication}\protect\subref{auth_none}. \\
+Also, the user must have at least one fingerprint registered on the device as stated in \cite{FingerprintTutorial}. The FingerprintManager uses the method \texttt{hasEnrolledFingerprints()} to ensure that fingerprints are registered. If no fingerprints are saved, a message is displayed as shown in Figure \ref{fig:authentication}\protect\subref{auth_none}. \\
 Before starting authentication via fingerprint, the application makes sure the lock screen is secured. This is done with the Android class \texttt{KeyguardManager} \cite{KeyguardManager}. The KeyguardManager provides access to the lock screen and checks if a PIN, password, pattern is set or if the SIM card is locked. The mobile device must be secured for the authentication process to proceed.
 
-As mentioned above, upon every request to send an account login the user has to re-authenticate. This security mechanism can protect from an unintentional distribution of sensitive data. Therefore, the risk of threatened security can be reduced whenever the user left their phone unattended with the open application. \\
+As mentioned above, upon every request to retrieve credentials the user has to re-authenticate. This security mechanism can protect from an unintentional distribution of sensitive data. Therefore, the risk of threatened security can be reduced whenever the user left their phone unattended with the open application. \\
 
 \begin{figure}[!htb]
 \centering
@@ -185,6 +205,6 @@ As mentioned above, upon every request to send an account login the user has to 
 \subsection{Chrome Extension with the Web Bluetooth API}
 After discussing in depth the credential storage, encryption, and authentication, we will describe the communication of the extension and the Android application.
 
-In addition to the application, we implemented an extension for the Chrome browser. Chrome exposes a dedicated Web Bluetooth API to support a \gls{ble} connection \cite{WebBTAPI}. This makes it possible for a website to communicate with a near \gls{ble} device. Typically a \gls{ble} device advertises characteristics, where the Web Bluetooth API consumes them.
+In addition to the application, we implemented an extension for the Chrome browser. Chrome exposes a dedicated Web Bluetooth API to support a \gls{ble} connection \cite{WebBTAPI}. This allows websites to communicate with a near \gls{ble} device. Typically a \gls{ble} device advertises characteristics, where the Web Bluetooth API consumes them.
 
-The workflow is as follows: first, the application advertises a specific service containing the credentials. Services are specified by a \gls{uuid} and can advertise characteristics and descriptors. To distinguish our custom service from the other \gls{ble} services we defined a \gls{uuid} in the code. The extension will only connect to the service that matches the defined \gls{uuid}. Once found, the connection of the Bluetooth devices takes place. Only after the devices have been paired, the Web Bluetooth API can read the characteristics. Every characteristic has a \gls{uuid} of its own. This helps to distinguish them easily. We defined the username and password as our characteristics. They are retrieved from the service with the method \texttt{service.getCharacteristic();}. To read the values, the Web Bluetooth API uses the method \texttt{characteristic.readValue();} \cite{WebBTAPI}.
+The workflow is as follows: first, the application advertises a specific service containing the credentials. Services are specified by a \gls{uuid} and can advertise characteristics and descriptors. To distinguish our custom service from other \gls{ble} services we defined a \gls{uuid} in the code. The extension will only connect to the service that matches the defined \gls{uuid}. Once found, the connection of the Bluetooth devices takes place. Only after the devices have been paired, the Web Bluetooth API can read the characteristics. Every characteristic has an own \gls{uuid}. This helps to distinguish them easily. We defined the username and password as our characteristics. They are retrieved from the service with the method \texttt{service.getCharacteristic();}. According to \cite{WebBTAPI}, to read the values, the Web Bluetooth API uses the method \texttt{characteristic.readValue();} .

@@ -1,13 +1,8 @@
 %%%% Time-stamp: <2013-02-25 10:31:01 vk>
 
 \section*{Abstract} \label{cha:abstract}
-In this thesis, we present a novel approach to manage credentials and making them accessible throughout multiple devices. We use the smartphone as a secure environment and deliberately resign from cloud services for storage. However, to make the passwords accessible, we rely on a Bluetooth connection between the mobile device and the web browser. To make this possible, we implemented an Android application and a Chrome web extension. The extension retrieves data sent from the application and fills it directly into the login fields of the website. \\
-The encryption of credentials is done on the mobile phone. Cryptographic keys are securely stored in a \gls{tee}. This makes extraction from the phone very difficult. To access and distribute passwords, the user must authenticate using biometric identification.
-
-
-gute argumente:
-
-In this work, we want to explore the possibility of making credentials available without depending on third party services. 
+In this thesis, we present a novel approach to provide secure access to passwords across multiple devices. Recent security issues concerning cloud services have shown that depending on third-parties for availability can compromise confidentiality. Our goal is to manage credentials without depending on third-party services. A mobile devices serves as the storage for credentials since it provides a secure hardware-backed environment. To make the passwords available, we rely on a Bluetooth connection between the mobile device and the web browser. \\
+To achieve this goal, we implemented an Android application and an accompanying Chrome web extension. The extension retrieves data sent from the application and fills it directly into the login fields of the website. To access and distribute passwords, the user must authenticate using biometric identification.
 
 %\glsresetall %% all glossary entries should be used in long form (again)
 %% vim:foldmethod=expr

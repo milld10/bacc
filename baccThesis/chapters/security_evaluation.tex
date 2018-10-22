@@ -1,18 +1,18 @@
 \section{Security Evaluation based on Common Criteria} \label{seceval}
 In this chapter, we will evaluate the security of the Android application and the Chrome extension. This process will be based on a Security Evaluation with Common Criteria \cite{CC}. We will list the assets and weaknesses of this project and identify the threats and countermeasures.
 
-Our \gls{toe} is the Android application and the Chrome extension. According to \cite{CC}, an asset is an entity of the \gls{toe} that is valuable to the owner. A weakness is a vulnerability in the \gls{toe}. We will roughly distinguish a weakness into exploitable and potential vulnerability.
-A threat is induced by a threat agent, which in turn wishes to damage an asset. On the other hand, a countermeasure protects an asset from a threat \cite{CC}.
+Our \gls{toe} is the Android application and the Chrome extension. As stated in \cite{CC}, an asset is an entity of the \gls{toe} that is valuable to the owner. A weakness is a vulnerability in the \gls{toe}. We will roughly distinguish a weakness into exploitable and potential vulnerability.
+A threat is induced by a threat agent, which in turn wishes to damage an asset. On the other hand, a countermeasure protects an asset from a threat according to \cite{CC}.
 
-Stored credentials are valuable to the owner of the \gls{toe}. This makes the credentials as our most valuable asset. Another asset is the general access to the mobile device and its resources. \\
+Stored credentials are valuable to the owner of the \gls{toe}. Thus, credentials are our most valuable asset. Another asset is the general access to the mobile device and maintaining its integrity. Untrusted third parties should not be able to make changes to files or retrieve data. \\
 %
-As our greatest weakness, we define the \gls{ble} connection. To use the Web Bluetooth API we needed to implement a \gls{ble} connection. However, as researches \cite{Ryan13}, \cite{GomezOP12}, \cite{IntroductionBLE} (cf. Section \ref{bluetooth}) have shown, \gls{ble} has the downside of a possibly insecure communication channel. This can make the transfer of sensitive data an exploitable vulnerability. In case of an attack, the attacker can retrieve the sent credentials in plaintext. Another weakness is given when a device has root privileges. This is a threat that is challenging to minimize and is discussed thoroughly in Section \ref{limitations}.
+As our greatest weakness, we define the \gls{ble} connection. To use the Web Bluetooth API we needed to implement a \gls{ble} connection. However, as researches \cite{Ryan13}, \cite{GomezOP12}, \cite{IntroductionBLE} (c.f. Section \ref{bluetooth}) have shown, \gls{ble} has the downside of a possibly insecure communication channel. This can make the transfer of sensitive data an exploitable vulnerability. In case of an attack, the attacker can retrieve the sent credentials in plaintext. Another weakness is given when a device has root privileges. This is a threat that is challenging to minimize and is discussed thoroughly in Section \ref{limitations}.
 
-As a threat, we consider retrieving credentials with the secret key or brute forcing stored data. There also exists the threat of tampering with stored data. Also, phishing data from the \gls{ble} connection with packet sniffer tools we see as a threat. \\
+As a threat, we, therefore, consider retrieving credentials with the secret key or brute forcing stored data. There also exists the threat of tampering with stored data. Also, we see phishing data from the \gls{ble} connection with packet sniffer tools as a threat. \\
 %
-The first countermeasure is the AES-GCM encryption which is independent of the user's input. Through GCM mode we provide additional authenticity. In the case of tampering with stored data, the decryption will not be executed since the authentication tag will be different. An additional countermeasure is the storage of the secret key in the hardware provided \gls{tee}. The secret key cannot be extracted from this environment. Lastly, we use the fingerprint for user authentication. A PIN is considered to be more secure than a pattern according to \cite{PinSaferThanPattern}. In \cite{SecureWayToLockPhone} they claim that using a PIN is the best way to protect a mobile device, but only when the PIN is randomly generated and hard to remember. Users tend to choose simple passwords leading to an insecure PIN since convenience is preferred over security. Therefore, choosing biometrics to secure a mobile device is the best option regarding security.
+The first countermeasure is the AES-GCM encryption which is independent of the user's input. Through GCM mode we provide additional authenticity. In the case of tampering with stored data, the decryption will not be executed since the authentication tag will be different. An additional countermeasure is the storage of the secret key in the hardware provided \gls{tee}. The secret key cannot be extracted from this environment. Lastly, we use the fingerprint for user authentication. A PIN is considered to be more secure than a pattern according to \cite{PinSaferThanPattern}. In \cite{SecureWayToLockPhone} the authors claim that using a PIN is the best way to protect a mobile device, but only when the PIN is randomly generated and hard to remember. Users tend to choose simple passwords leading to an insecure PIN since convenience is preferred over security. Therefore, choosing biometrics to secure a mobile device provides reasonable security while maintaining usability.
 
-\noindent We have identified following countermeasures:
+\noindent Summarising, we have identified following countermeasures:
 \begin{itemize}
 \item $c_1$ - Encryption independent form user's input.
 \item $c_2$ - GCM cipher mode provides additional authentication.
@@ -24,7 +24,7 @@ The first countermeasure is the AES-GCM encryption which is independent of the u
 \noindent Following assets must be protected:
 \begin{itemize}
 \item $a_1$ - User credentials
-\item $a_2$ - Resources of smartphone
+\item $a_2$ - Integrity of smartphone
 \end{itemize}
 \vspace{0.5cm}
 
