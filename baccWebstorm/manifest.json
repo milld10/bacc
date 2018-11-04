@@ -8,12 +8,6 @@
       "tabs", "<all_urls>"
   ],
 
-//  "app": {
-//    "background": {
-//      "scripts": ["background.js", "scripts/jquery-3.3.1.js"]
-//    }
-//  },
-
   "icons": {
     "16": "img/icon16.png",
     "48": "img/icon48.png",
@@ -39,8 +33,4 @@
       "js": ["scripts/jquery-3.3.1.js", "content.js"],
       "run_at": "document_end"
   }]
-
-//  "bluetooth":{
-//    "uuids": [ "180D", "1809", "180F", "180A" ]
-//  }
 }

@@ -118,7 +118,6 @@ public class PeripheralActivity extends ListActivity
 
         mBleCustomServiceFragment = new BluetoothLeService();
 
-        ensureBleFeaturesAvailable();
     }
 
     @Override

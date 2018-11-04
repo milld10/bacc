@@ -32,9 +32,11 @@ const characteristicPasswordUUID = "0000a002-0000-1000-8000-00805f9b34fb";
                     var enc = new TextDecoder("utf-8");
                     var help = enc.decode(dataView.buffer);
                     if(c.uuid == characteristicUsernameUUID){
+                      console.log("Username: " + document.getElementById("username").value);
                       document.getElementById("username").value = help;
                     }
                     if(c.uuid == characteristicPasswordUUID) {
+                      console.log("Password: " + document.getElementById("password").value);
                       document.getElementById("password").value = help;
                     }
                   
@@ -52,3 +54,6 @@ const characteristicPasswordUUID = "0000a002-0000-1000-8000-00805f9b34fb";
         onButtonClick();
 
     });
+
+
+

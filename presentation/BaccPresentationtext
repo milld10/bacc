@@ -1,0 +1,115 @@
+Bacc Presentationtext
+------------------------------------------------------------------------
+
+Folie 1 - Titlepage 
+------------------------------------------------------------------------
+Hello and welcome to my presentation of my bachelors thesis. Today I am presenting an unexplored approach to provide secure storage and availability of credentials on multiple devices while reducing external dependencies.
+
+
+
+
+
+Section Motivation
+------------------------------------------------------------------------
+
+Android password managers are not as safe as they could be.
+Many recent articles report about Android applications of leading password managers are prone to exploitation through phishing attacks. 
+Affected were, for example, the password managers Keeper, Dashlane, LastPass, and 1Password. The problem was that malicious applications phished credentials from the password managers through misleading them with tampered package names.
+When users log in to a web application, they communicate through the web backend provided by the password manager. The password managers associates the website domain for that app with the app package name. So the package name is used to identify the application.
+In case a malicious application mimics the legitimate app, the password manager will provide the malicious appliction with user's credentials via autofill and the attacker can gain access to sensitive data.
+Also, many Android password managers stored master passwords in plain text onto the phone, which resulted in a big compromise of security where credentials can be retrieved easily.
+Many applications also face exploitation through sniffing of the phones clipboard. If the clipboard is not properly cleaned after credentials are copied, potentially malicous application can access the clipboard and retrieve credentials.
+Even web-based password manangers, such as LastPass, are prone to various attacks because only cookies where used to authenticate a user.
+Although these article state, manufacutes have already been informed about these security vulnerabilities and the problems have been closed, future vulnerabilities cannot be excluded.
+
+For users an important feature is availability of their credentials. Most users work on more than one device, which makes availability crucial. A common solution to provide access to credentials on multiple devices, is by synchronizing them with cloud services. Nowadays there exist countless applications that offer cloud services to store user credentials and make them available on multiple devices. Data is stored on servers owned by third parties and the user can access them on the Internet. However, using cloud services can compromise data confidentiality. Confidentiality is provided when data can be accessed only by the authorized party. While storing data onto servers owned by third parties, unauthorized access cannot be excluded. However, if cloud services are renounced, availability on different devices can be challenging.
+
+We realize that depending on third-parties for availability can immensely compromise security of credentials. So for this project, we strive to reduce external dependencies altogether. We will handle an unexplored approach of sending credentials from the mobile device directly through a Bluetooth connection while sensitive data is stored in a secure environment on the mobile phone.
+
+--------------
+
+Mobile phones support our everyday lives and can help to make data available wherever the user is. Android phones offer important security mechanisms to provide integritiy, confidentiality and authenticity such as
+A Trusted Execution Environment (TEE) which offers a secure way to store data and cryptographic keys.
+Biometric Authentication Methods like Fingerprint.
+Additionally, Android offers the advantage of Linux user-based protection to identify and isolate app resources. 
+
+
+The motivation for this project is to provide secure storage and availability while reducing external dependencies. By storing them on a mobile device, authenticity can be provided. Third parties are excluded so the risk of compromised confidentiality is reduced.
+
+To achieve this goal, we designed and implemented an Android credential manager. Additionally, we developed an accompanying Google Chrome extension, which uses the Web Bluetooth API. The extension and application establish a secured BLE connection to transfer the credentials.
+Data is stored on the device and only on demand one selected credential can be shared with the extension at a time. Accessing and sending credentials requires authentication from the user via fingerprint. This process ensures that only registered fingerprints can access and share sensitive data. The Chrome extension then fills username and password in into the forms on the website.
+
+
+
+
+
+
+
+
+Section Architecture
+------------------------------------------------------------------------
+The workflow between the mobile device and web browser can be seen here: <Image of workflow>
+First, the user selects the credential to send to the web browser and authenticates via fingerprint. After this process, the application starts advertising. Through the extension, we inject a button on the website. The button is used to establish a BLE connection between application and extension. Upon button click in the web browser, the extension and application start the pairing process and after successful pairing, the extension is allowed to read characteristics that are advertised from the app. The characteristics contain username and password, which the extension inserts directly into the login forms of the website. Finally, the credentials are inserted into the forms.
+
+
+Before starting with the implementation we defined minimal requirements of the Android application and the Chrome extension:
+Requirements of application are
+Secure storage and management of credentials (like adding, changing and deleting credentials)
+En- and decryption of data
+Authentication through biometric identification
+Establishing a Bluetooth connection with the web extension
+And the equirements of the extension are
+Injection of a button onto the website
+Establishment of BLE Connection
+Reading the advertised characteristics and inserting them into the proper forms
+
+
+%%% ------------- storage of credentials
+To store user credentials on the phone, we need a suitable database structure. We decided not to implement traditional SQL queries, but rather use the object/relational mapping framework greenDAO. It manages the tasks of storing, deleting, updating, and querying. 
+The database created by the application lies in persistent memory of the mobile device, and can only be accessed from our app.
+
+
+%%% ------------- encryption of credentials
+Our goal is to provide secure en- and decryption without depending on the user's input. Also, all encryption tasks take place on the mobile phone, and there is no need for distribution of a public key component. Hence, the same key can be used for encryption and decryption.
+Symmetric key algorithms are efficient and secure and provide fast execution of computation. Also, they consume fewer resources such as memory and processor time.
+Therefore, we decided to encrypt data using the AES algorithm and GCM as our cipher mode. The reason for this is that GCM provides confidentiality, integrity, and authenticity.
+
+
+%%% ------------- storage of key
+The AndroidKeystore system allows secure storage of cryptographic keys. It lets an application store and manage its credentials while making sure no other application can access them.
+
+To store the cryptographic key in a secure manner, we used the hardware-based security feature provided by a specific realization of the AndroidKeystore stored in the Trusted Execution Enviroment. Availability of a TEE depends on the device manufacturer. On devices equipped with a Qualcomm processor with TrustZone Technology, the AndroidKeystore is automatically stored in the TEE. Modern mobile phones' processors are equipped with ARM TrustZone Technology that separates the hardware into two operating systems: a secure world OS and normal OS. The secure world OS is also known as a TEE. 
+The TEE ensures that data cannot be extracted from this trusted environment.
+Tt represents the most secure option to store keys. And even if a TEE is not supported, the keys are stored in a system provided emulated software environment. However, keys will be removed when deleting the application that created them.
+
+
+%%% ------------- autentication with fingerprint
+To securely protect user credentials, the app uses biometric authentication. As biometric authentication, we use the user's fingerprint. Whenever the user wants to access or send credentials, the application requires fingerprint authentication from the user. Upon every new request the user has to re-authenticate. This security mechanism protects from an unintentional distribution of sensitive data. Therefore, the risk of threatened security can be reduced whenever the user left their phone unattended with the open application.
+
+
+%%% ------------- browser extension
+After discussing in depth the credential storage, encryption, and authentication, we will describe the communication of the extension and the Android application.
+
+As mentioned earlier, we implemented an extension for the Chrome browser. Chrome introduced a dedicated Web Bluetooth API to support a BLE connection. This allows websites to communicate with near BLE devices. Typically a BLE device advertises characteristics, while the Web Bluetooth API consumes them.
+
+Usually, an Android application has the central role in a BLE connection. The BLE device, on the other hand has the peripheral role. The app serves as the client and the BLE device as the server, sending data to the application.
+In our scenario, however, the roles are reversed. So the Android app acts as the server. It advertises data for the extension to consume. The extension implements a GATT client to retrieve the characteristics sent from the application. The extension reads the values and fills them into the login fields.
+
+The extension also modifys the document object model by injecting a button into the website next to the password form. This button initiates the connection process between extension and application.
+
+
+%%% ------------- 
+
+
+
+
+Summary
+------------------------------------------------------------------------
+Coming to the end of my presentation I would like to summarize:
+We realized the possibility of eliminating external dependencies while providing availability across multiple devices. 
+Sensitive data is stored securely on the Android device. 
+The cryptographic key lies securely in the hardware-backed environment provided by the Android system, where extraction is made almost infeasible.
+The distribution of credentials is accomplished by a BLE connection between the browser extension and the Android application. The user securely accesses and distributes credentials by authentication through biometrics. By authenticating the user via fingerprint, we provide reasonable security while still maintaining usability. This avoids usage of insecure PINs and patterns which can result in insecure storage of credentials.
+
+
+Thank you for your attention.
