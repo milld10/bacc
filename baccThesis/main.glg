@@ -1,6 +1,6 @@
 ;; This logfile was generated automatically by `xindy'
-;; at 03.11.2018  15:03:24
-;; Indexstyle: "/var/folders/zg/xzc7c4rs45l08yzm9rgn97c00000gn/T/QqKbj5zH14", Rawindex: "/var/folders/zg/xzc7c4rs45l08yzm9rgn97c00000gn/T/7dSmf_4Y15", Output: "main.gls"
+;; at 06.11.2018  18:13:09
+;; Indexstyle: "/var/folders/zg/xzc7c4rs45l08yzm9rgn97c00000gn/T/u1PeLcxsfw", Rawindex: "/var/folders/zg/xzc7c4rs45l08yzm9rgn97c00000gn/T/a8y9ZnByb2", Output: "main.gls"
 
 
 Building indexentry-tree:
@@ -35,6 +35,7 @@ Letter-group: "„´—" -> "B"
 Letter-group: "†ÐËœ" -> "C"
 Letter-group: "ÃÐ" -> "D"
 Letter-group: "à2œ" -> "U"
+Letter-group: "»¨Ú»" -> "M"
 Letter-group: "Ú——" -> "T"
 Letter-group: "ÃÐ" -> "O"
 Letter-group: "€ÚÚ" -> "A"
@@ -48,7 +49,6 @@ Letter-group: "†»" -> "G"
 Letter-group: "¨å" -> "I"
 Letter-group: "€€" -> "A"
 Letter-group: "ÚÃ—" -> "T"
-Letter-group: "»¨Ú»" -> "M"
 Letter-group: "ÐÚ®" -> "S"
 Letter-group: "Ú®" -> "T"
 Letter-group: "´Ú®" -> "L"

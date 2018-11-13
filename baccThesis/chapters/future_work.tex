@@ -1,7 +1,7 @@
 \section{Future Work} \label{futurework}
 This Section presents ideas that could be realized in the near future once the necessary technology has progressed. Also, we discuss improvements regarding usability, convenience, and security of the Bluetooth connection, the extension, and the application. These features are not part of the scope of this project and therefore have not been implemented.
 
-\subsection{Improvements on the Bluetooth connection}
+\subsection{Improvements of the Bluetooth connection}
 One possible future implementation can be the end-to-end encryption of the \gls{ble} data streams to provide further security. By providing end-to-end encryption, a more secure environment to exchange credentials can be provided. Therefore, the implementation of classic Bluetooth can be spared by increasing the security of the protocol. As mentioned in Section \ref{bluetooth}, with \gls{ble} the risk of extracting data via packet sniffers exists. By securing the data stream with an end-to-end encryption, retrieving data in plaintext is made challenging. \\
 
 Another consideration is switching from a \gls{ble} to a classic Bluetooth connection. This depends on Google's Web Bluetooth \gls{api}. Currently only \gls{ble} is supported. As discussed in Section \ref{bluetooth}, \gls{ble} can lead to a vulnerable communication channel when keys can be retrieved during the pairing process. Also, the Web Bluetooth \gls{api} is still experimental, and the specification is not final yet. This leaves the possibility open for further development and eventually the support for classic Bluetooth.

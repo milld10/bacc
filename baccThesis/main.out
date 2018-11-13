@@ -10,7 +10,7 @@
 \BOOKMARK [1][-]{section.5}{Architecture}{}% 10
 \BOOKMARK [2][-]{subsection.5.1}{Activity for managing Accounts}{section.5}% 11
 \BOOKMARK [2][-]{subsection.5.2}{Activity for Bluetooth Connection}{section.5}% 12
-\BOOKMARK [2][-]{subsection.5.3}{Storage using greenDao ORM}{section.5}% 13
+\BOOKMARK [2][-]{subsection.5.3}{Storage of Credentials}{section.5}% 13
 \BOOKMARK [2][-]{subsection.5.4}{Encryption of Data}{section.5}% 14
 \BOOKMARK [2][-]{subsection.5.5}{Secure Storage of Secret Key}{section.5}% 15
 \BOOKMARK [2][-]{subsection.5.6}{Authentication through Biometrics}{section.5}% 16
@@ -19,7 +19,7 @@
 \BOOKMARK [1][-]{section.7}{Bluetooth Security}{}% 19
 \BOOKMARK [1][-]{section.8}{Limitations with Root Privilege}{}% 20
 \BOOKMARK [1][-]{section.9}{Future Work}{}% 21
-\BOOKMARK [2][-]{subsection.9.1}{Improvements on the Bluetooth connection}{section.9}% 22
+\BOOKMARK [2][-]{subsection.9.1}{Improvements of the Bluetooth connection}{section.9}% 22
 \BOOKMARK [2][-]{subsection.9.2}{Improvements of the Chrome extension}{section.9}% 23
 \BOOKMARK [2][-]{subsection.9.3}{Improvements of the Android application}{section.9}% 24
 \BOOKMARK [1][-]{section.10}{Conclusion}{}% 25

@@ -1,2 +1,0 @@
-\beamer@sectionintoc {1}{Motivation}{3}{0}{1}
-\beamer@sectionintoc {2}{Architecture of Project}{7}{0}{2}
